@@ -3,16 +3,21 @@ import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { HomePage } from '../pages/home/home';
+import { LoginPage } from '../pages/login/login';
 import { ListPage } from '../pages/list/list';
-
+import { RealizarReservaPage } from '../pages/realizar-reserva/realizar-reserva';
+import { RegistrarConductorPage } from '../pages/registrar-conductor/registrar-conductor';
+import { DatosPersonalesUsuarioPage } from '../pages/datos-personales-usuario/datos-personales-usuario';
+import { HistoricoViajesPage } from '../pages/historico-viajes/historico-viajes';
+import { PenalizacionesPage } from '../pages/penalizaciones/penalizaciones';
+//import { PerfilClientePage } from '../pages/perfil-cliente/perfil-cliente';
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = HomePage;
+  rootPage: any = LoginPage;
 
   pages: Array<{title: string, component: any}>;
 
@@ -21,7 +26,7 @@ export class MyApp {
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Home', component: HomePage },
+      { title: 'Realizar Reserva', component: RealizarReservaPage },
       { title: 'List', component: ListPage }
     ];
 
@@ -41,4 +46,35 @@ export class MyApp {
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
   }
+  
+  iraRealizarReserva(){
+    this.nav.push(RealizarReservaPage);
+  }
+
+  iraRegistrarConductor(){
+    this.nav.push(RegistrarConductorPage);
+  }
+
+  iraLogin(){
+    this.nav.push(LoginPage);
+  }
+
+  iraDatosPersonales(){
+    this.nav.push(DatosPersonalesUsuarioPage);
+  }
+
+  iraHistoricoViajes(){
+    this.nav.push(HistoricoViajesPage);
+  }
+
+  iraPenalizaciones(){
+    this.nav.push(PenalizacionesPage);
+  }
+
+  iraDatosConductor(){
+    this.nav.push(RegistrarConductorPage);
+  }
+
+
+
 }

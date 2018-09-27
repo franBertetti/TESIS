@@ -1,0 +1,109 @@
+<!--
+  Generated template for the PerfilClientePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+<ion-header>
+
+  <ion-navbar>
+      <ion-buttons start>
+          <button ion-button menuToggle>
+          <ion-icon name="menu"></ion-icon>
+        </button>
+        </ion-buttons>
+    <ion-title>Perfil Cliente</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-card>
+
+    <ion-item>
+      <ion-avatar item-start>
+        <img src="https://cdn4.iconfinder.com/data/icons/Pretty_office_icon_part_2/256/man.png">
+      </ion-avatar>
+      <h2> Hola</h2>
+     </ion-item>
+    
+  </ion-card>
+
+  <ion-list>
+    <a ion-button block clear (click)="iraRealizarReserva()">
+      Realizar Reserva
+    </a>
+  </ion-list>
+
+<ion-label text-aling-left>Proximas reservas</ion-label>
+
+<ion-row>
+    <button ion-button round outline color="primary" col> Como Cliente</button>
+    <button ion-button round outline color="secondary" col>Como Conductor</button>
+  </ion-row>
+
+
+
+
+
+  <ion-row style="border-bottom: groove; background-color: rgba(0, 0, 0, 0.1)">
+    <ion-col col-3>
+    <ion-label style="font-weight: bold" text-wrap>Fecha y hora</ion-label>
+  </ion-col>
+  <ion-col col-3>
+    <ion-label style="font-weight: bold" text-wrap>Conductor</ion-label>
+  </ion-col>
+    <ion-col col-3>
+    <ion-label style="font-weight: bold" text-wrap>  Destino </ion-label>
+  </ion-col>
+  <ion-col col-3 style="font-weight: bold">
+      <ion-label text-wrap>Estado</ion-label>
+    </ion-col>
+</ion-row>
+
+  <ion-row style="border-bottom: groove;" (click)="iraViajeSeleccionado()">
+    <ion-col col-3>
+     <ion-label text-wrap>12/04/2018 20:00</ion-label>
+  </ion-col>
+  <ion-col col-3>
+   <ion-label text-wrap>Lionel Messi</ion-label> 
+  </ion-col>
+    <ion-col col-3>
+   <ion-label text-wrap> Avenida Siempre Viva 123 </ion-label>
+  </ion-col>
+  <ion-col col-3> 
+     <ion-label text-wrap>En espera</ion-label>
+  </ion-col>
+</ion-row>
+<ion-row style="border-bottom: groove;" (click)="iraViajeSeleccionado()">
+  <ion-col col-3>
+   <ion-label text-wrap>12/04/2018 20:30</ion-label>
+</ion-col>
+<ion-col col-3>
+  <ion-label text-wrap>Paul Walker</ion-label>
+</ion-col>
+  <ion-col col-3>
+   <ion-label text-wrap> Avenida Siempre Viva 123 </ion-label>
+</ion-col>
+<ion-col col-3>
+     <ion-label text-wrap> En espera </ion-label>
+  </ion-col>
+</ion-row>
+<ion-row style="border-bottom: groove;" (click)="iraViajeSeleccionado()">
+  <ion-col col-3>
+   <ion-label text-wrap>12/04/2018 20:50</ion-label>
+</ion-col>
+<ion-col col-3>
+   <ion-label text-wrap>Chano</ion-label>
+</ion-col>
+  <ion-col col-3>
+   <ion-label text-wrap> Avenida Siempre Viva 123 </ion-label>
+</ion-col>
+<ion-col col-3>
+     <ion-label text-wrap>En espera confirmación</ion-label>
+  </ion-col>
+</ion-row>
+
+</ion-content>

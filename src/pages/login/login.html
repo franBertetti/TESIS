@@ -1,0 +1,53 @@
+
+<ion-content padding>
+  <ion-list>
+      <ion-row>
+          <ion-col col-5>
+              <a clear (click)="irARegistrarUsuario()">
+                  Registrarme
+                </a>  
+          </ion-col>
+          <ion-col col-6></ion-col>
+          <ion-col col-1>
+              <a clear (click)="iraAyuda()">
+                  <ion-icon id="iconoAyuda" name="help"></ion-icon>
+              </a>  
+          </ion-col>
+      </ion-row>
+
+    <ion-row >
+        <ion-label col-12 text-center id="tituloApp">Mejor tu conduce  </ion-label>
+    </ion-row>
+
+
+    <form [formGroup]="myForm" (ngSubmit)="loginUsuario()">
+    <ion-list>
+      <ion-item>
+        <ion-icon name="person" item-left></ion-icon>
+        <ion-label floating>Correo electronico</ion-label>
+        <ion-input formControlName="email" type="text"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-icon name="key" item-left></ion-icon>
+        <ion-label stacked>Contraseña</ion-label>
+        <ion-input formControlName="password" type="password"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <div padding>
+        <button ion-button block type="submit" [disabled]="!myForm.valid">Ingresar</button>
+    </div>
+
+    </form>
+
+    <!--<br>  
+    <button ion-button full (click)="iraPerfilClientes()">Ingresar</button>-->
+    <div text-center>
+      <a ion-button block clear (click)="iraRestablecerPassword()">
+        Olvide mi Contraseña
+      </a>
+    </div>
+  </ion-list>
+
+</ion-content>
