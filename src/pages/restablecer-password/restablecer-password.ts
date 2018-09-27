@@ -4,7 +4,6 @@ import { MenuController } from 'ionic-angular';
 import { CodigoPasswordPage } from '../codigo-password/codigo-password';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { servicioUsuarios } from '../../services/notes.servicioUsuarios';
 
 
 /**
