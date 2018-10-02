@@ -6,6 +6,7 @@ import { DatosPersonalesUsuarioPage } from '../datos-personales-usuario/datos-pe
 import { PenalizacionesPage } from '../penalizaciones/penalizaciones';
 import { ViajeSeleccionadoPage } from '../viaje-seleccionado/viaje-seleccionado';
 import { RealizarReservaPage } from '../realizar-reserva/realizar-reserva';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 /**
  * Generated class for the PerfilClientePage page.
@@ -20,15 +21,42 @@ import { RealizarReservaPage } from '../realizar-reserva/realizar-reserva';
   templateUrl: 'perfil-cliente.html',
 })
 export class PerfilClientePage {
-  usuarios = [];
-  
-  constructor(public navCtrl: NavController, public navParams: NavParams, public menuCtrl:MenuController) {
-    this.menuCtrl.enable(true, 'myMenu');//para desactivar el menu desplegable en esta pagina
 
-  }
+  constructor(public navCtrl: NavController, public navParams: NavParams, public menuCtrl:MenuController, public fireAuth:AngularFireAuth) {
+    this.menuCtrl.enable(true, 'myMenu');//para desactivar el menu desplegable en esta pagina
+    
+  /*  firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+    console.log("logueado");    // User is signed in.
+      } else {
+    console.log("no logueado");        // No user is signed in.
+      }
+    });
+  }*/
+
+/*    var user = firebase.auth().currentUser;
+
+    if (user) {
+      console.log("logueado");    // User is signed in.
+        } else {
+      console.log("no logueado");        // No user is signed in.
+        }
+      };    
+    
+    /*firebase.auth().onAuthStateChanged(
+      (user) => {  
+      if (user) {
+        this.opc="si";// User is signed in.
+        
+      } else {
+        this.opc="no";  // No user is signed in.
+      }
+          });*/
+        }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PerfilClientePage');
+    //this.fireAuth.user.subscribe(user=> console.log(user));
   }
 
   iraRegistrarConductor(){

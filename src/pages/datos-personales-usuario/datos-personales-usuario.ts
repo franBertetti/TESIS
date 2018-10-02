@@ -2,6 +2,10 @@
 import { IonicPage, NavController, NavParams, MenuController } from 'ionic-angular';
 import { PerfilClientePage } from '../perfil-cliente/perfil-cliente';
 import { AngularFireDatabase } from 'angularfire2/database';
+import firebase from 'firebase';
+
+
+
 
 /**
  * Generated class for the DatosPersonalesUsuarioPage page.
@@ -25,15 +29,15 @@ export class DatosPersonalesUsuarioPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad DatosPersonalesUsuarioPage');
+    //this.fireAuth.user.subscribe(user=> console.log(user));  
   }
+
 
   iraRealizarReserva(){
     this.navCtrl.setRoot('PerfilClientePage');
   }
 
   crearUsuario(){
-    this.usuario.id = Date.now();
-    this.afDB.database.ref('usuarios/'+this.usuario.id).set(this.usuario);
     this.navCtrl.setRoot('PerfilClientePage');
   }
 }

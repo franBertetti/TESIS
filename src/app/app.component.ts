@@ -59,6 +59,10 @@ export class MyApp {
     this.nav.push(LoginPage);
   }
 
+  CerrarSesion(){
+    this.nav.setRoot(LoginPage);
+  }
+
   iraDatosPersonales(){
     this.nav.push(DatosPersonalesUsuarioPage);
   }

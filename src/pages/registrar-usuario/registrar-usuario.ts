@@ -6,6 +6,8 @@ import { DatosPersonalesUsuarioPage } from '../datos-personales-usuario/datos-pe
 import { PerfilClientePage } from '../perfil-cliente/perfil-cliente';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AngularFireDatabase } from 'angularfire2/database';
+
 
 /**
  * Generated class for the RegistrarUsuarioPage page.
@@ -23,6 +25,7 @@ export class RegistrarUsuarioPage {
 
   myForm: FormGroup;
   public loading:Loading;
+  usuario:any = {id:null, email: null};//nombreCompleto:null, dni:null
 
   constructor(
     public navCtrl: NavController,
@@ -31,7 +34,8 @@ export class RegistrarUsuarioPage {
     public formBuilder: FormBuilder,
     public afAuth: AngularFireAuth, 
     public alertCtrl: AlertController,
-    public loadingCtrl: LoadingController) {
+    public loadingCtrl: LoadingController,
+    public afDB: AngularFireDatabase) {
       this.myForm = this.formBuilder.group({
         email: ['', Validators.required],
         password: ['', Validators.required]
@@ -48,6 +52,10 @@ registrarUsuario(){
     this.afAuth.auth.createUserWithEmailAndPassword(this.myForm.value.email, this.myForm.value.password)
     .then(
       res => {
+        console.log(res);
+        this.usuario.id = res.user.uid;
+        this.usuario.email = res.user.email;
+        this.afDB.database.ref('usuarios/'+this.usuario.id).set(this.usuario);
         this.navCtrl.setRoot('PerfilClientePage');
       }, error => {
         this.loading.dismiss().then( () => {

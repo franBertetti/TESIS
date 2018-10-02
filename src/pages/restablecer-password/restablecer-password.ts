@@ -4,6 +4,7 @@ import { MenuController } from 'ionic-angular';
 import { CodigoPasswordPage } from '../codigo-password/codigo-password';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import * as firebase from "firebase";
 
 
 /**
@@ -19,6 +20,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   templateUrl: 'restablecer-password.html',
 })
 export class RestablecerPasswordPage {
+
+  email = "";
 
   myForm: FormGroup;
 
