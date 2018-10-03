@@ -22,6 +22,8 @@ import { AngularFireAuth } from 'angularfire2/auth';
 })
 export class PerfilClientePage {
 
+  
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public menuCtrl:MenuController, public fireAuth:AngularFireAuth) {
     this.menuCtrl.enable(true, 'myMenu');//para desactivar el menu desplegable en esta pagina
     
@@ -56,7 +58,7 @@ export class PerfilClientePage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PerfilClientePage');
-    //this.fireAuth.user.subscribe(user=> console.log(user));
+    this.fireAuth.user.subscribe(user=> console.log(user));
   }
 
   iraRegistrarConductor(){
