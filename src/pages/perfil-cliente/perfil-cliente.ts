@@ -7,6 +7,9 @@ import { PenalizacionesPage } from '../penalizaciones/penalizaciones';
 import { ViajeSeleccionadoPage } from '../viaje-seleccionado/viaje-seleccionado';
 import { RealizarReservaPage } from '../realizar-reserva/realizar-reserva';
 import { AngularFireAuth } from 'angularfire2/auth';
+import firebase from 'firebase';
+import { AngularFireDatabase } from 'angularfire2/database';
+
 
 /**
  * Generated class for the PerfilClientePage page.
@@ -22,11 +25,18 @@ import { AngularFireAuth } from 'angularfire2/auth';
 })
 export class PerfilClientePage {
 
-  
+  usuario={};
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public menuCtrl:MenuController, public fireAuth:AngularFireAuth) {
+  constructor(public navCtrl: NavController, 
+    public navParams: NavParams,
+     public menuCtrl:MenuController,
+      public fireAuth:AngularFireAuth,
+      public afDB: AngularFireDatabase) {
     this.menuCtrl.enable(true, 'myMenu');//para desactivar el menu desplegable en esta pagina
-    
+    var database = firebase.database();
+
+    console.log(fireAuth);
+
   /*  firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
     console.log("logueado");    // User is signed in.
@@ -58,8 +68,16 @@ export class PerfilClientePage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PerfilClientePage');
-    this.fireAuth.user.subscribe(user=> console.log(user));
+    this.fireAuth.user.subscribe(user=> this.mostrarPerfilCliente(user));
+    
   }
+
+mostrarPerfilCliente(user){
+    this.afDB.object('usuarios/'+user.uid)
+    .valueChanges().subscribe(usuarioGuardado => {
+      this.usuario = usuarioGuardado;
+    });  //con el valueChanges le estoy diciendo q ante cualquier cambio de estado se suscriba a los cambios 
+}
 
   iraRegistrarConductor(){
     this.navCtrl.push(RegistrarConductorPage);
