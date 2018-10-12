@@ -99,7 +99,7 @@ mostrarPerfilCliente(user){
     this.navCtrl.push(ViajeSeleccionadoPage);
   }
 
-  iraRegistrarReserva(){
+  iraRealizarReserva(){
     this.navCtrl.push(RealizarReservaPage);
   }
 }

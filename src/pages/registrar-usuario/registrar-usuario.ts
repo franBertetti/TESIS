@@ -25,7 +25,7 @@ export class RegistrarUsuarioPage {
 
   myForm: FormGroup;
   public loading:Loading;
-  usuario:any = {id:null, email: null};//nombreCompleto:null, dni:null
+  usuario:any = {};//nombreCompleto:null, dni:null
 
   constructor(
     public navCtrl: NavController,
@@ -56,7 +56,7 @@ registrarUsuario(){
         this.usuario.id = res.user.uid;
         this.usuario.email = res.user.email;
         this.afDB.database.ref('usuarios/'+this.usuario.id).set(this.usuario);
-        this.navCtrl.setRoot('PerfilClientePage');
+        this.navCtrl.setRoot('DatosPersonalesUsuarioPage');
       }, error => {
         this.loading.dismiss().then( () => {
           let alert = this.alertCtrl.create({

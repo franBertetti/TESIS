@@ -3,6 +3,12 @@ import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+import { AngularFireAuth } from 'angularfire2/auth';
+import firebase from 'firebase';
+import { AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+
+
 import { LoginPage } from '../pages/login/login';
 import { ListPage } from '../pages/list/list';
 import { RealizarReservaPage } from '../pages/realizar-reserva/realizar-reserva';
@@ -18,11 +24,20 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
   rootPage: any = LoginPage;
+  
+  usuario={};
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(public platform: Platform, 
+    public statusBar: StatusBar, 
+    public splashScreen: SplashScreen,
+    public fireAuth:AngularFireAuth,
+      public afDB: AngularFireDatabase,
+    public FirebaseAuth: AngularFireAuthModule) {
     this.initializeApp();
+    this.fireAuth.user.subscribe(user=> this.mostrarPerfilCliente(user));
+
 
     // used for an example of ngFor and navigation
     this.pages = [
@@ -31,6 +46,13 @@ export class MyApp {
     ];
 
   }
+
+  mostrarPerfilCliente(user){
+    this.afDB.object('usuarios/'+user.uid)
+    .valueChanges().subscribe(usuarioGuardado => {
+      this.usuario = usuarioGuardado;
+    });  //con el valueChanges le estoy diciendo q ante cualquier cambio de estado se suscriba a los cambios 
+}
 
   initializeApp() {
     this.platform.ready().then(() => {
@@ -60,6 +82,7 @@ export class MyApp {
   }
 
   CerrarSesion(){
+    this.fireAuth.auth.signOut();
     this.nav.setRoot(LoginPage);
   }
 

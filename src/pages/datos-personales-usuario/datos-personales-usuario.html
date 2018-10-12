@@ -17,7 +17,7 @@
 
     <ion-list>
         <ion-item>
-            <ion-label floating>Nombre completo</ion-label>
+            <ion-label floating>Nombre completo </ion-label>
             <ion-input type="text" [(ngModel)]="usuario.nombreCompleto"></ion-input>
           </ion-item>
         
@@ -28,37 +28,37 @@
 
           <ion-item>
               <ion-label floating>Fecha Nacimiento</ion-label>
-              <ion-datetime></ion-datetime>
+              <ion-datetime [(ngModel)]="usuario.fechaNacimiento"></ion-datetime>
           </ion-item>
           
           <ion-item>
               <ion-label floating>Número celular</ion-label>
-              <ion-input type="tel"></ion-input>
+              <ion-input type="tel" [(ngModel)]="usuario.numCelular"></ion-input>
           </ion-item>
 
           <ion-row>
             <ion-item col-9>
               <ion-label floating>Dirección</ion-label>
-              <ion-input type="text"></ion-input>
+              <ion-input type="text" [(ngModel)]="usuario.direccion"></ion-input>
           </ion-item>
           <ion-item col-3>
               <ion-label floating>Nro</ion-label>
-              <ion-input type="number"></ion-input>
+              <ion-input type="number" [(ngModel)]="usuario.nroDireccion"></ion-input>
           </ion-item>
           </ion-row>
 
           <ion-row>
               <ion-item col-6>
                 <ion-label floating>Piso</ion-label>
-                <ion-input type="number"></ion-input>
+                <ion-input type="number" [(ngModel)]="usuario.numPiso"></ion-input>
             </ion-item>
             <ion-item col-6>
                 <ion-label floating>Nro Dpto</ion-label>
-                <ion-input type="text"></ion-input>
+                <ion-input type="text" [(ngModel)]="usuario.numDepto"></ion-input>
             </ion-item>
             </ion-row>
     </ion-list>
-    <button ion-button block full (click)="crearUsuario()"> Registrar Datos prueba bd </button>
+    <button ion-button block full (click)="crearDatosUsuario()"> Registrar Datos prueba bd </button>
     <button ion-button block full (click)="iraRealizarReserva()"> Registrar Datos </button>
 
 </ion-content>

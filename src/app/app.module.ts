@@ -28,6 +28,10 @@ import { PenalizacionPageModule } from '../pages/penalizacion/penalizacion.modul
 import { InicioViajePageModule } from '../pages/inicio-viaje/inicio-viaje.module';
 import { FinalViajePageModule } from '../pages/final-viaje/final-viaje.module';
 import { PerfilClientePageModule } from '../pages/perfil-cliente/perfil-cliente.module';
+import { TipoVehiculoPageModule } from '../pages/tipo-vehiculo/tipo-vehiculo.module';
+import { DetalletipoVehiculoPageModule } from '../pages/detalletipo-vehiculo/detalletipo-vehiculo.module';
+//import { AdministradorPage } from '../pages/administrador/administrador';
+
 
 
 export const firebaseConfig = {
@@ -68,7 +72,10 @@ export const firebaseConfig = {
     PenalizacionPageModule,
     InicioViajePageModule,
     FinalViajePageModule,
-    PerfilClientePageModule
+    PerfilClientePageModule,
+    TipoVehiculoPageModule,
+    DetalletipoVehiculoPageModule/*,
+    AdministradorPage*/
   ],
   bootstrap: [IonicApp],
   entryComponents: [

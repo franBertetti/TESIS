@@ -29,6 +29,14 @@
         <ion-label floating>Tarifa por cuadra</ion-label>
         <ion-input type="password"></ion-input>
       </ion-item>
+
+      <ion-item>
+        <ion-label>Tipo Vehiculo</ion-label>
+        <ion-select [(ngModel)]="Conductor.VehiculosHabilitado" multiple="true">
+          <ion-option  *ngFor="let TipoVehiculo of TipoVehiculos" value="{{TipoVehiculo.nombre}}">{{TipoVehiculo.nombre}}</ion-option>
+        </ion-select>
+      </ion-item>
+    
       <ion-item>
           <ion-label floating text-wrapper>Restricción distancia máxima</ion-label>
           <ion-input type="password"></ion-input>

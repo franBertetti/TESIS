@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, MenuController } from 'ionic-angular';
+import { AngularFireDatabase } from 'angularfire2/database';
 import { PerfilClientePage } from '../perfil-cliente/perfil-cliente';
 
 /**
@@ -16,9 +17,21 @@ import { PerfilClientePage } from '../perfil-cliente/perfil-cliente';
 })
 export class RegistrarConductorPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public menuCtrl:MenuController) {
+Conductor:any={};
+TipoVehiculos = [];
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public menuCtrl:MenuController, public afDB: AngularFireDatabase) {
     this.menuCtrl.enable(true, 'myMenu');//para desactivar el menu desplegable en esta pagina
-  }
+    this.getTipoVehiculo()
+    .valueChanges().subscribe(TipoVehiculoGuardados => {
+      console.log(TipoVehiculoGuardados)
+      this.TipoVehiculos = TipoVehiculoGuardados;
+});
+}
+
+public getTipoVehiculo(){
+   return this.afDB.list('TipoVehiculo/');
+}
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad RegistrarConductorPage');
