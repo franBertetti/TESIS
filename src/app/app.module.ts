@@ -31,6 +31,7 @@ import { PerfilClientePageModule } from '../pages/perfil-cliente/perfil-cliente.
 import { TipoVehiculoPageModule } from '../pages/tipo-vehiculo/tipo-vehiculo.module';
 import { DetalletipoVehiculoPageModule } from '../pages/detalletipo-vehiculo/detalletipo-vehiculo.module';
 //import { AdministradorPage } from '../pages/administrador/administrador';
+import { Camera } from '@ionic-native/camera';
 
 
 
@@ -86,6 +87,7 @@ export const firebaseConfig = {
   providers: [
     StatusBar,
     SplashScreen,
+    Camera,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
     ]
 })
