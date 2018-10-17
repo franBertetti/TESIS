@@ -15,16 +15,17 @@
 
 <ion-content padding>
 
-    <ion-label text-center> Foto Carnet</ion-label>
+  <!--  <ion-label text-center> Foto Carnet</ion-label>
     <ion-row>
-      <button ion-button round col> Agregar<ion-icon name="add"></ion-icon></button>
+      <button ion-button round col (click)="tomarFotoDesdeGaleria()"> Agregar<ion-icon name="add"></ion-icon></button>
     </ion-row>
     <br>
 
     <ion-label text-center> Foto DNI (con conductor incluido en foto)</ion-label>
     <ion-row>
-      <button ion-button round col> Agregar<ion-icon name="add"></ion-icon></button>
+      <button ion-button round col (click)= "tomarFotoCarnet()"> Agregar<ion-icon name="add"></ion-icon></button>    
     </ion-row>
+    <p align-center><img src="{{selfieRef}}" alt=""></p>
     <ion-item>  
         <ion-label floating>Tarifa por cuadra</ion-label>
         <ion-input type="password"></ion-input>
@@ -44,5 +45,11 @@
 
         <button ion-button full (click)="iraPerfilCliente()">Guardar Datos</button>
 
+-->
+        <ion-label>desde aca </ion-label>
+
+        <button ion-button block (click)="getPicture()">Toma una foto</button>
+        <img [src]="image" *ngIf="image" />
+        <button ion-button block (click)="guardar()">Guardar</button>
 
 </ion-content>

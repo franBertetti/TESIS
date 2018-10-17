@@ -26,6 +26,7 @@ import { AngularFireDatabase } from 'angularfire2/database';
 export class PerfilClientePage {
 
   usuario={};
+  public uid:any;
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
@@ -34,42 +35,14 @@ export class PerfilClientePage {
       public afDB: AngularFireDatabase) {
     this.menuCtrl.enable(true, 'myMenu');//para desactivar el menu desplegable en esta pagina
     var database = firebase.database();
+    this.uid = firebase.auth().currentUser.uid;
 
     console.log(fireAuth);
-
-  /*  firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-    console.log("logueado");    // User is signed in.
-      } else {
-    console.log("no logueado");        // No user is signed in.
-      }
-    });
-  }*/
-
-/*    var user = firebase.auth().currentUser;
-
-    if (user) {
-      console.log("logueado");    // User is signed in.
-        } else {
-      console.log("no logueado");        // No user is signed in.
-        }
-      };    
-    
-    /*firebase.auth().onAuthStateChanged(
-      (user) => {  
-      if (user) {
-        this.opc="si";// User is signed in.
-        
-      } else {
-        this.opc="no";  // No user is signed in.
-      }
-          });*/
-        }
+}
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PerfilClientePage');
     this.fireAuth.user.subscribe(user=> this.mostrarPerfilCliente(user));
-    
   }
 
 mostrarPerfilCliente(user){
@@ -103,3 +76,35 @@ mostrarPerfilCliente(user){
     this.navCtrl.push(RealizarReservaPage);
   }
 }
+
+
+/* en constructor
+
+firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+    console.log("logueado");    // User is signed in.
+      } else {
+    console.log("no logueado");        // No user is signed in.
+      }
+    });
+  }*/
+
+/*    var user = firebase.auth().currentUser;
+
+    if (user) {
+      console.log("logueado");    // User is signed in.
+        } else {
+      console.log("no logueado");        // No user is signed in.
+        }
+      };    
+    
+    /*firebase.auth().onAuthStateChanged(
+      (user) => {  
+      if (user) {
+        this.opc="si";// User is signed in.
+        
+      } else {
+        this.opc="no";  // No user is signed in.
+      }
+          });*/
+  
