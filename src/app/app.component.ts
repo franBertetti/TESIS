@@ -4,9 +4,10 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { AngularFireAuth } from 'angularfire2/auth';
-import firebase from 'firebase';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+import firebase from 'firebase';
+
 
 
 import { LoginPage } from '../pages/login/login';
@@ -27,16 +28,18 @@ export class MyApp {
   
   usuario={};
 
+
   pages: Array<{title: string, component: any}>;
 
   constructor(public platform: Platform, 
     public statusBar: StatusBar, 
     public splashScreen: SplashScreen,
     public fireAuth:AngularFireAuth,
-      public afDB: AngularFireDatabase,
+    public afDB: AngularFireDatabase,
     public FirebaseAuth: AngularFireAuthModule) {
     this.initializeApp();
-    this.fireAuth.user.subscribe(user=> this.mostrarPerfilCliente(user));
+    //this.fireAuth.user.subscribe(user=> this.mostrarPerfilCliente(user));
+    
 
 
     // used for an example of ngFor and navigation
@@ -44,6 +47,15 @@ export class MyApp {
       { title: 'Realizar Reserva', component: RealizarReservaPage },
       { title: 'List', component: ListPage }
     ];
+
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+    console.log("logueado");
+    this.usuario = user;    // User is signed in.
+      } else {
+    console.log("no logueado");        // No user is signed in.
+      }
+    });
 
   }
 

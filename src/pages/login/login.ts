@@ -9,8 +9,7 @@ import { RegistrarUsuarioPage } from '../registrar-usuario/registrar-usuario';
 import { RestablecerPasswordPage } from '../restablecer-password/restablecer-password';
 import { AyudaPage } from '../ayuda/ayuda';
 import { RealizarReservaPage } from '../realizar-reserva/realizar-reserva';
-import { PerfilClientePage } from '../perfil-cliente/perfil-cliente';
-import { AdministradorPage } from '../administrador/administrador';
+
 
 @Component({
   selector: 'page-login',
