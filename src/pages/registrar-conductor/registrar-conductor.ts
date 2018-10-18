@@ -7,6 +7,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 import { firebaseConfig } from '../../app/app.module';
 //import { Storage } from '@ionic/storage';
 import  { initializeApp } from 'firebase';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 
 
@@ -25,10 +26,11 @@ import  { initializeApp } from 'firebase';
 })
 export class RegistrarConductorPage {
 
-Conductor:any={};
+conductor:any={};
 TipoVehiculos = [];
-selfieRef:any;
-
+//selfieRef:any;
+usuario:any = {};
+nombre:any;
 image: string = null;
 data_url_image: any = null;
 
@@ -37,6 +39,7 @@ data_url_image: any = null;
               public navParams: NavParams,
               public menuCtrl:MenuController,
               public afDB: AngularFireDatabase,
+              public fireAuth:AngularFireAuth,
               public cameraPlugin: Camera,
               /*public storage: Storage*/) {
     this.menuCtrl.enable(true, 'myMenu');//para desactivar el menu desplegable en esta pagina
@@ -45,6 +48,7 @@ data_url_image: any = null;
       console.log(TipoVehiculoGuardados)
       this.TipoVehiculos = TipoVehiculoGuardados;
       initializeApp(firebaseConfig);
+      //this.nombre = this.usuario.nombreCompleto;
 
 });
 }
@@ -78,20 +82,20 @@ tomarFotoCarnet(): void {
     quality : 95,
     destinationType : this.cameraPlugin.DestinationType.DATA_URL,
     sourceType : this.cameraPlugin.PictureSourceType.CAMERA,
-    allowEdit : true,
+    allowEdit : false,
     encodingType: this.cameraPlugin.EncodingType.PNG,
     mediaType: this.cameraPlugin.MediaType.PICTURE,
     targetWidth: 500,
     targetHeight: 500,
     saveToPhotoAlbum: true
   }).then(profilePicture => {
-     this.selfieRef = firebase.storage().ref('profilePictures/user1/profilePicture.png');
-  this.selfieRef
+     const selfieRef = firebase.storage().ref('profilePictures/FrancoBertetti/fotoCarnet.png');
+    selfieRef
     .putString(profilePicture, 'base64', {contentType: 'image/png'})
     .then(savedProfilePicture => {
       firebase
         .database()
-        .ref(`users/user1/profilePicture`)
+        .ref(`users/FrancoBertetti/profilePicture`)
         .set(savedProfilePicture.downloadURL);
         //miFotoCarnet = this.cameraPlugin.getPicture(option)
     });
@@ -119,21 +123,22 @@ tomarFotoDesdeGaleria(): void {
     quality : 95,
     destinationType : this.cameraPlugin.DestinationType.DATA_URL,
     sourceType : this.cameraPlugin.PictureSourceType.PHOTOLIBRARY,
-    allowEdit : true,
+    allowEdit : false,
     encodingType: this.cameraPlugin.EncodingType.PNG,
     targetWidth: 500,
     targetHeight: 500,
     saveToPhotoAlbum: true
   }).then(profilePicture => {
-    const selfieRef = firebase.storage().ref('profilePictures/user1/profilePicture.png');
-  selfieRef
-    .putString(profilePicture, 'base64', {contentType: 'image/png'})
-    .then(savedProfilePicture => {
-      firebase
-        .database()
-        .ref(`users/user1/profilePicture`)
-        .set(savedProfilePicture.downloadURL);
-    });
+    const selfieRef = firebase.storage().ref('profilePictures/FrancoBertetti/fotoDni.png');
+   selfieRef
+   .putString(profilePicture, 'base64', {contentType: 'image/png'})
+   .then(savedProfilePicture => {
+     firebase
+       .database()
+       .ref(`users/FrancoBertetti/profilePicture`)
+       .set(savedProfilePicture.downloadURL);
+       //miFotoCarnet = this.cameraPlugin.getPicture(option)
+   });
 });
 }
 
@@ -146,9 +151,18 @@ public getTipoVehiculo(){
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad RegistrarConductorPage');
+    this.fireAuth.user.subscribe(user=> this.mostrarPerfilCliente(user));
   }
 
-  iraPerfilCliente(){
+  mostrarPerfilCliente(user){
+    this.afDB.object('usuarios/'+user.uid)
+    .valueChanges().subscribe(usuarioGuardado => {
+      this.usuario = usuarioGuardado;
+    });  //con el valueChanges le estoy diciendo q ante cualquier cambio de estado se suscriba a los cambios 
+}
+
+  guardarDatosConductor(){
+    this.afDB.database.ref('usuarios/'+this.usuario.id+'/conductor/').set(this.conductor);
     this.navCtrl.setRoot('PerfilClientePage');
   }
 }

@@ -14,8 +14,7 @@
 
 
 <ion-content padding>
-
-  <!--  <ion-label text-center> Foto Carnet</ion-label>
+    <ion-label text-center> Foto Carnet</ion-label>
     <ion-row>
       <button ion-button round col (click)="tomarFotoDesdeGaleria()"> Agregar<ion-icon name="add"></ion-icon></button>
     </ion-row>
@@ -25,31 +24,32 @@
     <ion-row>
       <button ion-button round col (click)= "tomarFotoCarnet()"> Agregar<ion-icon name="add"></ion-icon></button>    
     </ion-row>
-    <p align-center><img src="{{selfieRef}}" alt=""></p>
-    <ion-item>  
-        <ion-label floating>Tarifa por cuadra</ion-label>
-        <ion-input type="password"></ion-input>
-      </ion-item>
+    <!--<p align-center><img src="{{selfieRef}}" alt=""></p>-->
+    <ion-list> 
 
-      <ion-item>
+    <ion-item>
+        <ion-label floating>Tarifa por cuadra</ion-label>
+        <ion-input type="text" [(ngModel)]="conductor.tarifa"></ion-input>
+    </ion-item>
+
+    <ion-item>
+        <ion-label floating>Restricción distancia máxima (en metros)</ion-label>
+        <ion-input type="text" [(ngModel)]="conductor.distanciaMaxima"></ion-input>
+    </ion-item>
+    
+    <ion-item>
         <ion-label>Tipo Vehiculo</ion-label>
-        <ion-select [(ngModel)]="Conductor.VehiculosHabilitado" multiple="true">
+        <ion-select [(ngModel)]="conductor.VehiculosHabilitado" multiple="true">
           <ion-option  *ngFor="let TipoVehiculo of TipoVehiculos" value="{{TipoVehiculo.nombre}}">{{TipoVehiculo.nombre}}</ion-option>
         </ion-select>
       </ion-item>
-    
-      <ion-item>
-          <ion-label floating text-wrapper>Restricción distancia máxima</ion-label>
-          <ion-input type="password"></ion-input>
-        </ion-item>
 
-        <button ion-button full (click)="iraPerfilCliente()">Guardar Datos</button>
+      <button ion-button full (click)="guardarDatosConductor()">Guardar Datos</button>
 
--->
-        <ion-label>desde aca </ion-label>
-
+</ion-list>
+<!--
         <button ion-button block (click)="getPicture()">Toma una foto</button>
         <img [src]="image" *ngIf="image" />
         <button ion-button block (click)="guardar()">Guardar</button>
-
+-->
 </ion-content>
