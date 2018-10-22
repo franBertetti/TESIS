@@ -28,11 +28,12 @@ export class RegistrarConductorPage {
 
 conductor:any={};
 TipoVehiculos = [];
-//selfieRef:any;
+fotoCarnet:any;
+fotoDni:any;
+perfilDni:any;
+perfilCarnet:any;
 usuario:any = {};
-nombre:any;
-image: string = null;
-data_url_image: any = null;
+
 
 
   constructor(public navCtrl: NavController,
@@ -40,8 +41,7 @@ data_url_image: any = null;
               public menuCtrl:MenuController,
               public afDB: AngularFireDatabase,
               public fireAuth:AngularFireAuth,
-              public cameraPlugin: Camera,
-              /*public storage: Storage*/) {
+              public camera: Camera) {
     this.menuCtrl.enable(true, 'myMenu');//para desactivar el menu desplegable en esta pagina
     this.getTipoVehiculo()
     .valueChanges().subscribe(TipoVehiculoGuardados => {
@@ -53,96 +53,76 @@ data_url_image: any = null;
 });
 }
 
-getPicture(){
-  let options: CameraOptions = {
-    destinationType: this.cameraPlugin.DestinationType.DATA_URL,
-    sourceType : this.cameraPlugin.PictureSourceType.PHOTOLIBRARY,
-    targetWidth: 1000,
-    targetHeight: 1000,
-    quality: 100
-  }
-  this.cameraPlugin.getPicture( options )
-  .then(imageData => {
-    this.image = `data:image/jpeg;base64,${imageData}`;
-    this.data_url_image = options.destinationType;
-  })
-  .catch(error =>{
-    console.error( error );
-  });
+tomarFotoDni(): void {
+  this.camera.getPicture({
+  quality : 95,
+  destinationType : this.camera.DestinationType.DATA_URL,
+  sourceType : this.camera.PictureSourceType.CAMERA,
+  allowEdit : false,
+  encodingType: this.camera.EncodingType.PNG,
+  mediaType: this.camera.MediaType.PICTURE,
+  targetWidth: 500,
+  targetHeight: 500,
+  saveToPhotoAlbum: true
+}).then(profilePicture => {
+  this.perfilDni = profilePicture;
+  this.fotoDni = 'data:image/jpeg;base64,' + this.perfilDni;
+});
+
 }
 
-guardar(){
-const fotoCarnet = firebase.storage().ref('profilePictures/user1/profilePicture.png');
-fotoCarnet.putString(this.image, this.data_url_image);
+buscarFotoDni(): void {
+this.camera.getPicture({
+quality : 95,
+destinationType : this.camera.DestinationType.DATA_URL,
+sourceType : this.camera.PictureSourceType.PHOTOLIBRARY,
+allowEdit : false,
+encodingType: this.camera.EncodingType.PNG,
+mediaType: this.camera.MediaType.PICTURE,
+targetWidth: 500,
+targetHeight: 500,
+saveToPhotoAlbum: true
+}).then(profilePicture => {
+this.perfilDni = profilePicture;
+this.fotoDni = 'data:image/jpeg;base64,' + this.perfilDni;
+});
 }
-
 
 tomarFotoCarnet(): void {
-  this.cameraPlugin.getPicture({
-    quality : 95,
-    destinationType : this.cameraPlugin.DestinationType.DATA_URL,
-    sourceType : this.cameraPlugin.PictureSourceType.CAMERA,
-    allowEdit : false,
-    encodingType: this.cameraPlugin.EncodingType.PNG,
-    mediaType: this.cameraPlugin.MediaType.PICTURE,
-    targetWidth: 500,
-    targetHeight: 500,
-    saveToPhotoAlbum: true
-  }).then(profilePicture => {
-     const selfieRef = firebase.storage().ref('profilePictures/FrancoBertetti/fotoCarnet.png');
-    selfieRef
-    .putString(profilePicture, 'base64', {contentType: 'image/png'})
-    .then(savedProfilePicture => {
-      firebase
-        .database()
-        .ref(`users/FrancoBertetti/profilePicture`)
-        .set(savedProfilePicture.downloadURL);
-        //miFotoCarnet = this.cameraPlugin.getPicture(option)
-    });
+this.camera.getPicture({
+quality : 95,
+destinationType : this.camera.DestinationType.DATA_URL,
+sourceType : this.camera.PictureSourceType.CAMERA,
+allowEdit : false,
+encodingType: this.camera.EncodingType.PNG,
+mediaType: this.camera.MediaType.PICTURE,
+targetWidth: 500,
+targetHeight: 500,
+saveToPhotoAlbum: true
+}).then(profilePicture => {
+this.perfilCarnet = profilePicture;
+this.fotoCarnet = 'data:image/jpeg;base64,' + this.perfilCarnet;
 });
-/*
-const options: CameraOptions = {
-  quality : 95,
-    destinationType : this.cameraPlugin.DestinationType.DATA_URL,
-    sourceType : this.cameraPlugin.PictureSourceType.CAMERA,
-    //allowEdit : true,
-    encodingType: this.cameraPlugin.EncodingType.JPEG,
-    mediaType: this.cameraPlugin.MediaType.PICTURE,
-    targetWidth: 500,
-    targetHeight: 500,
-    saveToPhotoAlbum: true
-}
-this.cameraPlugin.getPicture(options).then((ImageData) => {
-  this.miFotoCarnet = 'data:image/jpeg;base64,' + ImageData;
-});
-*/
+
 }
 
-tomarFotoDesdeGaleria(): void {
-  this.cameraPlugin.getPicture({
-    quality : 95,
-    destinationType : this.cameraPlugin.DestinationType.DATA_URL,
-    sourceType : this.cameraPlugin.PictureSourceType.PHOTOLIBRARY,
-    allowEdit : false,
-    encodingType: this.cameraPlugin.EncodingType.PNG,
-    targetWidth: 500,
-    targetHeight: 500,
-    saveToPhotoAlbum: true
-  }).then(profilePicture => {
-    const selfieRef = firebase.storage().ref('profilePictures/FrancoBertetti/fotoDni.png');
-   selfieRef
-   .putString(profilePicture, 'base64', {contentType: 'image/png'})
-   .then(savedProfilePicture => {
-     firebase
-       .database()
-       .ref(`users/FrancoBertetti/profilePicture`)
-       .set(savedProfilePicture.downloadURL);
-       //miFotoCarnet = this.cameraPlugin.getPicture(option)
-   });
+buscarFotoCarnet(): void {
+this.camera.getPicture({
+quality : 95,
+destinationType : this.camera.DestinationType.DATA_URL,
+sourceType : this.camera.PictureSourceType.PHOTOLIBRARY,
+allowEdit : false,
+encodingType: this.camera.EncodingType.PNG,
+mediaType: this.camera.MediaType.PICTURE,
+targetWidth: 500,
+targetHeight: 500,
+saveToPhotoAlbum: true
+}).then(profilePicture => {
+this.perfilCarnet = profilePicture;
+this.fotoCarnet = 'data:image/jpeg;base64,' + this.perfilCarnet;
 });
+
 }
-
-
 
 
 public getTipoVehiculo(){
@@ -163,6 +143,12 @@ public getTipoVehiculo(){
 
   guardarDatosConductor(){
     this.afDB.database.ref('usuarios/'+this.usuario.id+'/conductor/').set(this.conductor);
+    
+    const selfieRefCarnet = firebase.storage().ref('FotosConductor/'+this.usuario.id+'/fotoCarnet.png');
+    selfieRefCarnet.putString(this.perfilCarnet, 'base64', {contentType: 'image/png'});
+    const selfieRefDni = firebase.storage().ref('FotosConductor/'+this.usuario.id+'/fotoDni.png');
+    selfieRefDni.putString(this.perfilDni, 'base64', {contentType: 'image/png'});
+    
     this.navCtrl.setRoot('PerfilClientePage');
   }
 }

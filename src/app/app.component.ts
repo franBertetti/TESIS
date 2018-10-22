@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, AlertController, Alert } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -23,10 +23,12 @@ import { PenalizacionesPage } from '../pages/penalizaciones/penalizaciones';
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
+  @ViewChild(Alert) alertCtrl: AlertController;
 
   rootPage: any = LoginPage;
   
-  usuario={};
+  usuario:any;
+  conductor:any={};
 
 
   pages: Array<{title: string, component: any}>;
@@ -38,8 +40,10 @@ export class MyApp {
     public afDB: AngularFireDatabase,
     public FirebaseAuth: AngularFireAuthModule) {
     this.initializeApp();
-    //this.fireAuth.user.subscribe(user=> this.mostrarPerfilCliente(user));
-    
+    if (this.fireAuth.user !== null){
+      console.log("entro al if");
+      this.fireAuth.user.subscribe(user=> this.mostrarPerfilCliente(user));
+    }
 
 
     // used for an example of ngFor and navigation
@@ -48,14 +52,14 @@ export class MyApp {
       { title: 'List', component: ListPage }
     ];
 
-    firebase.auth().onAuthStateChanged(function(user) {
+  /*  firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
     console.log("logueado");
     this.usuario = user;    // User is signed in.
       } else {
     console.log("no logueado");        // No user is signed in.
       }
-    });
+    });*/
 
   }
 
@@ -63,7 +67,16 @@ export class MyApp {
     this.afDB.object('usuarios/'+user.uid)
     .valueChanges().subscribe(usuarioGuardado => {
       this.usuario = usuarioGuardado;
-    });  //con el valueChanges le estoy diciendo q ante cualquier cambio de estado se suscriba a los cambios 
+    });
+
+    this.afDB.object('usuarios/'+user.uid+'/conductor')
+    .valueChanges().subscribe(conductorGuardado => {
+      this.conductor = conductorGuardado;
+    });
+
+    console.log(this.conductor);
+    console.log("estadoo:"+this.conductor.estado);
+      //con el valueChanges le estoy diciendo q ante cualquier cambio de estado se suscriba a los cambios 
 }
 
   initializeApp() {
@@ -86,15 +99,33 @@ export class MyApp {
   }
 
   iraRegistrarConductor(){
+    if ( this.conductor.estado == "PendienteRevision") {
+      let alert = this.alertCtrl.create({
+        title: 'Solicitud de conductor pendiente de Revisión',
+        subTitle: 'Su solicitud aún se encuentra pendiente de revisión, en la brevedad sera revisada',
+        buttons: [
+          {
+            text: "Aceptar",
+            role: 'cancel'
+          }
+        ]
+      });
+      alert.present();
+    }else{
     this.nav.push(RegistrarConductorPage);
   }
+}
 
   iraLogin(){
     this.nav.push(LoginPage);
   }
 
-  CerrarSesion(){
-    this.fireAuth.auth.signOut();
+CerrarSesion():void{
+    console.log('1'+this.usuario);
+    /*this.fireAuth.auth.signOut();
+    console.log('2'+this.usuario);
+    this.usuario = {};
+    console.log('3'+this.usuario);*/
     this.nav.setRoot(LoginPage);
   }
 

@@ -16,15 +16,17 @@
 <ion-content padding>
     <ion-label text-center> Foto Carnet</ion-label>
     <ion-row>
-      <button ion-button round col (click)="tomarFotoDesdeGaleria()"> Agregar<ion-icon name="add"></ion-icon></button>
+      <button ion-button col-5 offset-1 (click)="tomarFotoCarnet()">Toma una foto</button>
+      <button ion-button col-5          (click)="buscarFotoCarnet()">Seleccionar de galería</button>
+      <p><img class="foto" src="{{fotoCarnet}}"></p> 
     </ion-row>
-    <br>
 
     <ion-label text-center> Foto DNI (con conductor incluido en foto)</ion-label>
     <ion-row>
-      <button ion-button round col (click)= "tomarFotoCarnet()"> Agregar<ion-icon name="add"></ion-icon></button>    
+      <button ion-button col-5 offset-1 (click)="tomarFotoDni()">Toma una foto</button>
+      <button ion-button col-5          (click)="buscarFotoDni()">Seleccionar de galería</button>
+    <p><img class="foto" src="{{fotoDni}}"></p> 
     </ion-row>
-    <!--<p align-center><img src="{{selfieRef}}" alt=""></p>-->
     <ion-list> 
 
     <ion-item>
@@ -37,6 +39,8 @@
         <ion-input type="text" [(ngModel)]="conductor.distanciaMaxima"></ion-input>
     </ion-item>
     
+    <ion-input type="text" hidden [(ngModel)]="conductor.estado" value="PendienteRevision"></ion-input>
+
     <ion-item>
         <ion-label>Tipo Vehiculo</ion-label>
         <ion-select [(ngModel)]="conductor.VehiculosHabilitado" multiple="true">
@@ -47,9 +51,5 @@
       <button ion-button full (click)="guardarDatosConductor()">Guardar Datos</button>
 
 </ion-list>
-<!--
-        <button ion-button block (click)="getPicture()">Toma una foto</button>
-        <img [src]="image" *ngIf="image" />
-        <button ion-button block (click)="guardar()">Guardar</button>
--->
+
 </ion-content>

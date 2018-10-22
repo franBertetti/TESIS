@@ -10,7 +10,6 @@ import { RestablecerPasswordPage } from '../restablecer-password/restablecer-pas
 import { AyudaPage } from '../ayuda/ayuda';
 import { RealizarReservaPage } from '../realizar-reserva/realizar-reserva';
 
-
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
@@ -46,6 +45,7 @@ export class LoginPage {
 
     this.afAuth.auth.signInWithEmailAndPassword(this.myForm.value.email, this.myForm.value.password).then(() => {
       console.log("User logging");
+      console.log(this.user);
       if ( this.myForm.value.email == 'admin@admin.com' && this.myForm.value.password == 'admin123' ){
         this.navCtrl.setRoot('AdministradorPage');  
       }else {

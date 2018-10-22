@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, MenuController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, MenuController, AlertController } from 'ionic-angular';
 import { RegistrarConductorPage } from '../registrar-conductor/registrar-conductor';
 import { HistoricoViajesPage } from '../historico-viajes/historico-viajes';
 import { DatosPersonalesUsuarioPage } from '../datos-personales-usuario/datos-personales-usuario';
@@ -25,19 +25,19 @@ import { AngularFireDatabase } from 'angularfire2/database';
 })
 export class PerfilClientePage {
 
-  usuario={};
+  usuario:any={};
+  conductor:any={};
   public uid:any;
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
      public menuCtrl:MenuController,
       public fireAuth:AngularFireAuth,
-      public afDB: AngularFireDatabase) {
+      public afDB: AngularFireDatabase,
+      public alertCtrl: AlertController) {
     this.menuCtrl.enable(true, 'myMenu');//para desactivar el menu desplegable en esta pagina
     var database = firebase.database();
     this.uid = firebase.auth().currentUser.uid;
-
-    console.log(fireAuth);
 }
 
   ionViewDidLoad() {
@@ -49,12 +49,17 @@ mostrarPerfilCliente(user){
     this.afDB.object('usuarios/'+user.uid)
     .valueChanges().subscribe(usuarioGuardado => {
       this.usuario = usuarioGuardado;
-    });  //con el valueChanges le estoy diciendo q ante cualquier cambio de estado se suscriba a los cambios 
+    });
+    
+    this.afDB.object('usuarios/'+user.uid+'/conductor')
+    .valueChanges().subscribe(conductorGuardado => {
+      this.conductor = conductorGuardado;
+    });//con el valueChanges le estoy diciendo q ante cualquier cambio de estado se suscriba a los cambios 
 }
 
   iraRegistrarConductor(){
     this.navCtrl.push(RegistrarConductorPage);
-  }
+}
 
   iraHistoricoViajes(){
     this.navCtrl.push(HistoricoViajesPage);
