@@ -149,6 +149,7 @@ public getTipoVehiculo(){
     const selfieRefDni = firebase.storage().ref('FotosConductor/'+this.usuario.id+'/fotoDni.png');
     selfieRefDni.putString(this.perfilDni, 'base64', {contentType: 'image/png'});
     
+    
     this.navCtrl.setRoot('PerfilClientePage');
   }
 }

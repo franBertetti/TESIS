@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, AlertController, Alert } from 'ionic-angular';
+import { Nav, Platform, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -8,8 +8,6 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import firebase from 'firebase';
 
-
-
 import { LoginPage } from '../pages/login/login';
 import { ListPage } from '../pages/list/list';
 import { RealizarReservaPage } from '../pages/realizar-reserva/realizar-reserva';
@@ -17,67 +15,58 @@ import { RegistrarConductorPage } from '../pages/registrar-conductor/registrar-c
 import { DatosPersonalesUsuarioPage } from '../pages/datos-personales-usuario/datos-personales-usuario';
 import { HistoricoViajesPage } from '../pages/historico-viajes/historico-viajes';
 import { PenalizacionesPage } from '../pages/penalizaciones/penalizaciones';
-//import { PerfilClientePage } from '../pages/perfil-cliente/perfil-cliente';
+
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
-  @ViewChild(Alert) alertCtrl: AlertController;
 
   rootPage: any = LoginPage;
-  
-  usuario:any;
-  conductor:any={};
 
+  usuario: any;
+  conductor: any = {};
+  fotoPerfil: any;
 
-  pages: Array<{title: string, component: any}>;
+  pages: Array<{ title: string, component: any }>;
 
-  constructor(public platform: Platform, 
-    public statusBar: StatusBar, 
+  constructor(public platform: Platform,
+    public statusBar: StatusBar,
     public splashScreen: SplashScreen,
-    public fireAuth:AngularFireAuth,
+    public fireAuth: AngularFireAuth,
     public afDB: AngularFireDatabase,
-    public FirebaseAuth: AngularFireAuthModule) {
+    public FirebaseAuth: AngularFireAuthModule,
+    public AlertCtrl: AlertController) {
     this.initializeApp();
-    if (this.fireAuth.user !== null){
-      console.log("entro al if");
-      this.fireAuth.user.subscribe(user=> this.mostrarPerfilCliente(user));
-    }
+    this.fireAuth.user.subscribe(user => this.mostrarPerfilCliente(user));
 
-
-    // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Realizar Reserva', component: RealizarReservaPage },
       { title: 'List', component: ListPage }
     ];
 
-  /*  firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-    console.log("logueado");
-    this.usuario = user;    // User is signed in.
-      } else {
-    console.log("no logueado");        // No user is signed in.
-      }
-    });*/
-
   }
 
-  mostrarPerfilCliente(user){
-    this.afDB.object('usuarios/'+user.uid)
-    .valueChanges().subscribe(usuarioGuardado => {
-      this.usuario = usuarioGuardado;
-    });
+  mostrarPerfilCliente(user) {
+    if (user) {
+      this.afDB.object('usuarios/' + user.uid)
+        .valueChanges().subscribe(usuarioGuardado => {
+          this.usuario = usuarioGuardado;
+          firebase.storage().ref('FotosConductor/cgWAtLUvMNQHZq36CTUb8zTjKp12/fotoCarnet.png').getDownloadURL().then((url) => {
+          this.fotoPerfil = url;
+          });
+        });
 
-    this.afDB.object('usuarios/'+user.uid+'/conductor')
-    .valueChanges().subscribe(conductorGuardado => {
-      this.conductor = conductorGuardado;
-    });
 
-    console.log(this.conductor);
-    console.log("estadoo:"+this.conductor.estado);
+
+      this.afDB.object('usuarios/' + user.uid + '/conductor')
+        .valueChanges().subscribe(conductorGuardado => {
+          this.conductor = conductorGuardado;
+        });
       //con el valueChanges le estoy diciendo q ante cualquier cambio de estado se suscriba a los cambios 
-}
+    }
+
+  }
 
   initializeApp() {
     this.platform.ready().then(() => {
@@ -88,19 +77,14 @@ export class MyApp {
     });
   }
 
-  openPage(page) {
-    // Reset the content nav to have just this page
-    // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page.component);
-  }
-  
-  iraRealizarReserva(){
+  iraRealizarReserva() {
     this.nav.push(RealizarReservaPage);
   }
 
-  iraRegistrarConductor(){
-    if ( this.conductor.estado == "PendienteRevision") {
-      let alert = this.alertCtrl.create({
+  iraRegistrarConductor() {
+    if (this.conductor.estado == "PendienteRevision") {
+      //alert('Tipo de Vehiculo con exito');
+      /**/let alert = this.AlertCtrl.create({
         title: 'Solicitud de conductor pendiente de Revisión',
         subTitle: 'Su solicitud aún se encuentra pendiente de revisión, en la brevedad sera revisada',
         buttons: [
@@ -110,38 +94,35 @@ export class MyApp {
           }
         ]
       });
-      alert.present();
-    }else{
-    this.nav.push(RegistrarConductorPage);
+      alert.present();/**/
+    } else {
+      this.nav.push(RegistrarConductorPage);
+    }
   }
-}
 
-  iraLogin(){
+  iraLogin() {
     this.nav.push(LoginPage);
   }
 
-CerrarSesion():void{
-    console.log('1'+this.usuario);
-    /*this.fireAuth.auth.signOut();
-    console.log('2'+this.usuario);
+  CerrarSesion(): void {
+    this.fireAuth.auth.signOut();
     this.usuario = {};
-    console.log('3'+this.usuario);*/
     this.nav.setRoot(LoginPage);
   }
 
-  iraDatosPersonales(){
+  iraDatosPersonales() {
     this.nav.push(DatosPersonalesUsuarioPage);
   }
 
-  iraHistoricoViajes(){
+  iraHistoricoViajes() {
     this.nav.push(HistoricoViajesPage);
   }
 
-  iraPenalizaciones(){
+  iraPenalizaciones() {
     this.nav.push(PenalizacionesPage);
   }
 
-  iraDatosConductor(){
+  iraDatosConductor() {
     this.nav.push(RegistrarConductorPage);
   }
 

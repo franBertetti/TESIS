@@ -13,10 +13,11 @@
  
   <ion-content>
     <ion-list>
+    
 
-      <ion-item>
+      <ion-item ng-if="usuario">
       <ion-avatar item-start>
-        <img src="https://cdn4.iconfinder.com/data/icons/Pretty_office_icon_part_2/256/man.png">
+        <p><img class="foto" src="{{fotoPerfil}}"></p> 
       </ion-avatar>
       <h2>{{usuario?.nombreCompleto}}</h2>
      </ion-item>
@@ -76,7 +77,7 @@
     </ion-list>
 
   </ion-content>
- 
-</ion-menu>
- 
+
+</ion-menu> 
+
 <ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>

@@ -25,59 +25,68 @@ import { AngularFireDatabase } from 'angularfire2/database';
 })
 export class PerfilClientePage {
 
-  usuario:any={};
-  conductor:any={};
-  public uid:any;
+  usuario: any = {};
+  conductor: any = {};
+  public uid: any;
+  fotoPerfil: any;
 
-  constructor(public navCtrl: NavController, 
+
+  constructor(public navCtrl: NavController,
     public navParams: NavParams,
-     public menuCtrl:MenuController,
-      public fireAuth:AngularFireAuth,
-      public afDB: AngularFireDatabase,
-      public alertCtrl: AlertController) {
+    public menuCtrl: MenuController,
+    public fireAuth: AngularFireAuth,
+    public afDB: AngularFireDatabase,
+    public alertCtrl: AlertController) {
     this.menuCtrl.enable(true, 'myMenu');//para desactivar el menu desplegable en esta pagina
     var database = firebase.database();
     this.uid = firebase.auth().currentUser.uid;
-}
+  }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PerfilClientePage');
-    this.fireAuth.user.subscribe(user=> this.mostrarPerfilCliente(user));
+    this.fireAuth.user.subscribe(user => this.mostrarPerfilCliente(user));
   }
 
-mostrarPerfilCliente(user){
-    this.afDB.object('usuarios/'+user.uid)
-    .valueChanges().subscribe(usuarioGuardado => {
-      this.usuario = usuarioGuardado;
-    });
-    
-    this.afDB.object('usuarios/'+user.uid+'/conductor')
-    .valueChanges().subscribe(conductorGuardado => {
-      this.conductor = conductorGuardado;
-    });//con el valueChanges le estoy diciendo q ante cualquier cambio de estado se suscriba a los cambios 
-}
+  mostrarPerfilCliente(user) {
+    if (user) {
+      this.afDB.object('usuarios/' + user.uid)
+        .valueChanges().subscribe(usuarioGuardado => {
+          this.usuario = usuarioGuardado;
+          firebase.storage().ref('FotosConductor/cgWAtLUvMNQHZq36CTUb8zTjKp12/fotoCarnet.png').getDownloadURL().then((url) => {
+            this.fotoPerfil = url;
+          });
 
-  iraRegistrarConductor(){
+        });
+
+      this.afDB.object('usuarios/' + user.uid + '/conductor')
+        .valueChanges().subscribe(conductorGuardado => {
+          this.conductor = conductorGuardado;
+        });//con el valueChanges le estoy diciendo q ante cualquier cambio de estado se suscriba a los cambios 
+    }
+
+  }
+
+  iraRegistrarConductor() {
     this.navCtrl.push(RegistrarConductorPage);
-}
+  }
 
-  iraHistoricoViajes(){
+  iraHistoricoViajes() {
     this.navCtrl.push(HistoricoViajesPage);
   }
 
-  iraDatosPersonales(){
+  iraDatosPersonales() {
     this.navCtrl.push(DatosPersonalesUsuarioPage);
   }
 
-  iraPenalizaciones(){
+  iraPenalizaciones() {
     this.navCtrl.push(PenalizacionesPage);
   }
 
-  iraViajeSeleccionado(){
+  iraViajeSeleccionado() {
     this.navCtrl.push(ViajeSeleccionadoPage);
   }
 
-  iraRealizarReserva(){
+  iraRealizarReserva() {
     this.navCtrl.push(RealizarReservaPage);
   }
 }
@@ -112,4 +121,3 @@ firebase.auth().onAuthStateChanged(function(user) {
         this.opc="no";  // No user is signed in.
       }
           });*/
-  
