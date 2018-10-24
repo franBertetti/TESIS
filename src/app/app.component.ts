@@ -88,7 +88,7 @@ export class MyApp {
 
   iraRegistrarConductor() {
     if (this.conductor.estado == "PendienteRevision") {
-      //alert('Tipo de Vehiculo con exito');
+      //alert('Tipoo de Vehiculo con exito');
       /**/let alert = this.AlertCtrl.create({
         title: 'Solicitud de conductor pendiente de Revisión',
         subTitle: 'Su solicitud aún se encuentra pendiente de revisión, en la brevedad sera revisada',
