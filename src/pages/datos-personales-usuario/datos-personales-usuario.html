@@ -6,9 +6,9 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>Datos Personales</ion-title>
-  </ion-navbar>
+    <ion-navbar>
+        <ion-title>Datos Personales</ion-title>
+    </ion-navbar>
 
 </ion-header>
 
@@ -16,39 +16,49 @@
 <ion-content *ngIf="usuario" padding>
 
     <ion-list>
+
+        <ion-label text-center> Foto Perfil</ion-label>
+        <ion-row>
+            <button ion-button col-5 offset-1 (click)="tomarFotoPerfil()">Toma una foto</button>
+            <button ion-button col-5 (click)="buscarFotoPerfil()">Seleccionar de galería</button>
+            <p>
+                <img *ngIf="fotoPerfil" class="foto" src="{{fotoPerfil}}">
+            </p>
+        </ion-row>
+
         <ion-item>
             <ion-label floating>Nombre completo </ion-label>
             <ion-input type="text" [(ngModel)]="usuario.nombreCompleto"></ion-input>
-          </ion-item>
-        
-          <ion-item>
-              <ion-label floating>DNI</ion-label>
-              <ion-input type="text" [(ngModel)]="usuario.dni"></ion-input>
-          </ion-item>
+        </ion-item>
 
-          <ion-item>
-              <ion-label floating>Fecha Nacimiento</ion-label>
-              <ion-datetime [(ngModel)]="usuario.fechaNacimiento"></ion-datetime>
-          </ion-item>
-          
-          <ion-item>
-              <ion-label floating>Número celular</ion-label>
-              <ion-input type="tel" [(ngModel)]="usuario.numCelular"></ion-input>
-          </ion-item>
+        <ion-item>
+            <ion-label floating>DNI</ion-label>
+            <ion-input type="text" [(ngModel)]="usuario.dni"></ion-input>
+        </ion-item>
 
-          <ion-row>
+        <ion-item>
+            <ion-label floating>Fecha Nacimiento</ion-label>
+            <ion-datetime [(ngModel)]="usuario.fechaNacimiento"></ion-datetime>
+        </ion-item>
+
+        <ion-item>
+            <ion-label floating>Número celular</ion-label>
+            <ion-input type="tel" [(ngModel)]="usuario.numCelular"></ion-input>
+        </ion-item>
+
+        <ion-row>
             <ion-item col-9>
-              <ion-label floating>Dirección</ion-label>
-              <ion-input type="text" [(ngModel)]="usuario.direccion"></ion-input>
-          </ion-item>
-          <ion-item col-3>
-              <ion-label floating>Nro</ion-label>
-              <ion-input type="number" [(ngModel)]="usuario.nroDireccion"></ion-input>
-          </ion-item>
-          </ion-row>
+                <ion-label floating>Dirección</ion-label>
+                <ion-input type="text" [(ngModel)]="usuario.direccion"></ion-input>
+            </ion-item>
+            <ion-item col-3>
+                <ion-label floating>Nro</ion-label>
+                <ion-input type="number" [(ngModel)]="usuario.nroDireccion"></ion-input>
+            </ion-item>
+        </ion-row>
 
-          <ion-row>
-              <ion-item col-6>
+        <ion-row>
+            <ion-item col-6>
                 <ion-label floating>Piso</ion-label>
                 <ion-input type="number" [(ngModel)]="usuario.numPiso"></ion-input>
             </ion-item>
@@ -56,8 +66,8 @@
                 <ion-label floating>Nro Dpto</ion-label>
                 <ion-input type="text" [(ngModel)]="usuario.numDepto"></ion-input>
             </ion-item>
-            </ion-row>
+        </ion-row>
     </ion-list>
-    <button ion-button block full (click)="crearDatosUsuario()"> Registrar Datos prueba bd </button>
+    <button ion-button block full (click)="crearDatosUsuario()"> Registrar Datos </button>
 
 </ion-content>

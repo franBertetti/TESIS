@@ -52,7 +52,7 @@ export class PerfilClientePage {
       this.afDB.object('usuarios/' + user.uid)
         .valueChanges().subscribe(usuarioGuardado => {
           this.usuario = usuarioGuardado;
-          firebase.storage().ref('FotosConductor/cgWAtLUvMNQHZq36CTUb8zTjKp12/fotoCarnet.png').getDownloadURL().then((url) => {
+          firebase.storage().ref('FotosUsuario/'+ user.uid +'/fotoPerfil.png').getDownloadURL().then((url) => {
             this.fotoPerfil = url;
           });
 
