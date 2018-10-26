@@ -26,8 +26,8 @@ export class MyApp {
 
   usuario: any;
   conductor: any = {};
-  fotoPerfil: any = null;
-  estado: any;
+  fotoPerfil: any;
+  estado:any;
 
   pages: Array<{ title: string, component: any }>;
 
@@ -40,6 +40,11 @@ export class MyApp {
     public AlertCtrl: AlertController) {
     this.initializeApp();
     this.fireAuth.user.subscribe(user => this.mostrarPerfilCliente(user));
+    /*if (this.conductor.estado) {
+      this.estado = this.conductor.estado;
+    } else {
+      this.estado = '';
+    }*/
 
     this.pages = [
       { title: 'Realizar Reserva', component: RealizarReservaPage },
@@ -48,26 +53,27 @@ export class MyApp {
 
   }
 
+  
+
   mostrarPerfilCliente(user) {
     if (user) {
       this.afDB.object('usuarios/' + user.uid)
         .valueChanges().subscribe(usuarioGuardado => {
           this.usuario = usuarioGuardado;
-        });
-
-        if ( this.fotoPerfil !== null) {
-        firebase.storage().ref('FotosUsuario/'+ user.uid +'/fotoPerfil.png').getDownloadURL().then((url) => {
-          this.fotoPerfil = url;
+          firebase.storage().ref('FotosUsuario/'+ user.uid +'/fotoPerfil.png').getDownloadURL().then((url) => {
+            this.fotoPerfil = url;
           });
-
-        }
-
-
+        });
 
       this.afDB.object('usuarios/' + user.uid + '/conductor')
         .valueChanges().subscribe(conductorGuardado => {
           this.conductor = conductorGuardado;
         });
+
+        console.log('conductor:'+ this.conductor);
+        console.log('usuario:'+ this.usuario);
+
+        
       //con el valueChanges le estoy diciendo q ante cualquier cambio de estado se suscriba a los cambios 
     }
 
@@ -87,6 +93,7 @@ export class MyApp {
   }
 
   iraRegistrarConductor() {
+    console.log("estado: "+this.estado);
     if (this.conductor.estado == "PendienteRevision") {
       //alert('Tipoo de Vehiculo con exito');
       /**/let alert = this.AlertCtrl.create({

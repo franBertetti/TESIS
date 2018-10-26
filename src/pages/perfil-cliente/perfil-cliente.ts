@@ -29,6 +29,7 @@ export class PerfilClientePage {
   conductor: any = {};
   public uid: any;
   fotoPerfil: any;
+  fotoPerfilDesdeBd:any;
 
 
   constructor(public navCtrl: NavController,
@@ -40,6 +41,13 @@ export class PerfilClientePage {
     this.menuCtrl.enable(true, 'myMenu');//para desactivar el menu desplegable en esta pagina
     var database = firebase.database();
     this.uid = firebase.auth().currentUser.uid;
+
+    if  (this.navParams.get('Photo')) {
+      this.fotoPerfil = this.navParams.get('Photo');
+      }else {
+        this.fotoPerfil = "la otra foto";
+      }
+
   }
 
   ionViewDidLoad() {

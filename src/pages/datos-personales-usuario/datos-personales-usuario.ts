@@ -94,6 +94,6 @@ saveToPhotoAlbum: true
     const selfieRefPerfil = firebase.storage().ref('FotosUsuario/'+this.usuario.id+'/fotoPerfil.png');
     selfieRefPerfil.putString(this.perfilPerfil, 'base64', {contentType: 'image/png'});
 
-    this.navCtrl.setRoot('PerfilClientePage');
+    this.navCtrl.setRoot('PerfilClientePage', {'Photo': this.fotoPerfil} );
   }
 }
