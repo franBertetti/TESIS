@@ -97,3 +97,7 @@ saveToPhotoAlbum: true
     this.navCtrl.setRoot('PerfilClientePage', {'Photo': this.fotoPerfil} );
   }
 }
+
+
+
+//a
