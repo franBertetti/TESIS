@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { TipoVehiculoPage } from '../tipo-vehiculo/tipo-vehiculo';    
 import { AngularFireAuth } from 'angularfire2/auth';
 import { LoginPage } from '../../pages/login/login';
+import { LocalidadPage } from '../localidad/localidad';
 
 
 /**
@@ -31,6 +32,10 @@ export class AdministradorPage {
 
   irATipoVehiculo(){
     this.navCtrl.push(TipoVehiculoPage);
+  }
+
+  irALocalidad(){
+    this.navCtrl.push(LocalidadPage);
   }
 
   cerrarSesion(){

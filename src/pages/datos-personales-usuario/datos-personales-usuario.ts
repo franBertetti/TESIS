@@ -5,6 +5,7 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import firebase from 'firebase';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Camera, CameraOptions } from '@ionic-native/camera';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 
 
@@ -24,15 +25,43 @@ export class DatosPersonalesUsuarioPage {
   usuario:any = {};  
   fotoPerfil:any;
   perfilPerfil:any;
+  Localidades = [];
+  conductor:any={estado:null};
+
+
+  myForm: FormGroup;  
 
   constructor(public afDB: AngularFireDatabase,
      public navCtrl: NavController,
       public navParams: NavParams,
       public fireAuth:AngularFireAuth,
        public menuCtrl:MenuController,
+       public formBuilder: FormBuilder,
        public camera: Camera) {
+
+
+        this.getLocalidad().valueChanges().subscribe(localidadesGuardadas => {
+        console.log(localidadesGuardadas)
+        this.Localidades = localidadesGuardadas;
+        });
+      
+        this.myForm = this.formBuilder.group({
+          //fotoPerfilUsuario: ['', Validators.required],
+          nombreCompleto: ['', Validators.required],
+          dni: ['', Validators.required],
+          fechaNacimiento: ['', Validators.required],
+          numCelular: ['', Validators.required],
+          direccion: ['', Validators.required],
+          localidad: ['', Validators.required],
+          numPiso: [''],
+          numDepto: ['']
+        });
+
+        this.conductor.estado = ""; 
+
     this.menuCtrl.enable(true, 'myMenu');//para desactivar el menu desplegable en esta pagina
   }
+
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad DatosPersonalesUsuarioPage');
@@ -84,12 +113,42 @@ saveToPhotoAlbum: true
 });
 }
 
+public getLocalidad(){
+  return this.afDB.list('Localidad/');
+}
+
   iraRealizarReserva(){
     this.navCtrl.setRoot('PerfilClientePage');
   }
 
   crearDatosUsuario(){
+
+    if (!this.fotoPerfil){
+      return alert('Falta la foto de Perfil ');
+    }
+  //this.usuario.fotoPerfil = this.myForm.value.fotoPerfilUsuario;
+    this.usuario.nombreCompleto = this.myForm.value.nombreCompleto;
+    this.usuario.dni = this.myForm.value.dni;
+    this.usuario.fechaNacimiento = this.myForm.value.fechaNacimiento;
+    this.usuario.numCelular = this.myForm.value.numCelular;
+    this.usuario.direccion = this.myForm.value.direccion;
+    this.usuario.localidad = this.myForm.value.localidad;
+
+    if (!this.myForm.value.numPiso){ 
+      this.usuario.numPiso = ''; 
+    } else {
+      this.usuario.numPiso = this.myForm.value.numPiso;
+    }
+    
+    if (!this.myForm.value.numDepto){ 
+      this.usuario.numDepto = ''; 
+    } else {
+      this.usuario.numDepto = this.myForm.value.numDepto;
+    }
+
     this.afDB.database.ref('usuarios/'+this.usuario.id).set(this.usuario);
+
+    this.afDB.database.ref('usuarios/'+this.usuario.id+'/conductor/').set(this.conductor);
 
     const selfieRefPerfil = firebase.storage().ref('FotosUsuario/'+this.usuario.id+'/fotoPerfil.png');
     selfieRefPerfil.putString(this.perfilPerfil, 'base64', {contentType: 'image/png'});

@@ -1,0 +1,37 @@
+<!--
+  Generated template for the DetalletipoVehiculoPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>detalle Localidad</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-content *ngIf="Localidad">
+    <ion-list>
+     
+      <ion-item>
+          <ion-label color="primary" floating>Localidad</ion-label>
+          <!-- para poder comunicar los datos con la bd, se usa el [(ngmodel)]="note.title"-->
+       <ion-input type="text" [(ngModel)]="Localidad.nombre"></ion-input>
+      </ion-item>
+      <ion-item>
+          <ion-label color="primary" floating>Provincia</ion-label>
+          <ion-input type="textarea" [(ngModel)]="Localidad.descripcion"></ion-input>
+      </ion-item>
+   
+    </ion-list>
+    <div padding>
+        <button ion-button block color="secondary" (click)="agregarLocalidad()"> Guardar Localidad </button> <br><br><br>   
+        <button *ngIf=" id != 0" ion-button block color="danger" (click)="borrarLocalidad()"> Eliminar Localidad </button>
+    </div>
+
+</ion-content>

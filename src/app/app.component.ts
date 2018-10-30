@@ -70,6 +70,11 @@ export class MyApp {
           this.conductor = conductorGuardado;
         });
 
+        if (this.conductor.estado) {
+          this.estado = this.conductor.estado;
+          console.log("entro a parte 2");
+        }
+
         console.log('conductor:'+ this.conductor);
         console.log('usuario:'+ this.usuario);
 

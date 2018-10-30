@@ -19,8 +19,7 @@ import { DetalletipoVehiculoPage } from '../detalletipo-vehiculo/detalletipo-veh
 export class TipoVehiculoPage {
   
   TipoVehiculos = [];
-  @ViewChild('myNav') nav: NavController;
-  
+    
   constructor(public navCtrl: NavController, public navParams: NavParams, public afDB: AngularFireDatabase) {
       this.getTipoVehiculo()
       .valueChanges().subscribe(TipoVehiculoGuardados => {

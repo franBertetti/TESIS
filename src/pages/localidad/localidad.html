@@ -1,0 +1,28 @@
+<!--
+  Generated template for the LocalidadPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Localidad</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-list>
+    <ion-label> Localidades </ion-label>
+     <button ion-item *ngFor="let Localidad of Localidades" (click)="irADetalleLocalidad(Localidad.id)">
+       <span>{{ Localidad.nombre }}</span>
+     </button>  
+   </ion-list>
+   <div padding>
+       <button ion-button block color="secondary" (click)="crearLocalidad()"> Agregar Localidad </button>  
+   </div>
+
+</ion-content>

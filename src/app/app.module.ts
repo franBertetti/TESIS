@@ -32,6 +32,8 @@ import { TipoVehiculoPageModule } from '../pages/tipo-vehiculo/tipo-vehiculo.mod
 import { DetalletipoVehiculoPageModule } from '../pages/detalletipo-vehiculo/detalletipo-vehiculo.module';
 //import { AdministradorPage } from '../pages/administrador/administrador';
 import { Camera } from '@ionic-native/camera';
+import { LocalidadPageModule } from '../pages/localidad/localidad.module';
+import { DetalleLocalidadPageModule } from '../pages/detalle-localidad/detalle-localidad.module';
 
 
 
@@ -75,7 +77,10 @@ export const firebaseConfig = {
     FinalViajePageModule,
     PerfilClientePageModule,
     TipoVehiculoPageModule,
-    DetalletipoVehiculoPageModule/*,
+    DetalletipoVehiculoPageModule,
+    LocalidadPageModule,
+    DetalleLocalidadPageModule
+    /*,
     AdministradorPage*/
   ],
   bootstrap: [IonicApp],
