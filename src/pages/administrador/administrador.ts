@@ -4,6 +4,8 @@ import { TipoVehiculoPage } from '../tipo-vehiculo/tipo-vehiculo';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { LoginPage } from '../../pages/login/login';
 import { LocalidadPage } from '../localidad/localidad';
+import { AdminConductoresPage } from '../admin-conductores/admin-conductores';
+import { EstadoConductoresPage } from '../estado-conductores/estado-conductores';
 
 
 /**
@@ -36,6 +38,14 @@ export class AdministradorPage {
 
   irALocalidad(){
     this.navCtrl.push(LocalidadPage);
+  }
+
+  irAAdminConductores(){
+    this.navCtrl.push(AdminConductoresPage);
+  }
+
+  irAEstadoConductores(){
+    this.navCtrl.push(EstadoConductoresPage);
   }
 
   cerrarSesion(){

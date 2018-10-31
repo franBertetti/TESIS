@@ -1,0 +1,37 @@
+<!--
+  Generated template for the DetalletipoVehiculoPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>detalle Estado Conductor</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-content *ngIf="estadoConductor">
+    <ion-list>
+     
+      <ion-item>
+          <ion-label color="primary" floating>Estado Conductor</ion-label>
+          <!-- para poder comunicar los datos con la bd, se usa el [(ngmodel)]="note.title"-->
+       <ion-input type="text" [(ngModel)]="estadoConductor.nombre"></ion-input>
+      </ion-item>
+      <ion-item>
+          <ion-label color="primary" floating>descripción</ion-label>
+          <ion-input type="textarea" [(ngModel)]="estadoConductor.descripcion"></ion-input>
+      </ion-item>
+   
+    </ion-list>
+    <div padding>
+        <button ion-button block color="secondary" (click)="agregarEstadoConductor()"> Guardar Estado Conductor </button>   
+        <button *ngIf=" id != 0" ion-button block color="danger" (click)="borrarEstadoConductor()"> Eliminar Estado Conductor </button>
+    </div>
+
+</ion-content>

@@ -28,6 +28,7 @@ export class MyApp {
   conductor: any = {};
   fotoPerfil: any;
   estado:any;
+  email:any;
 
   pages: Array<{ title: string, component: any }>;
 
@@ -40,6 +41,12 @@ export class MyApp {
     public AlertCtrl: AlertController) {
     this.initializeApp();
     this.fireAuth.user.subscribe(user => this.mostrarPerfilCliente(user));
+
+    if (this.conductor.estado) {
+      this.estado = this.conductor.estado;
+      console.log("entro a parte 2");
+    }
+
     /*if (this.conductor.estado) {
       this.estado = this.conductor.estado;
     } else {
@@ -53,7 +60,6 @@ export class MyApp {
 
   }
 
-  
 
   mostrarPerfilCliente(user) {
     if (user) {
@@ -65,22 +71,24 @@ export class MyApp {
           });
         });
 
-      this.afDB.object('usuarios/' + user.uid + '/conductor')
+       // if (this.usuario.email !== 'admin@admin.com') {
+
+       this.afDB.object('usuarios/' + user.uid + '/conductor')
         .valueChanges().subscribe(conductorGuardado => {
           this.conductor = conductorGuardado;
         });
 
-        if (this.conductor.estado) {
+       /* if (this.conductor.estado) {
           this.estado = this.conductor.estado;
           console.log("entro a parte 2");
-        }
+        }*/
 
         console.log('conductor:'+ this.conductor);
         console.log('usuario:'+ this.usuario);
 
         
       //con el valueChanges le estoy diciendo q ante cualquier cambio de estado se suscriba a los cambios 
-    }
+  }
 
   }
 
@@ -99,10 +107,10 @@ export class MyApp {
 
   iraRegistrarConductor() {
     console.log("estado: "+this.estado);
-    if (this.conductor.estado == "PendienteRevision") {
+    if (this.conductor.estado == "PendienteAprobacion") {
       //alert('Tipoo de Vehiculo con exito');
       /**/let alert = this.AlertCtrl.create({
-        title: 'Solicitud de conductor pendiente de Revisión',
+        title: 'Solicitud de conductor pendiente de Aprobación',
         subTitle: 'Su solicitud aún se encuentra pendiente de revisión, en la brevedad sera revisada',
         buttons: [
           {

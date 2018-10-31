@@ -73,10 +73,18 @@ export class LoginPage {
       });
     });
 
-    this.loading = this.loadingCtrl.create({
-      dismissOnPageChange: true,
+    let loading = this.loadingCtrl.create({
+      spinner: 'crescent',
+      content: 'Please Wait',
+      duration: 3500
     });
-    this.loading.present();
+
+    loading.onDidDismiss(() => {
+      console.log('Dismissed loading');
+    });
+
+    loading.present();
+    
   }
 
 
@@ -107,7 +115,7 @@ export class LoginPage {
     let loading = this.loadingCtrl.create({
       spinner: 'crescent',
       content: 'Please Wait',
-      duration: 3000
+      duration: 3500
     });
 
     loading.onDidDismiss(() => {

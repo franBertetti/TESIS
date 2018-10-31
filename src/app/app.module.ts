@@ -34,6 +34,10 @@ import { DetalletipoVehiculoPageModule } from '../pages/detalletipo-vehiculo/det
 import { Camera } from '@ionic-native/camera';
 import { LocalidadPageModule } from '../pages/localidad/localidad.module';
 import { DetalleLocalidadPageModule } from '../pages/detalle-localidad/detalle-localidad.module';
+import { AdminConductoresPageModule } from '../pages/admin-conductores/admin-conductores.module';
+import { DetalleConductorPageModule } from '../pages/detalle-conductor/detalle-conductor.module';
+import { EstadoConductoresPageModule } from '../pages/estado-conductores/estado-conductores.module';
+import { DetalleEstadoConductoresPageModule } from '../pages/detalle-estado-conductores/detalle-estado-conductores.module';
 
 
 
@@ -79,7 +83,11 @@ export const firebaseConfig = {
     TipoVehiculoPageModule,
     DetalletipoVehiculoPageModule,
     LocalidadPageModule,
-    DetalleLocalidadPageModule
+    DetalleLocalidadPageModule,
+    AdminConductoresPageModule,
+    DetalleConductorPageModule,
+    EstadoConductoresPageModule,
+    DetalleEstadoConductoresPageModule
     /*,
     AdministradorPage*/
   ],

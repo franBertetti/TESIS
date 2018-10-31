@@ -1,5 +1,5 @@
   import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, MenuController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, MenuController, LoadingController, Loading } from 'ionic-angular';
 import { PerfilClientePage } from '../perfil-cliente/perfil-cliente';
 import { AngularFireDatabase } from 'angularfire2/database';
 import firebase from 'firebase';
@@ -37,6 +37,7 @@ export class DatosPersonalesUsuarioPage {
       public fireAuth:AngularFireAuth,
        public menuCtrl:MenuController,
        public formBuilder: FormBuilder,
+       public loadingCtrl: LoadingController,
        public camera: Camera) {
 
 
@@ -152,6 +153,19 @@ public getLocalidad(){
 
     const selfieRefPerfil = firebase.storage().ref('FotosUsuario/'+this.usuario.id+'/fotoPerfil.png');
     selfieRefPerfil.putString(this.perfilPerfil, 'base64', {contentType: 'image/png'});
+
+
+    let loading = this.loadingCtrl.create({
+      spinner: 'crescent',
+      content: 'Please Wait',
+      duration: 3000
+    });
+
+    loading.onDidDismiss(() => {
+      console.log('Dismissed loading');
+    });
+
+    loading.present();
 
     this.navCtrl.setRoot('PerfilClientePage', {'Photo': this.fotoPerfil} );
   }
