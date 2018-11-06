@@ -39,6 +39,26 @@ export class MyApp {
     public afDB: AngularFireDatabase,
     public FirebaseAuth: AngularFireAuthModule,
     public AlertCtrl: AlertController) {
+
+      platform.ready().then(() => {
+        statusBar.styleDefault();
+        splashScreen.hide();
+    
+        // OneSignal Code start:
+        // Enable to debug issues:
+        // window["plugins"].OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
+    
+        var notificationOpenedCallback = function(jsonData) {
+          console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+        };
+    
+        window["plugins"].OneSignal
+          .startInit("e1e2cfc8-d5d2-44b9-883c-fba5a6c15cb3", "1037405461007")
+          .handleNotificationOpened(notificationOpenedCallback)
+          .endInit();
+      });
+
+
     this.initializeApp();
     this.fireAuth.user.subscribe(user => this.mostrarPerfilCliente(user));
 
