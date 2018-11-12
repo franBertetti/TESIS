@@ -93,5 +93,5 @@ export class DetalleConductorPage {
     this.navCtrl.setRoot(AdminConductoresPage);
   }
 
-
+//
 }
