@@ -21,7 +21,8 @@ export class AdminConductoresPage {
   usuarios = [];
   conductores:any = [];
   database:any;
-  
+  cont = 0;
+  arrayObj = [];
 
   constructor(
     public loadingCtrl: LoadingController,
@@ -33,6 +34,20 @@ export class AdminConductoresPage {
       });
       console.log("conductores"+this.conductores);
       this.database = firebase.database();
+    
+      firebase.database().ref('usuarios/').orderByChild('nombreCompleto').on('value', (snapshot) => {
+        let users = [];
+        snapshot.forEach( snap => {
+          let q = snap.val();
+          if (q.nombreCompleto != 'admin'){
+          users.push(snap.val()); //or snap.val().name if you just want the name and not the whole object
+          this.arrayObj[this.cont] = snap.val();
+          this.cont++;
+          console.log(users);
+          }
+        });
+      });
+    
     }
 
   public getUsuarios(){

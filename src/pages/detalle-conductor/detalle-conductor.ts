@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AngularFireDatabase } from 'angularfire2/database';
 import firebase from 'firebase';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { AdminConductoresPage } from '../admin-conductores/admin-conductores';
 
 /**
  * Generated class for the DetalleConductorPage page.
@@ -87,9 +88,9 @@ export class DetalleConductorPage {
   }
 
   actualizarEstadoSolicitud(){
-    this.afDB.database.ref('usuarios/'+this.id+'/conductor/').set(this.conductor);
+    this.afDB.database.ref('usuarios/'+this.id+'/conductor/estado').set(this.conductor.estado);
     alert('Estado de solicitud actualizada');
-    this.navCtrl.pop();
+    this.navCtrl.setRoot(AdminConductoresPage);
   }
 
 
