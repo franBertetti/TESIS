@@ -59,8 +59,7 @@ export class LoginPage {
       };
 
     }, (err) => {
-//renglon original      this.loading.dismiss().then(() => {
-      this.loading.dismiss().then(() => {
+      loading.dismiss().then(() => {
         let alert = this.alertCtrl.create({
           message: err.message,
           buttons: [
