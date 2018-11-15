@@ -40,6 +40,9 @@ export class MyApp {
     public FirebaseAuth: AngularFireAuthModule,
     public AlertCtrl: AlertController) {
 
+    
+    //codigo de onesignal de linea 45 a 64
+    /*
       platform.ready().then(() => {
         statusBar.styleDefault();
         splashScreen.hide();
@@ -58,6 +61,7 @@ export class MyApp {
           .endInit();
       });
 
+      */
 
     this.initializeApp();
     this.fireAuth.user.subscribe(user => this.mostrarPerfilCliente(user));
