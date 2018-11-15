@@ -15,7 +15,7 @@ import { RegistrarConductorPage } from '../pages/registrar-conductor/registrar-c
 import { DatosPersonalesUsuarioPage } from '../pages/datos-personales-usuario/datos-personales-usuario';
 import { HistoricoViajesPage } from '../pages/historico-viajes/historico-viajes';
 import { PenalizacionesPage } from '../pages/penalizaciones/penalizaciones';
-
+//
 @Component({
   templateUrl: 'app.html'
 })
