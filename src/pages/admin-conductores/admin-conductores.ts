@@ -54,7 +54,7 @@ export class AdminConductoresPage {
           console.log(userSnap.val()); // trae bien los datos del usuario
           this.usuarios.push(userSnap.val());
         });
-      }
+      } //seasdasdasra
     });
 
     console.log(this.estados);
