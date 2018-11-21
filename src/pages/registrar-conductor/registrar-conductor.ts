@@ -138,11 +138,12 @@ public getTipoVehiculo(){
     this.afDB.object('usuarios/'+user.uid)
     .valueChanges().subscribe(usuarioGuardado => {
       this.usuario = usuarioGuardado;
-    });  //con el valueChanges le estoy diciendo q ante cualquier cambio de estado se suscriba a los cambios 
+    });
+      //con el valueChanges le estoy diciendo q ante cualquier cambio de estado se suscriba a los cambios 
 }
 
   guardarDatosConductor(){
-    this.afDB.database.ref('usuarios/'+this.usuario.id+'/conductor/').set(this.conductor);
+    this.afDB.database.ref('conductor/'+this.usuario.id).set(this.conductor);
     
     const selfieRefCarnet = firebase.storage().ref('FotosConductor/'+this.usuario.id+'/fotoCarnet.png');
     selfieRefCarnet.putString(this.perfilCarnet, 'base64', {contentType: 'image/png'});

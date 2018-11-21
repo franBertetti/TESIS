@@ -58,7 +58,7 @@ export class DatosPersonalesUsuarioPage {
           numDepto: ['']
         });
 
-        this.conductor.estado = ""; 
+        this.conductor.estado = "-"; 
 
     this.menuCtrl.enable(true, 'myMenu');//para desactivar el menu desplegable en esta pagina
   }
@@ -149,7 +149,7 @@ public getLocalidad(){
 
     this.afDB.database.ref('usuarios/'+this.usuario.id).set(this.usuario);
 
-    this.afDB.database.ref('usuarios/'+this.usuario.id+'/conductor/').set(this.conductor);
+    this.afDB.database.ref('conductor/'+this.usuario.id).set(this.conductor);
 
     const selfieRefPerfil = firebase.storage().ref('FotosUsuario/'+this.usuario.id+'/fotoPerfil.png');
     selfieRefPerfil.putString(this.perfilPerfil, 'base64', {contentType: 'image/png'});
@@ -170,7 +170,3 @@ public getLocalidad(){
     this.navCtrl.setRoot('PerfilClientePage', {'Photo': this.fotoPerfil} );
   }
 }
-
-
-
-//a
