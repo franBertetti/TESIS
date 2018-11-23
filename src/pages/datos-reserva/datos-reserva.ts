@@ -19,7 +19,7 @@ export class DatosReservaPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public menuCtrl:MenuController) {
     this.menuCtrl.enable(true, 'myMenu');//para desactivar el menu desplegable en esta pagina
   }
-
+z
   ionViewDidLoad() {
     console.log('ionViewDidLoad DatosReservaPage');
   }

@@ -14,47 +14,46 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content  class="bg-general" padding>
+<ion-content class="bg-general" padding>
 
-  <ion-list radio-group>
-      <ion-label col-100> Tipo Reserva</ion-label>
-    <ion-row> 
-        <ion-item col>
-          <ion-label>Inmediata</ion-label>
-          <ion-radio checked="true" value="go"></ion-radio>
-        </ion-item>
-      
-        <ion-item col>
-          <ion-label>Anticipada</ion-label>
-          <ion-radio value="rust"></ion-radio>
-        </ion-item>
-      </ion-row> 
-         </ion-list>
+  <ion-list>
+    <ion-row>
+      <ion-col col-5 text-center>
+        <ion-label>Inmediata</ion-label>
+      </ion-col>
+      <ion-col col-2>
+          <ion-toggle [(ngModel)]="tipoReserva"></ion-toggle>
+      </ion-col>
+      <ion-col col-5 text-center>
+        <ion-label>Anticipada</ion-label>
+      </ion-col>
+    </ion-row>
 
-    <div id="buscador">
-        <ion-item>
-            <ion-label>Tipo Vehiculo</ion-label>
-            <ion-select [(ngModel)]="tipoVehiculo">
-              <ion-option value="tipo1">tipo1</ion-option>
-              <ion-option value="tipo2">tipo2</ion-option>
-            </ion-select>
-          </ion-item>
+
+  </ion-list>
+
+   <div id="buscador">
+      <ion-item>
+        <ion-label>Tipo Vehiculo</ion-label>
+        <ion-select [(ngModel)]="busqueda.vehiculoReserva" multiple="false">
+          <ion-option  *ngFor="let TipoVehiculo of TipoVehiculos" value="{{TipoVehiculo.nombre}}">{{TipoVehiculo.nombre}}</ion-option>
+        </ion-select>
+      </ion-item>
 
           <ion-item>
               <ion-label floating>Dirección destino..</ion-label>
-              <ion-input type="text"></ion-input>
+              <ion-input  [(ngModel)]="busqueda.direccion" type="text"></ion-input>
           </ion-item>
-          <ion-item>
+          <ion-item *ngIf="tipoReserva">
             <ion-label>Hora búsqueda</ion-label>
-              <ion-input  text-center type="time"></ion-input>
+              <ion-input  [(ngModel)]="busqueda.horaBusqueda" text-center type="time"></ion-input>
           </ion-item> 
           
-            <ion-item>
+            <ion-item *ngIf="tipoReserva">
                 <ion-label floating>Fecha</ion-label>
-                <ion-datetime></ion-datetime>
+                <ion-datetime [(ngModel)]="busqueda.DiaBusqueda" type="date"></ion-datetime>
             </ion-item>
     </div>
 
     <button ion-button full block (click)="buscarConductores()"> Buscar Conductores </button>
-
-    </ion-content>
+</ion-content>

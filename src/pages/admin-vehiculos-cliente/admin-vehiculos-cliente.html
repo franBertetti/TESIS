@@ -1,0 +1,28 @@
+<!--
+  Generated template for the AdminVehiculosClientePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Administrar Vehiculos Cliente</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-list>
+    <ion-label> Tipo Vehiculos Cliente </ion-label>
+     <button ion-item *ngFor="let vehiculo of vehiculos" (click)="irADetalleVehiculosCliente(vehiculo.id)">
+       <span>{{ vehiculo.nombre }}</span>
+     </button>  
+   </ion-list>
+   <div padding>
+       <button ion-button block color="secondary" (click)="crearVehiculoCliente()"> Agregar Tipo Vehiculo </button>  
+   </div>
+
+</ion-content>

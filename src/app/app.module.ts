@@ -38,6 +38,8 @@ import { AdminConductoresPageModule } from '../pages/admin-conductores/admin-con
 import { DetalleConductorPageModule } from '../pages/detalle-conductor/detalle-conductor.module';
 import { EstadoConductoresPageModule } from '../pages/estado-conductores/estado-conductores.module';
 import { DetalleEstadoConductoresPageModule } from '../pages/detalle-estado-conductores/detalle-estado-conductores.module';
+import { AdminVehiculosClientePageModule } from '../pages/admin-vehiculos-cliente/admin-vehiculos-cliente.module';
+import { DetalleVehiculosClientePageModule } from '../pages/detalle-vehiculos-cliente/detalle-vehiculos-cliente.module';
 
 
 
@@ -87,7 +89,9 @@ export const firebaseConfig = {
     AdminConductoresPageModule,
     DetalleConductorPageModule,
     EstadoConductoresPageModule,
-    DetalleEstadoConductoresPageModule
+    DetalleEstadoConductoresPageModule,
+    AdminVehiculosClientePageModule,
+    DetalleVehiculosClientePageModule
     /*,
     AdministradorPage*/
   ],

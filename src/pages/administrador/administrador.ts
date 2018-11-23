@@ -6,6 +6,7 @@ import { LoginPage } from '../../pages/login/login';
 import { LocalidadPage } from '../localidad/localidad';
 import { AdminConductoresPage } from '../admin-conductores/admin-conductores';
 import { EstadoConductoresPage } from '../estado-conductores/estado-conductores';
+import { AdminVehiculosClientePage } from '../admin-vehiculos-cliente/admin-vehiculos-cliente';
 
 
 /**
@@ -46,6 +47,10 @@ export class AdministradorPage {
 
   irAEstadoConductores(){
     this.navCtrl.push(EstadoConductoresPage);
+  }
+
+  irAAdminVehiculosCliente(){
+    this.navCtrl.push(AdminVehiculosClientePage);
   }
 
   cerrarSesion(){

@@ -52,7 +52,7 @@ export class DetalleConductorPage {
       firebase.storage().ref('FotosConductor/' + this.id + '/fotoDni.png').getDownloadURL().then((url) => {
         this.fotoDni = url;
       });
-      this.datosConductor = firebase.database().ref('usuarios/' + this.id + '/conductor');
+      this.datosConductor = firebase.database().ref('conductor/' + this.id);
  /*
         console.log(this.id);
         this.getConductor(this.id)
@@ -74,7 +74,7 @@ export class DetalleConductorPage {
   }
 
   public getConductor(id) {
-    this.afDB.object('usuarios/' + id + '/conductor')
+    this.afDB.object('conductor/' + id)
       .valueChanges().subscribe(conductorGuardado => {
         this.datosConductor = conductorGuardado;
         console.log("datosConductor:" + this.datosConductor);
@@ -88,7 +88,7 @@ export class DetalleConductorPage {
   }
 
   actualizarEstadoSolicitud(){
-    this.afDB.database.ref('usuarios/'+this.id+'/conductor/estado').set(this.conductor.estado);
+    this.afDB.database.ref('conductor/'+this.id+'/estado').set(this.conductor.estado);
     alert('Estado de solicitud actualizada');
     this.navCtrl.setRoot(AdminConductoresPage);
   }
