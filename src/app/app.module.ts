@@ -5,6 +5,8 @@ import { IonicApp, IonicErrorHandler, IonicModule, Loading } from 'ionic-angular
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { Firebase } from '@ionic-native/firebase';
 
 import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login';
@@ -40,6 +42,8 @@ import { EstadoConductoresPageModule } from '../pages/estado-conductores/estado-
 import { DetalleEstadoConductoresPageModule } from '../pages/detalle-estado-conductores/detalle-estado-conductores.module';
 import { AdminVehiculosClientePageModule } from '../pages/admin-vehiculos-cliente/admin-vehiculos-cliente.module';
 import { DetalleVehiculosClientePageModule } from '../pages/detalle-vehiculos-cliente/detalle-vehiculos-cliente.module';
+import { FcmProvider } from '../providers/fcm/fcm';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 
 
@@ -65,6 +69,7 @@ export const firebaseConfig = {
     AngularFireModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireAuthModule,
+    AngularFirestoreModule,
     BrowserModule,
     RegistrarUsuarioPageModule,
     RestablecerPasswordPageModule,
@@ -91,7 +96,8 @@ export const firebaseConfig = {
     EstadoConductoresPageModule,
     DetalleEstadoConductoresPageModule,
     AdminVehiculosClientePageModule,
-    DetalleVehiculosClientePageModule
+    DetalleVehiculosClientePageModule,
+    HttpClientModule
     /*,
     AdministradorPage*/
   ],
@@ -105,7 +111,9 @@ export const firebaseConfig = {
     StatusBar,
     SplashScreen,
     Camera,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    Firebase,
+    FcmProvider,
     ]
 })
 export class AppModule {}

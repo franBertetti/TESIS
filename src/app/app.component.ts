@@ -1,3 +1,9 @@
+import { FcmProvider } from '../providers/fcm/fcm';
+import { ToastController } from 'ionic-angular';
+import { Subject } from 'rxjs/Subject';
+import { tap } from 'rxjs/operators';
+
+
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -38,9 +44,31 @@ export class MyApp {
     public fireAuth: AngularFireAuth,
     public afDB: AngularFireDatabase,
     public FirebaseAuth: AngularFireAuthModule,
-    public AlertCtrl: AlertController) {
+    public AlertCtrl: AlertController,
+    public fcm: FcmProvider,
+    public toastCtrl: ToastController) {
 
+      platform.ready().then(() => {  
+        fcm.getToken();
+
+        // Listen to incoming messages
+        fcm.listenToNotifications().pipe(
+          tap(msg => {
+            // show a toast
+            const toast = toastCtrl.create({
+              message: msg.body,
+              duration: 3000
+            });
+            toast.present();
+          })
+        )
+        .subscribe()
+      }
+  
+      )
     
+
+
     //codigo de onesignal de linea 45 a 64
     /*
       platform.ready().then(() => {

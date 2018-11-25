@@ -4,6 +4,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 import { Observable } from 'rxjs/Observable';
+import { ToastController } from 'ionic-angular';
+import { tap } from 'rxjs/operators';
+import { FcmProvider } from '../../providers/fcm/fcm';
 
 import { RegistrarUsuarioPage } from '../registrar-usuario/registrar-usuario';
 import { RestablecerPasswordPage } from '../restablecer-password/restablecer-password';
@@ -26,7 +29,9 @@ export class LoginPage {
     public loadingCtrl: LoadingController,
     public formBuilder: FormBuilder,
     public afAuth: AngularFireAuth,
-    public alertCtrl: AlertController) {
+    public alertCtrl: AlertController,
+    public fcm: FcmProvider,
+    public toastCtrl: ToastController) {
 
     console.log("entro a loginPage");
 
@@ -41,6 +46,17 @@ export class LoginPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
+    this.fcm.getToken();
+
+    this.fcm.listenToNotifications().pipe(
+      tap(msg => {
+        const toast = this.toastCtrl.create({
+          message: msg.body,
+          duration:3000
+        });
+        toast.present();
+      })
+    )
   }
 
   loginUsuario() {

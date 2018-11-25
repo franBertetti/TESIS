@@ -27,6 +27,7 @@ export class ResultadoBusquedaPage {
   licenciasCompatibles: any = []; //array con los tipos de licencia de acuerdo al vehiculo que puso el usuario q hizo la busqueda
   datosdeUsuarioConductores: any = []; //array que tiene los datos de usuario de los conductores que coincidieron con la busqueda
   datosConductores = []; //array con la info de conductore de los conductores que coincidieron con la busqueda
+  conductores: any = [];
 
   constructor(
     public navCtrl: NavController,
@@ -38,13 +39,39 @@ export class ResultadoBusquedaPage {
     this.datosBusqueda = this.navParams.get('datosBusqueda');
     console.log("datos busqueda:");
     console.log(this.datosBusqueda);
-    this.conductoresEnLinea = this.buscarEstadoConductoresEnLinea();
+
+    if (this.datosBusqueda.tipoReserva == 'ReservaInmediata'){
+      this.conductoresEnLinea = this.buscarEstadoConductoresEnLinea();
     console.log("conductores en linea:");
     console.log(this.conductoresEnLinea);
     this.buscarTipoLicenciasPosiblesDeVehiculoSeleccionado();
     this.traerConductoresEnLineaPorTipoLicencia();
     console.log(this.datosConductores);
     console.log(this.datosdeUsuarioConductores);
+    }
+    
+    if (this.datosBusqueda.tipoReserva == 'Reserva'){
+    this.conductores = this.buscarConductoresHabilitados();
+    }
+    
+  }
+
+  buscarConductoresHabilitados(){
+    return firebase.database().ref('conductor/').orderByChild('estado')
+    /*return firebase.database().ref('conductor/').orderByChild('estado').equalTo('EnLinea').on('child_added', (snapshot) => {
+
+      let userRef = firebase.database().ref('usuarios/' + snapshot.key);
+      this.datosConductores.push(snapshot.val());
+      console.log('datos conductor:');
+      console.log(snapshot.val());
+      userRef.on('value', userSnap => {
+        console.log(' datos usuario conductor:');
+        console.log(userSnap.val()); // trae bien los datos del usuario
+        this.datosUsuarioConductores.push(userSnap.val());
+      });
+    });
+
+  */
   }
 
   traerConductoresEnLineaPorTipoLicencia() {
@@ -66,7 +93,7 @@ export class ResultadoBusquedaPage {
         }
         if (flag == 1) {
           var key = snap.key;
-          firebase.database().ref().child('usuarios').child(key).once('value', (snapshot) => {
+          firebase.database().ref().child('usuarios').child(key).on('value', (snapshot) => {
             console.log(snapshot.val());
             var userAGuardar = snapshot.val();
             console.log(userAGuardar);
@@ -84,7 +111,6 @@ export class ResultadoBusquedaPage {
         }
       }
     });
-//asd 
   }
 
 
