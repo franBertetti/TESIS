@@ -38,6 +38,8 @@ export class RealizarReservaPage {
       });
 
   }
+
+  //s
   
   public getTipoVehiculo() {
     return this.afDB.list('vehiculoCliente/');
