@@ -79,7 +79,7 @@ export class PerfilClientePage {
       this.afDB.object('conductor/' + user.uid)
         .valueChanges().subscribe(conductorGuardado => {
           this.conductor = conductorGuardado;
-        });//con el valueChanges le estoy diciendo q ante cualquier cambio de estado se suscriba a los cambios 
+        }); 
     }
 
   }
