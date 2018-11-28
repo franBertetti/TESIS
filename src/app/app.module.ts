@@ -43,7 +43,10 @@ import { DetalleEstadoConductoresPageModule } from '../pages/detalle-estado-cond
 import { AdminVehiculosClientePageModule } from '../pages/admin-vehiculos-cliente/admin-vehiculos-cliente.module';
 import { DetalleVehiculosClientePageModule } from '../pages/detalle-vehiculos-cliente/detalle-vehiculos-cliente.module';
 import { FcmProvider } from '../providers/fcm/fcm';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
+import { FotoPerfilServiceProvider } from '../providers/foto-perfil-service/foto-perfil-service';
+import { EstadoUsuarioServiceProvider } from '../providers/estado-usuario-service/estado-usuario-service';
+import { UsuarioServicioProvider } from '../providers/usuario-servicio/usuario-servicio';
 
 
 
@@ -114,6 +117,9 @@ export const firebaseConfig = {
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     Firebase,
     FcmProvider,
+    FotoPerfilServiceProvider,
+    EstadoUsuarioServiceProvider,
+    UsuarioServicioProvider,
     ]
 })
 export class AppModule {}

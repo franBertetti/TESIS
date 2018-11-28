@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController, MenuController, LoadingController, Loading, AlertController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -12,12 +12,14 @@ import { RegistrarUsuarioPage } from '../registrar-usuario/registrar-usuario';
 import { RestablecerPasswordPage } from '../restablecer-password/restablecer-password';
 import { AyudaPage } from '../ayuda/ayuda';
 import { RealizarReservaPage } from '../realizar-reserva/realizar-reserva';
+import { UsuarioServicioProvider } from '../../providers/usuario-servicio/usuario-servicio';
+
 
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
 })
-export class LoginPage {
+export class LoginPage implements OnInit {
 
   myForm: FormGroup;
   user: Observable<firebase.User>;
@@ -31,6 +33,7 @@ export class LoginPage {
     public afAuth: AngularFireAuth,
     public alertCtrl: AlertController,
     public fcm: FcmProvider,
+    public usuarioService: UsuarioServicioProvider,
     public toastCtrl: ToastController) {
 
     console.log("entro a loginPage");
@@ -44,9 +47,17 @@ export class LoginPage {
     this.menuCtrl.enable(true, 'myMenu');//para desactivar el menu desplegable en esta pagina
   }
 
+  ngOnInit(){
+
+  }
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
-    this.fcm.getToken();
+    
+    /*this.fcm.getToken();*/
+
+
+    
 
     this.fcm.listenToNotifications().pipe(
       tap(msg => {
@@ -65,8 +76,15 @@ export class LoginPage {
     console.log("Password:" + this.myForm.value.password);
 
 
+
     this.afAuth.auth.signInWithEmailAndPassword(this.myForm.value.email, this.myForm.value.password).then(() => {
       console.log("User logging");
+
+    this.afAuth.user.subscribe(snap => {
+      this.fcm.setId(snap.uid);
+      this.fcm.getToken();
+    });
+
       console.log(this.user);
       if (this.myForm.value.email == 'admin@admin.com' && this.myForm.value.password == 'admin123') {
         this.navCtrl.setRoot('AdministradorPage');
@@ -139,6 +157,8 @@ export class LoginPage {
     });
 
     loading.present();
+
+
 
     this.navCtrl.setRoot('PerfilClientePage');
   }

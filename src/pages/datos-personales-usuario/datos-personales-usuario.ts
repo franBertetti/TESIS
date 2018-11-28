@@ -1,4 +1,4 @@
-  import { Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, MenuController, LoadingController, Loading } from 'ionic-angular';
 import { PerfilClientePage } from '../perfil-cliente/perfil-cliente';
 import { AngularFireDatabase } from 'angularfire2/database';
@@ -6,6 +6,7 @@ import firebase from 'firebase';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UsuarioServicioProvider } from '../../providers/usuario-servicio/usuario-servicio';
 
 
 
@@ -22,43 +23,48 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   templateUrl: 'datos-personales-usuario.html',
 })
 export class DatosPersonalesUsuarioPage {
-  usuario:any = {};  
-  fotoPerfil:any;
-  perfilPerfil:any;
+  usuario: any = {};
+  fotoPerfil: any;
+  perfilPerfil: any;
   Localidades = [];
-  conductor:any={estado:null};
+  conductor: any = { estado: null };
+  flag = 0;
 
-
-  myForm: FormGroup;  
+  myForm: FormGroup;
 
   constructor(public afDB: AngularFireDatabase,
-     public navCtrl: NavController,
-      public navParams: NavParams,
-      public fireAuth:AngularFireAuth,
-       public menuCtrl:MenuController,
-       public formBuilder: FormBuilder,
-       public loadingCtrl: LoadingController,
-       public camera: Camera) {
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public fireAuth: AngularFireAuth,
+    public menuCtrl: MenuController,
+    public formBuilder: FormBuilder,
+    public loadingCtrl: LoadingController,
+    public camera: Camera,
+    public usuarioService: UsuarioServicioProvider) {
 
+    if (this.navParams.get('id')) {
+      var parametro = this.navParams.get('id');
+      console.log(parametro);
+    }
 
-        this.getLocalidad().valueChanges().subscribe(localidadesGuardadas => {
-        console.log(localidadesGuardadas)
-        this.Localidades = localidadesGuardadas;
-        });
-      
-        this.myForm = this.formBuilder.group({
-          //fotoPerfilUsuario: ['', Validators.required],
-          nombreCompleto: ['', Validators.required],
-          dni: ['', Validators.required],
-          fechaNacimiento: ['', Validators.required],
-          numCelular: ['', Validators.required],
-          direccion: ['', Validators.required],
-          localidad: ['', Validators.required],
-          numPiso: [''],
-          numDepto: ['']
-        });
+    this.getLocalidad().valueChanges().subscribe(localidadesGuardadas => {
+      console.log(localidadesGuardadas)
+      this.Localidades = localidadesGuardadas;
+    });
 
-        this.conductor.estado = "-"; 
+    this.myForm = this.formBuilder.group({
+      //fotoPerfilUsuario: ['', Validators.required],
+      nombreCompleto: ['', Validators.required],
+      dni: ['', Validators.required],
+      fechaNacimiento: ['', Validators.required],
+      numCelular: ['', Validators.required],
+      direccion: ['', Validators.required],
+      localidad: ['', Validators.required],
+      numPiso: [''],
+      numDepto: ['']
+    });
+
+    this.conductor.estado = "-";
 
     this.menuCtrl.enable(true, 'myMenu');//para desactivar el menu desplegable en esta pagina
   }
@@ -67,67 +73,74 @@ export class DatosPersonalesUsuarioPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad DatosPersonalesUsuarioPage');
     //this.fireAuth.user.subscribe(user=> console.log(user));  
-    this.fireAuth.user.subscribe(user=> this.mostrarPerfilCliente(user));
+    this.fireAuth.user.subscribe(user => this.mostrarPerfilCliente(user));
   }
 
-  mostrarPerfilCliente(user){
+  mostrarPerfilCliente(user) {
     if (user) {
-    this.afDB.object('usuarios/'+user.uid)
-    .valueChanges().subscribe(usuarioGuardado => {
-      this.usuario = usuarioGuardado;
-    });  //con el valueChanges le estoy diciendo q ante cualquier cambio de estado se suscriba a los cambios 
+      this.afDB.object('usuarios/' + user.uid)
+        .valueChanges().subscribe(usuarioGuardado => {
+          this.usuario = usuarioGuardado;
+          firebase.storage().ref('FotosUsuario/' + user.uid + '/fotoPerfil.png').getDownloadURL().then((url) => {
+            console.log(this.fotoPerfil);
+            console.log(url);
+            this.fotoPerfil = url;
+            console.log(this.fotoPerfil);
+          });
+        });  //con el valueChanges le estoy diciendo q ante cualquier cambio de estado se suscriba a los cambios 
+    }
   }
-}
 
-tomarFotoPerfil(): void {
-  this.camera.getPicture({
-  quality : 95,
-  destinationType : this.camera.DestinationType.DATA_URL,
-  sourceType : this.camera.PictureSourceType.CAMERA,
-  allowEdit : false,
-  encodingType: this.camera.EncodingType.PNG,
-  mediaType: this.camera.MediaType.PICTURE,
-  targetWidth: 500,
-  targetHeight: 500,
-  saveToPhotoAlbum: true
-}).then(profilePicture => {
-  this.perfilPerfil = profilePicture;
-  this.fotoPerfil = 'data:image/jpeg;base64,' + this.perfilPerfil;
-});
+  tomarFotoPerfil(): void {
+    this.camera.getPicture({
+      quality: 95,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      sourceType: this.camera.PictureSourceType.CAMERA,
+      allowEdit: false,
+      encodingType: this.camera.EncodingType.PNG,
+      mediaType: this.camera.MediaType.PICTURE,
+      targetWidth: 500,
+      targetHeight: 500,
+      saveToPhotoAlbum: true
+    }).then(profilePicture => {
+      this.perfilPerfil = profilePicture;
+      this.fotoPerfil = 'data:image/jpeg;base64,' + this.perfilPerfil;
+    });
 
-}
+  }
 
-buscarFotoPerfil(): void {
-this.camera.getPicture({
-quality : 95,
-destinationType : this.camera.DestinationType.DATA_URL,
-sourceType : this.camera.PictureSourceType.PHOTOLIBRARY,
-allowEdit : false,
-encodingType: this.camera.EncodingType.PNG,
-mediaType: this.camera.MediaType.PICTURE,
-targetWidth: 500,
-targetHeight: 500,
-saveToPhotoAlbum: true
-}).then(profilePicture => {
-  this.perfilPerfil = profilePicture;
-  this.fotoPerfil = 'data:image/jpeg;base64,' + this.perfilPerfil;
-});
-}
 
-public getLocalidad(){
-  return this.afDB.list('Localidad/');
-}
+  buscarFotoPerfil(): void {
+    this.camera.getPicture({
+      quality: 95,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+      allowEdit: false,
+      encodingType: this.camera.EncodingType.PNG,
+      mediaType: this.camera.MediaType.PICTURE,
+      targetWidth: 500,
+      targetHeight: 500,
+      saveToPhotoAlbum: true
+    }).then(profilePicture => {
+      this.perfilPerfil = profilePicture;
+      this.fotoPerfil = 'data:image/jpeg;base64,' + this.perfilPerfil;
+    });
+  }
 
-  iraRealizarReserva(){
+  public getLocalidad() {
+    return this.afDB.list('Localidad/');
+  }
+
+  iraRealizarReserva() {
     this.navCtrl.setRoot('PerfilClientePage');
   }
 
-  crearDatosUsuario(){
+  crearDatosUsuario() {
 
-    if (!this.fotoPerfil){
+    if (!this.fotoPerfil) {
       return alert('Falta la foto de Perfil ');
     }
-  //this.usuario.fotoPerfil = this.myForm.value.fotoPerfilUsuario;
+    //this.usuario.fotoPerfil = this.myForm.value.fotoPerfilUsuario;
     this.usuario.nombreCompleto = this.myForm.value.nombreCompleto;
     this.usuario.dni = this.myForm.value.dni;
     this.usuario.fechaNacimiento = this.myForm.value.fechaNacimiento;
@@ -135,30 +148,35 @@ public getLocalidad(){
     this.usuario.direccion = this.myForm.value.direccion;
     this.usuario.localidad = this.myForm.value.localidad;
 
-    if (!this.myForm.value.numPiso){ 
-      this.usuario.numPiso = ''; 
+    if (!this.myForm.value.numPiso) {
+      this.usuario.numPiso = '';
     } else {
       this.usuario.numPiso = this.myForm.value.numPiso;
     }
-    
-    if (!this.myForm.value.numDepto){ 
-      this.usuario.numDepto = ''; 
+
+    if (!this.myForm.value.numDepto) {
+      this.usuario.numDepto = '';
     } else {
       this.usuario.numDepto = this.myForm.value.numDepto;
     }
 
-    this.afDB.database.ref('usuarios/'+this.usuario.id).set(this.usuario);
+    this.afDB.database.ref('usuarios/' + this.usuario.id).set(this.usuario);
 
-    this.afDB.database.ref('conductor/'+this.usuario.id).set(this.conductor);
+    this.afDB.database.ref('conductor/' + this.usuario.id).set(this.conductor);
 
-    const selfieRefPerfil = firebase.storage().ref('FotosUsuario/'+this.usuario.id+'/fotoPerfil.png');
-    selfieRefPerfil.putString(this.perfilPerfil, 'base64', {contentType: 'image/png'});
+    const selfieRefPerfil = firebase.storage().ref('FotosUsuario/' + this.usuario.id + '/fotoPerfil.png');
+    selfieRefPerfil.putString(this.perfilPerfil, 'base64', { contentType: 'image/png' }).then((snapshot) => {
+      console.log("snapshot.downloadURL", snapshot.downloadURL);
+      this.usuarioService.changeMessage('asdasd');
+      
+    });
 
 
+    // if (this.flag == 1){
     let loading = this.loadingCtrl.create({
       spinner: 'crescent',
       content: 'Please Wait',
-      duration: 3000
+      duration: 4500
     });
 
     loading.onDidDismiss(() => {
@@ -167,6 +185,7 @@ public getLocalidad(){
 
     loading.present();
 
-    this.navCtrl.setRoot('PerfilClientePage', {'Photo': this.fotoPerfil} );
+    this.navCtrl.setRoot('PerfilClientePage', { 'Photo': this.fotoPerfil });
   }
+//}
 }

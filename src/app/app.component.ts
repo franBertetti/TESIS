@@ -21,11 +21,16 @@ import { RegistrarConductorPage } from '../pages/registrar-conductor/registrar-c
 import { DatosPersonalesUsuarioPage } from '../pages/datos-personales-usuario/datos-personales-usuario';
 import { HistoricoViajesPage } from '../pages/historico-viajes/historico-viajes';
 import { PenalizacionesPage } from '../pages/penalizaciones/penalizaciones';
+import { UsuarioServicioProvider } from '../providers/usuario-servicio/usuario-servicio';
+import { Observable } from 'rxjs/Rx';
+import { AngularFireObject, AngularFireList } from 'angularfire2/database';
+import { ViewEncapsulation, OnInit } from '@angular/core';
+
 //
 @Component({
   templateUrl: 'app.html'
 })
-export class MyApp {
+export class MyApp implements OnInit {
   @ViewChild(Nav) nav: Nav;
 
   rootPage: any = LoginPage;
@@ -36,8 +41,14 @@ export class MyApp {
   estado:any;
   email:any;
 
+  id;
+
   pages: Array<{ title: string, component: any }>;
 
+  datoPrueba:any = {};
+
+  private users$: Observable<any[]>;
+  message:string = 'hola';
   constructor(public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
@@ -46,7 +57,16 @@ export class MyApp {
     public FirebaseAuth: AngularFireAuthModule,
     public AlertCtrl: AlertController,
     public fcm: FcmProvider,
+    public usuarioService: UsuarioServicioProvider,
     public toastCtrl: ToastController) {
+
+
+      /*this.datoPrueba = usuarioService.getValor().subscribe(valorGuardado => {
+        this.datoPrueba = valorGuardado;
+        console.log("el valor cambio a:");
+        console.log(this.datoPrueba);
+      });*/
+
 
       platform.ready().then(() => {  
         fcm.getToken();
@@ -110,11 +130,71 @@ export class MyApp {
       { title: 'List', component: ListPage }
     ];
 
+    console.log('el mensaje es:');
+    console.log(this.message);
+  
+    console.log('el mensaje es:');
+    this.usuarioService.currentMesagge.subscribe(message=> {
+      
+      firebase.storage().ref('FotosUsuario/'+ this.id +'/fotoPerfil.png').getDownloadURL().then((url) => {
+        console.log(this.fotoPerfil);
+        console.log(url);
+        this.fotoPerfil = url;
+        console.log(this.fotoPerfil);
+      });
+
+      this.message = message;
+      console.log(this.message);
+    });
+
+   // this.newMessage();
+  
+    console.log('el objeto es:');
+    console.log(this.datoPrueba);
+
+    this.usuarioService.currentObjeto.subscribe(objet => {
+      this.datoPrueba = objet;
+    })
+
+    console.log('el objeto es:');
+    console.log(this.datoPrueba);
+
+    this.newObjeto();
+
+    console.log('el objeto es:');
+    console.log(this.datoPrueba);
+
+
+
+
+  
   }
+
+  ngOnInit() {
+/*    console.log('el mensaje es:');
+    this.usuarioService.currentMesagge.subscribe(message=> {
+      this.message = message;
+      console.log(this.message);
+    });
+
+
+    this.newMessage();
+    
+  */}
+
+  newMessage(){
+    this.usuarioService.changeMessage('hello from appComponent');
+  }
+
+  newObjeto(){
+    this.usuarioService.changeObject({title: 'qisio', description: 'bebelo con soda', name: 'narniaaaa'});
+  }
+
 
 
   mostrarPerfilCliente(user) {
     if (user) {
+      this.id = user.uid;
       this.afDB.object('usuarios/' + user.uid)
         .valueChanges().subscribe(usuarioGuardado => {
           this.usuario = usuarioGuardado;
@@ -125,7 +205,7 @@ export class MyApp {
 
        // if (this.usuario.email !== 'admin@admin.com') {
 
-       this.afDB.object('usuarios/' + user.uid + '/conductor')
+       this.afDB.object('conductor/' + user.uid)
         .valueChanges().subscribe(conductorGuardado => {
           this.conductor = conductorGuardado;
         });
@@ -196,7 +276,7 @@ export class MyApp {
   }
 
   iraPenalizaciones() {
-    this.nav.push(PenalizacionesPage);
+    this.nav.push(PenalizacionesPage, {'id': this.id});
   }
 
   iraDatosConductor() {

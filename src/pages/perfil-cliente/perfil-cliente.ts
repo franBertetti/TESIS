@@ -9,6 +9,7 @@ import { RealizarReservaPage } from '../realizar-reserva/realizar-reserva';
 import { AngularFireAuth } from 'angularfire2/auth';
 import firebase from 'firebase';
 import { AngularFireDatabase } from 'angularfire2/database';
+import { UsuarioServicioProvider } from '../../providers/usuario-servicio/usuario-servicio';
 
 
 /**
@@ -29,24 +30,31 @@ export class PerfilClientePage {
   conductor: any = {};
   public uid: any;
   fotoPerfil: any;
-  fotoPerfilDesdeBd:any;
-
+  fotoPerfilDesdeBd: any;
+  flag = 0;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public menuCtrl: MenuController,
     public fireAuth: AngularFireAuth,
     public afDB: AngularFireDatabase,
+    public usuarioService: UsuarioServicioProvider,
     public alertCtrl: AlertController) {
     this.menuCtrl.enable(true, 'myMenu');//para desactivar el menu desplegable en esta pagina
+
+    //this.usuarioService.changeMessage('ASDA');
+
     var database = firebase.database();
     this.uid = firebase.auth().currentUser.uid;
 
-    if  (this.navParams.get('Photo')) {
+    if (this.navParams.get('Photo')) {
       this.fotoPerfil = this.navParams.get('Photo');
-      }else {
-        this.fotoPerfil = "la otra foto";
-      }
+      this.flag = 0;
+      /*this.usuarioService.changeMessage('ASDA');*/
+     } else {
+      this.fotoPerfil = "la otra foto";
+      this.flag = 1;
+    }
 
   }
 
@@ -60,9 +68,11 @@ export class PerfilClientePage {
       this.afDB.object('usuarios/' + user.uid)
         .valueChanges().subscribe(usuarioGuardado => {
           this.usuario = usuarioGuardado;
-          firebase.storage().ref('FotosUsuario/'+ user.uid +'/fotoPerfil.png').getDownloadURL().then((url) => {
+          if (this.flag == 1){
+          firebase.storage().ref('FotosUsuario/' + user.uid + '/fotoPerfil.png').getDownloadURL().then((url) => {
             this.fotoPerfil = url;
           });
+        }
 
         });
 

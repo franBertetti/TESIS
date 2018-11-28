@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, MenuController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, MenuController, LoadingController } from 'ionic-angular';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { PerfilClientePage } from '../perfil-cliente/perfil-cliente';
 import firebase from 'firebase';
@@ -40,6 +40,7 @@ usuario:any = {};
               public navParams: NavParams,
               public menuCtrl:MenuController,
               public afDB: AngularFireDatabase,
+              public loadingCtrl: LoadingController,
               public fireAuth:AngularFireAuth,
               public camera: Camera) {
     this.menuCtrl.enable(true, 'myMenu');//para desactivar el menu desplegable en esta pagina
@@ -150,7 +151,19 @@ public getTipoVehiculo(){
     const selfieRefDni = firebase.storage().ref('FotosConductor/'+this.usuario.id+'/fotoDni.png');
     selfieRefDni.putString(this.perfilDni, 'base64', {contentType: 'image/png'});
     
-    
+    let loading = this.loadingCtrl.create({
+      spinner: 'crescent',
+      content: 'Please Wait',
+      duration: 4500
+    });
+
+    loading.onDidDismiss(() => {
+      console.log('Dismissed loading');
+    });
+
+    loading.present();
+
+
     this.navCtrl.setRoot('PerfilClientePage');
   }
 }
