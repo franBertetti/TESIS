@@ -4,6 +4,7 @@ import { DatosReservaPage } from '../datos-reserva/datos-reserva';
 import { AngularFireDatabase, snapshotChanges } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import firebase from 'firebase';
+import { UsuarioServicioProvider } from '../../providers/usuario-servicio/usuario-servicio';
 
 /**
  * Generated class for the ResultadoBusquedaPage page.
@@ -36,6 +37,7 @@ export class ResultadoBusquedaPage {
     public navParams: NavParams,
     public afDB: AngularFireDatabase,
     public fireAuth: AngularFireAuth,
+    public usuarioServicio: UsuarioServicioProvider,
     private alertCtrl: AlertController) {
 
     this.datosBusqueda = this.navParams.get('datosBusqueda');
@@ -47,12 +49,30 @@ export class ResultadoBusquedaPage {
     console.log("conductores en linea:");
     console.log(this.conductoresEnLinea);
 
+  this.buscarTipoLicenciasPosiblesDeVehiculoSeleccionado(); //obtengo los tipos de licencia q pueden ser por la licencia q se ingreso
+
+  this.traerConductoresEnLineaPorTipoLicencia();
+  console.log(this.datosConductores);
+  console.log(this.datosdeUsuarioConductores);
+  }
+  usuarioServicio.changeMessage('asda');
+
+    usuarioServicio.currentMesagge.subscribe(message=> {
+      /*if (this.datosBusqueda.tipoReserva == 'ReservaInmediata'){
+        this.conductoresEnLinea = this.buscarEstadoConductoresEnLinea();//obtengo los conductores en linea
+      console.log("conductores en linea:");
+      console.log(this.conductoresEnLinea);
+
     this.buscarTipoLicenciasPosiblesDeVehiculoSeleccionado(); //obtengo los tipos de licencia q pueden ser por la licencia q se ingreso
 
     this.traerConductoresEnLineaPorTipoLicencia();
     console.log(this.datosConductores);
     console.log(this.datosdeUsuarioConductores);
-    }
+      }*/
+    });
+    //usuarioServicio.changeMessage('asda');
+
+      
     
     if (this.datosBusqueda.tipoReserva == 'ReservaAnticipada'){
     this.conductores = this.buscarConductoresHabilitados();
@@ -141,7 +161,7 @@ export class ResultadoBusquedaPage {
   buscarEstadoConductoresEnLinea() {
 
     return firebase.database().ref('conductor/').orderByChild('estado').equalTo('EnLinea');
-    /*return firebase.database().ref('conductor/').orderByChild('estado').equalTo('EnLinea').on('child_added', (snapshot) => {
+    /*return firebase.database() .ref('conductor/').orderByChild('estado').equalTo('EnLinea').on('child_added', (snapshot) => {
 
       let userRef = firebase.database().ref('usuarios/' + snapshot.key);
       this.datosConductores.push(snapshot.val());

@@ -31,7 +31,7 @@ export class PerfilClientePage {
   public uid: any;
   fotoPerfil: any;
   fotoPerfilDesdeBd: any;
-  flag = 0;
+  flag = false;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -49,11 +49,11 @@ export class PerfilClientePage {
 
     if (this.navParams.get('Photo')) {
       this.fotoPerfil = this.navParams.get('Photo');
-      this.flag = 0;
+      this.flag = true;
       /*this.usuarioService.changeMessage('ASDA');*/
      } else {
       this.fotoPerfil = "la otra foto";
-      this.flag = 1;
+      this.flag = true;
     }
 
   }
@@ -68,7 +68,7 @@ export class PerfilClientePage {
       this.afDB.object('usuarios/' + user.uid)
         .valueChanges().subscribe(usuarioGuardado => {
           this.usuario = usuarioGuardado;
-          if (this.flag == 1){
+          if (this.flag == true){
           firebase.storage().ref('FotosUsuario/' + user.uid + '/fotoPerfil.png').getDownloadURL().then((url) => {
             this.fotoPerfil = url;
           });

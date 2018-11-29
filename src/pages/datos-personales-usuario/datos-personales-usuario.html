@@ -15,7 +15,7 @@
         <button ion-button col-5 offset-1 (click)="tomarFotoPerfil()">Toma una foto</button>
         <button ion-button col-5 (click)="buscarFotoPerfil()">Seleccionar de galería</button>
         <p>
-          <img class="foto" src="{{fotoPerfil}}">
+          <img *ngIf="fotoPerfil" class="foto" src="{{fotoPerfil}}">
         </p>
       </ion-row>
   
