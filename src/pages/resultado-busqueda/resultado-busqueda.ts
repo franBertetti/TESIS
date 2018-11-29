@@ -95,7 +95,7 @@ export class ResultadoBusquedaPage {
       console.log(snapshot.val());
       userRef.on('value', userSnap => {
         console.log(' datos usuario conductor:');
-        console.log(userSnap.val()); // trae bien los datos del usuario
+        console.log(userSnap.val()); // trae bien los datos del usuarios
         this.datosUsuarioConductores.push(userSnap.val());
       });
     });
