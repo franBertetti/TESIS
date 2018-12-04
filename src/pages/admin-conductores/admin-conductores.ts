@@ -48,7 +48,7 @@ export class AdminConductoresPage {
 
       let userRef = firebase.database().ref('usuarios/' + snapshot.key);
         var evaluarEstado = snapshot.val();
-        if (evaluarEstado.estado != "-") {
+        if (evaluarEstado.estado != "-" && evaluarEstado.estado) {
         this.estados.push(snapshot.val());
         userRef.on('value', userSnap => {
           console.log(userSnap.val()); // trae bien los datos del usuario

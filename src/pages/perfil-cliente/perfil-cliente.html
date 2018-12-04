@@ -24,7 +24,7 @@
 
     <ion-item>
       <ion-avatar item-start>
-        <p *ngIf="flag == true"><img class="foto" src="{{fotoPerfil}}"></p> 
+        <p *ngIf="flag == 1 || flag == 0"><img class="foto" src="{{fotoPerfil}}"></p> 
       </ion-avatar>
       <h2> Hola,  {{usuario?.nombreCompleto}} </h2>
      </ion-item>

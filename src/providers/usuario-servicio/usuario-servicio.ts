@@ -17,6 +17,14 @@ interface IUser {
   isPremium: boolean;
 }
 
+export interface Credenciales {
+  nombre?: string;
+  email?: string;
+  imagen?: string;
+  uid?: string;
+  provider?: string;
+}
+
 /*
   Generated class for the UsuarioServicioProvider provider.
 
@@ -45,6 +53,8 @@ export class UsuarioServicioProvider {
 
   private usersSubject = new BehaviorSubject([]);
   private users: IUser[];
+
+  Usuario: Credenciales = {};
 
   constructor(public http: HttpClient,
     public firebaseNative: Firebase,
@@ -94,5 +104,14 @@ export class UsuarioServicioProvider {
   public getValor(): Observable<any> {
     return this.usuario.asObservable;
   }
-  
+
+
+  cargarUsuario(nombre:string, email:string, imagen:string, uid:string, provider:string){
+    this.Usuario.nombre = nombre;
+    this.Usuario.email = email;
+    this.Usuario.imagen = imagen;
+    this.Usuario.uid = uid;
+    this.Usuario.provider = provider;
+  }
+ 
 }

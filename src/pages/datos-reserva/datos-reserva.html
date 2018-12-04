@@ -15,28 +15,28 @@
 
 <ion-content padding>
     <ion-item>
-        <ion-label>Nro Contratación:</ion-label>
+        <ion-label>Nro Contratación: {{ numeroContratacion }}</ion-label>
     </ion-item>
     <ion-item>
-        <ion-label>Fecha:</ion-label>
+        <ion-label>Fecha: {{ fechaActualFormateada }}</ion-label>
     </ion-item>
     <ion-item>
-        <ion-label>Hora:</ion-label>
+        <ion-label>Hora: {{ horaActual }}</ion-label>
     </ion-item>
     <ion-item>
-        <ion-label>Cliente:</ion-label>
+        <ion-label>Cliente: {{ usuario.nombreCompleto }}</ion-label>
     </ion-item>
     <ion-item>
-        <ion-label>Conductor:</ion-label>
+        <ion-label>Conductor: {{ conductor.nombreCompleto }} </ion-label>
     </ion-item>
     <ion-item>
-        <ion-label>Lugar de Búsqueda:</ion-label>
+        <ion-label>Lugar de Búsqueda: {{ datosReserva.direccion }}</ion-label>
     </ion-item>
     <ion-item>
-        <ion-label>Tipo vehículo del pasajero:</ion-label>
+        <ion-label>Tipo vehículo del pasajero: {{ datosReserva.vehiculoReserva }} </ion-label>
     </ion-item>
     <ion-item>
-        <ion-label>Tipo de Contratación:</ion-label>
+        <ion-label>Tipo de Contratación: {{ datosReserva.tipoReserva }} </ion-label>
     </ion-item>
 
     <ion-card margin-top>

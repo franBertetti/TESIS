@@ -26,6 +26,7 @@ import { Observable } from 'rxjs/Rx';
 import { AngularFireObject, AngularFireList } from 'angularfire2/database';
 import { ViewEncapsulation, OnInit } from '@angular/core';
 
+import { timer } from 'rxjs/observable/timer';
 //
 @Component({
   templateUrl: 'app.html'
@@ -40,6 +41,8 @@ export class MyApp implements OnInit {
   fotoPerfil: any;
   estado:any;
   email:any;
+
+  showSplash = true; // <-- show animation
 
   id;
 
@@ -114,10 +117,10 @@ export class MyApp implements OnInit {
     this.initializeApp();
     this.fireAuth.user.subscribe(user => this.mostrarPerfilCliente(user));
 
-    if (this.conductor.estado) {
+    /*if (this.conductor.estado) {
       this.estado = this.conductor.estado;
       console.log("entro a parte 2");
-    }
+    }*/
 
     /*if (this.conductor.estado) {
       this.estado = this.conductor.estado;
@@ -229,7 +232,8 @@ export class MyApp implements OnInit {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
-      this.splashScreen.hide();
+    //  this.splashScreen.hide();
+     // timer(3000).subscribe(() => this.showSplash = false) // <-- hide animation after 3s
     });
   }
 
@@ -238,8 +242,8 @@ export class MyApp implements OnInit {
   }
 
   iraRegistrarConductor() {
-    console.log("estado: "+this.estado);
-    if (this.conductor.estado == "PendienteAprobacion") {
+    if (this.conductor.estado != undefined && this.conductor.estado == "PendienteAprobacion"){
+    //console.log("estado: "+this.estado);
       //alert('Tipoo de Vehiculo con exito');
       /**/let alert = this.AlertCtrl.create({
         title: 'Solicitud de conductor pendiente de Aprobación',
@@ -255,6 +259,7 @@ export class MyApp implements OnInit {
     } else {
       this.nav.push(RegistrarConductorPage);
     }
+
   }
 
   iraLogin() {
@@ -264,11 +269,12 @@ export class MyApp implements OnInit {
   CerrarSesion(): void {
     this.fireAuth.auth.signOut();
     this.usuario = {};
-    this.nav.setRoot(LoginPage);
+    //this.usuarioService.Usuario = {};
+    this.nav.setRoot(LoginPage, {'splash': false,'usuario': {}});
   }
 
   iraDatosPersonales() {
-    this.nav.push(DatosPersonalesUsuarioPage);
+    this.nav.push(DatosPersonalesUsuarioPage, {'flag': true});
   }
 
   iraHistoricoViajes() {

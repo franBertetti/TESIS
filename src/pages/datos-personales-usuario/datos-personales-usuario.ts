@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, MenuController, LoadingController, Loading } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, MenuController, LoadingController, Loading, AlertController } from 'ionic-angular';
 import { PerfilClientePage } from '../perfil-cliente/perfil-cliente';
 import { AngularFireDatabase } from 'angularfire2/database';
 import firebase from 'firebase';
@@ -27,8 +27,8 @@ export class DatosPersonalesUsuarioPage {
   fotoPerfil: any;
   perfilPerfil: any;
   Localidades = [];
-  conductor: any = { estado: null };
-  flag = 0;
+  conductor: any = {};
+  flag = false;
 
   myForm: FormGroup;
 
@@ -40,11 +40,16 @@ export class DatosPersonalesUsuarioPage {
     public formBuilder: FormBuilder,
     public loadingCtrl: LoadingController,
     public camera: Camera,
+    public alertCtrl: AlertController,
     public usuarioService: UsuarioServicioProvider) {
 
     if (this.navParams.get('id')) {
       var parametro = this.navParams.get('id');
       console.log(parametro);
+    }
+
+    if (this.navParams.get('flag')) {
+      this.flag = this.navParams.get('flag');
     }
 
     this.getLocalidad().valueChanges().subscribe(localidadesGuardadas => {
@@ -64,8 +69,6 @@ export class DatosPersonalesUsuarioPage {
       numDepto: ['']
     });
 
-    this.conductor.estado = "-";
-
     this.menuCtrl.enable(true, 'myMenu');//para desactivar el menu desplegable en esta pagina
   }
 
@@ -81,6 +84,7 @@ export class DatosPersonalesUsuarioPage {
       this.afDB.object('usuarios/' + user.uid)
         .valueChanges().subscribe(usuarioGuardado => {
           this.usuario = usuarioGuardado;
+          this.conductor.id = this.usuario.id;
           firebase.storage().ref('FotosUsuario/' + user.uid + '/fotoPerfil.png').getDownloadURL().then((url) => {
             console.log(this.fotoPerfil);
             console.log(url);
@@ -162,30 +166,83 @@ export class DatosPersonalesUsuarioPage {
 
     this.afDB.database.ref('usuarios/' + this.usuario.id).set(this.usuario);
 
-    this.afDB.database.ref('conductor/' + this.usuario.id).set(this.conductor);
-
-    const selfieRefPerfil = firebase.storage().ref('FotosUsuario/' + this.usuario.id + '/fotoPerfil.png');
-    selfieRefPerfil.putString(this.perfilPerfil, 'base64', { contentType: 'image/png' }).then((snapshot) => {
-      console.log("snapshot.downloadURL", snapshot.downloadURL);
-      this.usuarioService.changeMessage('asdasd');
-      
-    });
+    if (this.flag == false) {
+      //this.conductor.id = this.usuario.id;
+      this.afDB.database.ref('conductor/' + this.usuario.id).set(this.conductor);
+    }
 
 
-    // if (this.flag == 1){
-    let loading = this.loadingCtrl.create({
-      spinner: 'crescent',
-      content: 'Please Wait',
-      duration: 4500
-    });
+    if (this.perfilPerfil != undefined) {
+      const selfieRefPerfil = firebase.storage().ref('FotosUsuario/' + this.usuario.id + '/fotoPerfil.png');
+      selfieRefPerfil.putString(this.perfilPerfil, 'base64', { contentType: 'image/png' }).then((snapshot) => {
+        console.log("snapshot.downloadURL", snapshot.downloadURL);
+        this.usuarioService.changeMessage('asdasd');
+      });
+    }
 
-    loading.onDidDismiss(() => {
-      console.log('Dismissed loading');
-    });
+    if (this.flag == false) {
 
-    loading.present();
+      let alert = this.alertCtrl.create({
+        title: 'Confirmar Datos Usuario',
+        message: 'Desea guardar los datos?',
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            handler: () => {
+              console.log('Cancel clicked');
+            }
+          },
+          {
+            text: 'Aceptar',
+            handler: () => {
+              let loading = this.loadingCtrl.create({
+                spinner: 'crescent',
+                content: 'Please Wait',
+                duration: 3000
+              });
 
-    this.navCtrl.setRoot('PerfilClientePage', { 'Photo': this.fotoPerfil });
+              loading.onDidDismiss(() => {
+                console.log('Dismissed loading');
+              });
+
+              loading.present();
+
+              this.navCtrl.setRoot('PerfilClientePage', { 'Photo': this.fotoPerfil });
+              console.log('Buy clicked');
+            }
+          }
+        ]
+      });
+      alert.present();
+    }
+
+    if (this.flag == true) {
+
+      let alert = this.alertCtrl.create({
+        title: 'Confirmar Cambios',
+        message: '¿Desea guardar los cambios?',
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            handler: () => {
+              console.log('Cancel clicked');
+            }
+          },
+          {
+            text: 'Aceptar',
+            handler: () => {
+              this.navCtrl.setRoot('PerfilClientePage', { 'Photo': this.fotoPerfil });
+              console.log('Buy clicked');
+            }
+          }
+        ]
+      });
+      alert.present();
+    }
+
   }
-//}
+
+  //}
 }

@@ -1,3 +1,10 @@
+<div id="custom-overlay" [style.display]="splash ? 'flex': 'none'"> 
+  <div class="flb">
+    <div class="Aligner-item Aligner-item--top"></div>
+    <img src="assets/logo.svg" alt="">
+    <div class="Aligner-item Aligner-item--bottom"></div>    
+  </div>
+</div>
 
 <ion-content padding>
   <ion-list>
@@ -44,6 +51,11 @@
     <!--<br>  
     <button ion-button full (click)="iraPerfilClientes()">Ingresar</button>-->
     <div text-center>
+
+<!--        <button ion-button block icon-left (click)="signInWithFacebook()">
+          <ion-icon name="logo-facebook">Facebook</ion-icon>
+        </button>
+-->
       <a ion-button block clear (click)="iraRestablecerPassword()">
         Olvide mi Contraseña
       </a>

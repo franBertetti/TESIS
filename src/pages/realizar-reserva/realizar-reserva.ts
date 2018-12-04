@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { MenuController } from 'ionic-angular';
 import { ResultadoBusquedaPage } from '../resultado-busqueda/resultado-busqueda';
 import { AngularFireDatabase } from 'angularfire2/database';
@@ -20,10 +20,15 @@ export class RealizarReservaPage {
   TipoVehiculos = [];
   busqueda: any = {};
   tipoReserva: boolean = false;
+  mensaje;
+  faltaTipoVehiculo: boolean;
+  faltaDireccion: boolean;
 
   constructor(
     public navCtrl: NavController,
+    public alertCtrl: AlertController,
     public navParams: NavParams,
+    public loadingCtrl: LoadingController,
     public afDB: AngularFireDatabase,
     public menuCtrl: MenuController) {
     this.menuCtrl.enable(true, 'myMenu');//para activar el menu desplegable en esta pagina
@@ -40,7 +45,7 @@ export class RealizarReservaPage {
   }
 
   //s
-  
+
   public getTipoVehiculo() {
     return this.afDB.list('vehiculoCliente/');
   }
@@ -56,10 +61,64 @@ export class RealizarReservaPage {
     } else {
       this.busqueda.tipoReserva = 'ReservaInmediata';
     }
+    
+    if (this.busqueda.direccion) {
+      this.faltaDireccion = false;
+    } else {
+      this.faltaDireccion = true;
+    }
 
-    console.log(this.busqueda.direccion);
-    console.log(this.busqueda);
+    console.log(this.faltaDireccion);
 
-    this.navCtrl.push(ResultadoBusquedaPage, {'datosBusqueda': this.busqueda} );
+    if (this.busqueda.vehiculoReserva) {
+      this.faltaTipoVehiculo = false;
+    } else {
+      this.faltaTipoVehiculo = true;
+    }
+
+    console.log(this.faltaTipoVehiculo);
+
+     if (this.faltaDireccion == true && this.faltaTipoVehiculo == true) {
+      this.mensaje = 'Por favor, ingrese el Tipo de vehiculo y la Direccion';
+    } else if (this.faltaDireccion == true) {
+      this.mensaje = 'Por favor, ingrese la Dirección';
+    } else if (this.faltaTipoVehiculo == true) {
+      this.mensaje = 'Por favor, ingrese el Tipo de vehiculo';
+    }
+
+    if (this.faltaDireccion == true || this.faltaTipoVehiculo == true) {
+      let alert = this.alertCtrl.create({
+        message: this.mensaje,
+        buttons: [
+          {
+            text: "Ok",
+            role: 'cancel'
+          }
+        ]
+      });
+      alert.present();
+    } 
+    
+    if (this.faltaDireccion == false && this.faltaTipoVehiculo == false) {
+
+      console.log(this.busqueda.direccion);
+      console.log(this.busqueda);
+
+      let loading = this.loadingCtrl.create({
+        spinner: 'crescent',
+        content: 'Buscando Conductores',
+        duration: 3500
+      });
+
+      loading.onDidDismiss(() => {
+        console.log('Dismissed loading');
+      });
+
+      loading.present();
+
+
+      this.navCtrl.push(ResultadoBusquedaPage, { 'datosBusqueda': this.busqueda });
+    }
   }
+
 }

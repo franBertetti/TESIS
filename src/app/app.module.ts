@@ -47,7 +47,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { FotoPerfilServiceProvider } from '../providers/foto-perfil-service/foto-perfil-service';
 import { EstadoUsuarioServiceProvider } from '../providers/estado-usuario-service/estado-usuario-service';
 import { UsuarioServicioProvider } from '../providers/usuario-servicio/usuario-servicio';
-
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { ServicioBusquedaConductoresProvider } from '../providers/servicio-busqueda-conductores/servicio-busqueda-conductores';
+import { Facebook } from '@ionic-native/facebook';
 
 
 export const firebaseConfig = {
@@ -100,7 +102,8 @@ export const firebaseConfig = {
     DetalleEstadoConductoresPageModule,
     AdminVehiculosClientePageModule,
     DetalleVehiculosClientePageModule,
-    HttpClientModule
+    HttpClientModule,
+    NgxDatatableModule
     /*,
     AdministradorPage*/
   ],
@@ -120,6 +123,8 @@ export const firebaseConfig = {
     FotoPerfilServiceProvider,
     EstadoUsuarioServiceProvider,
     UsuarioServicioProvider,
+    ServicioBusquedaConductoresProvider,
+    Facebook
     ]
 })
 export class AppModule {}

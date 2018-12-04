@@ -144,7 +144,9 @@ public getTipoVehiculo(){
 }
 
   guardarDatosConductor(){
-    this.afDB.database.ref('conductor/'+this.usuario.id).set(this.conductor);
+    this.conductor.puntaje = "-";
+    this.afDB.database.ref('conductor/'+this.usuario.id).update(this.conductor);
+    //.set(this.conductor);
     
     const selfieRefCarnet = firebase.storage().ref('FotosConductor/'+this.usuario.id+'/fotoCarnet.png');
     selfieRefCarnet.putString(this.perfilCarnet, 'base64', {contentType: 'image/png'});
@@ -154,7 +156,7 @@ public getTipoVehiculo(){
     let loading = this.loadingCtrl.create({
       spinner: 'crescent',
       content: 'Please Wait',
-      duration: 4500
+      duration: 3000
     });
 
     loading.onDidDismiss(() => {
@@ -164,6 +166,6 @@ public getTipoVehiculo(){
     loading.present();
 
 
-    this.navCtrl.setRoot('PerfilClientePage');
+    this.navCtrl.setRoot('PerfilClientePage', {'flag':false});
   }
 }

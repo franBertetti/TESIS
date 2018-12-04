@@ -29,7 +29,7 @@
   
         <ion-item>
           <ion-label floating>DNI</ion-label>
-          <ion-input formControlName="dni" type="text" [(ngModel)]="usuario.dni"></ion-input>
+          <ion-input formControlName="dni" type="tel" [(ngModel)]="usuario.dni"></ion-input>
         </ion-item>
   
         <ion-item>
@@ -60,7 +60,7 @@
             <ion-input  type="number" formControlName="numPiso" [(ngModel)]="usuario.numPiso"></ion-input>
           </ion-item>
           <ion-item col-6>
-            <ion-label floating>Nro Dpto</ion-label>
+            <ion-label floating>Dpto</ion-label>
             <ion-input type="text" formControlName="numDepto" [(ngModel)]="usuario.numDepto"></ion-input>
           </ion-item>
         </ion-row>

@@ -86,3 +86,9 @@ $colors: (
 
 @import "roboto";
 @import "noto-sans";
+
+
+@import "./node_modules/bootstrap/dist/css/bootstrap";
+
+$item-md-body-text-line-height: 4em;
+$item-md-body-text-font-size: 4em;
