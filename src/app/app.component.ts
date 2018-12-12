@@ -39,8 +39,8 @@ export class MyApp implements OnInit {
   usuario: any;
   conductor: any = {};
   fotoPerfil: any;
-  estado:any;
-  email:any;
+  estado: any;
+  email: any;
 
   showSplash = true; // <-- show animation
 
@@ -48,10 +48,10 @@ export class MyApp implements OnInit {
 
   pages: Array<{ title: string, component: any }>;
 
-  datoPrueba:any = {};
+  datoPrueba: any = {};
 
   private users$: Observable<any[]>;
-  message:string = 'hola';
+  message: string = 'hola';
   constructor(public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
@@ -64,32 +64,32 @@ export class MyApp implements OnInit {
     public toastCtrl: ToastController) {
 
 
-      /*this.datoPrueba = usuarioService.getValor().subscribe(valorGuardado => {
-        this.datoPrueba = valorGuardado;
-        console.log("el valor cambio a:");
-        console.log(this.datoPrueba);
-      });*/
+    /*this.datoPrueba = usuarioService.getValor().subscribe(valorGuardado => {
+      this.datoPrueba = valorGuardado;
+      console.log("el valor cambio a:");
+      console.log(this.datoPrueba);
+    });*/
 
 
-      platform.ready().then(() => {  
-        fcm.getToken();
+    platform.ready().then(() => {
+      fcm.getToken();
 
-        // Listen to incoming messages
-        fcm.listenToNotifications().pipe(
-          tap(msg => {
-            // show a toast
-            const toast = toastCtrl.create({
-              message: msg.body,
-              duration: 3000
-            });
-            toast.present();
-          })
-        )
-        .subscribe()
-      }
-  
+      // Listen to incoming messages
+      fcm.listenToNotifications().pipe(
+        tap(msg => {
+          // show a toast
+          const toast = toastCtrl.create({
+            message: msg.body,
+            duration: 3000
+          });
+          toast.present();
+        })
       )
-    
+        .subscribe()
+    }
+
+    )
+
 
 
     //codigo de onesignal de linea 45 a 64
@@ -135,23 +135,26 @@ export class MyApp implements OnInit {
 
     console.log('el mensaje es:');
     console.log(this.message);
-  
-    console.log('el mensaje es:');
-    this.usuarioService.currentMesagge.subscribe(message=> {
-      
-      firebase.storage().ref('FotosUsuario/'+ this.id +'/fotoPerfil.png').getDownloadURL().then((url) => {
-        console.log(this.fotoPerfil);
-        console.log(url);
-        this.fotoPerfil = url;
-        console.log(this.fotoPerfil);
-      });
 
-      this.message = message;
-      console.log(this.message);
+    console.log('el mensaje es:');
+    this.usuarioService.currentMesagge.subscribe(message => {
+
+      if (this.id != undefined) {
+        firebase.storage().ref('FotosUsuario/' + this.id + '/fotoPerfil.png').getDownloadURL().then((url) => {
+          console.log(this.fotoPerfil);
+          console.log(url);
+          this.fotoPerfil = url;
+          console.log(this.fotoPerfil);
+        });
+
+
+        this.message = message;
+        console.log(this.message);
+      }
     });
 
-   // this.newMessage();
-  
+    // this.newMessage();
+
     console.log('el objeto es:');
     console.log(this.datoPrueba);
 
@@ -170,7 +173,7 @@ export class MyApp implements OnInit {
 
 
 
-  
+
   }
 
   ngOnInit() {
@@ -185,12 +188,12 @@ export class MyApp implements OnInit {
     
   */}
 
-  newMessage(){
+  newMessage() {
     this.usuarioService.changeMessage('hello from appComponent');
   }
 
-  newObjeto(){
-    this.usuarioService.changeObject({title: 'qisio', description: 'bebelo con soda', name: 'narniaaaa'});
+  newObjeto() {
+    this.usuarioService.changeObject({ title: 'qisio', description: 'bebelo con soda', name: 'narniaaaa' });
   }
 
 
@@ -201,29 +204,29 @@ export class MyApp implements OnInit {
       this.afDB.object('usuarios/' + user.uid)
         .valueChanges().subscribe(usuarioGuardado => {
           this.usuario = usuarioGuardado;
-          firebase.storage().ref('FotosUsuario/'+ user.uid +'/fotoPerfil.png').getDownloadURL().then((url) => {
+          firebase.storage().ref('FotosUsuario/' + user.uid + '/fotoPerfil.png').getDownloadURL().then((url) => {
             this.fotoPerfil = url;
           });
         });
 
-       // if (this.usuario.email !== 'admin@admin.com') {
+      // if (this.usuario.email !== 'admin@admin.com') {
 
-       this.afDB.object('conductor/' + user.uid)
+      this.afDB.object('conductor/' + user.uid)
         .valueChanges().subscribe(conductorGuardado => {
           this.conductor = conductorGuardado;
         });
 
-       /* if (this.conductor.estado) {
-          this.estado = this.conductor.estado;
-          console.log("entro a parte 2");
-        }*/
+      /* if (this.conductor.estado) {
+         this.estado = this.conductor.estado;
+         console.log("entro a parte 2");
+       }*/
 
-        console.log('conductor:'+ this.conductor);
-        console.log('usuario:'+ this.usuario);
+      console.log('conductor:' + this.conductor);
+      console.log('usuario:' + this.usuario);
 
-        
+
       //con el valueChanges le estoy diciendo q ante cualquier cambio de estado se suscriba a los cambios 
-  }
+    }
 
   }
 
@@ -232,8 +235,8 @@ export class MyApp implements OnInit {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
-    //  this.splashScreen.hide();
-     // timer(3000).subscribe(() => this.showSplash = false) // <-- hide animation after 3s
+      //  this.splashScreen.hide();
+      // timer(3000).subscribe(() => this.showSplash = false) // <-- hide animation after 3s
     });
   }
 
@@ -242,7 +245,7 @@ export class MyApp implements OnInit {
   }
 
   iraRegistrarConductor() {
-    if (this.conductor.estado != undefined && this.conductor.estado == "PendienteAprobacion"){
+    if (this.conductor.estado != undefined && this.conductor.estado == "PendienteAprobacion") {
     //console.log("estado: "+this.estado);
       //alert('Tipoo de Vehiculo con exito');
       /**/let alert = this.AlertCtrl.create({
@@ -269,12 +272,12 @@ export class MyApp implements OnInit {
   CerrarSesion(): void {
     this.fireAuth.auth.signOut();
     this.usuario = {};
-    //this.usuarioService.Usuario = {};
-    this.nav.setRoot(LoginPage, {'splash': false,'usuario': {}});
+    this.usuarioService.Usuario = {};
+    this.nav.setRoot(LoginPage, { 'splash': false, 'usuario': {} });
   }
 
   iraDatosPersonales() {
-    this.nav.push(DatosPersonalesUsuarioPage, {'flag': true});
+    this.nav.push(DatosPersonalesUsuarioPage, { 'flag': true });
   }
 
   iraHistoricoViajes() {
@@ -282,7 +285,7 @@ export class MyApp implements OnInit {
   }
 
   iraPenalizaciones() {
-    this.nav.push(PenalizacionesPage, {'id': this.id});
+    this.nav.push(PenalizacionesPage, { 'id': this.id });
   }
 
   iraDatosConductor() {

@@ -31,7 +31,7 @@ export class ResultadoBusquedaPage {
   conductores: any = []; //array con los conductores q pueden ser mostrados para busqueda anticipada
   idConductores: any = []; //array con los id de los conductores q pueden ser llamados para busqueda anticipada
   conductoresHabilitados: any = []; //array q trae los condcutors del tipo reserva anticipada
-
+  todoJunto: any = [];
 
   idConductorSeleccionado: any;
 
@@ -143,6 +143,16 @@ export class ResultadoBusquedaPage {
             console.log(snapshot.val());
             var userAGuardar = snapshot.val();
             console.log(userAGuardar.nombreCompleto);
+            opcion.direccion = userAGuardar.direccion;
+            opcion.dni = userAGuardar.dni;
+            opcion.email = userAGuardar.email;
+            opcion.fechaNacimiento = userAGuardar.fechaNacimiento;
+            opcion.id = userAGuardar.id;
+            opcion.localidad = userAGuardar.localidad;
+            opcion.nombreCompleto = userAGuardar.nombreCompleto;
+            opcion.numCelular = userAGuardar.numCelular;
+            opcion.numDepto = userAGuardar.numDepto;
+            opcion.numPiso = userAGuardar.numPiso;
             this.datosdeUsuarioConductores.push(userAGuardar);
             this.datosConductores.push(opcion);
           });
@@ -184,6 +194,19 @@ export class ResultadoBusquedaPage {
             console.log(snapshot.val());
             var userAGuardar = snapshot.val();
             console.log(userAGuardar.nombreCompleto);
+            opcion.direccion = userAGuardar.direccion;
+            opcion.dni = userAGuardar.dni;
+            opcion.email = userAGuardar.email;
+            opcion.fechaNacimiento = userAGuardar.fechaNacimiento;
+            opcion.id = userAGuardar.id;
+            opcion.localidad = userAGuardar.localidad;
+            opcion.nombreCompleto = userAGuardar.nombreCompleto;
+            opcion.numCelular = userAGuardar.numCelular;
+            opcion.numDepto = userAGuardar.numDepto;
+            opcion.numPiso = userAGuardar.numPiso;
+            firebase.storage().ref('FotosUsuario/' + opcion.id + '/fotoPerfil.png').getDownloadURL().then((url) => {
+              opcion.fotoPerfil = url;
+            });
             this.datosdeUsuarioConductores.push(userAGuardar);
             this.datosConductores.push(opcion);
           });

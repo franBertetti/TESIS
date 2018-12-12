@@ -30,4 +30,40 @@ page-perfil-cliente {
     
     }
 
+    .btn{
+        color: #488aff;
+        background-color: transparent;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        border-radius: 64px;
+        padding: 0 2.6rem;
+    }
+
+    .btn:hover{
+        color: white;
+    }
+    .btnViajesUsuario{
+        border-width: 1px;
+        border-style: solid;
+//        border-color: #488aff;
+        color: white;
+        background-color: #488aff;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        border-radius: 64px;
+        padding: 0 2.6rem;        
+    }
+
+    .btnViajesConductor{
+        border-width: 1px;
+        border-style: solid;
+//        border-color: #488aff;
+        color: white;
+        background-color: #488aff;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        border-radius: 64px;
+        padding: 0 2.6rem;
+    }
+
 }

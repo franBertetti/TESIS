@@ -29,8 +29,10 @@ export class DatosPersonalesUsuarioPage {
   Localidades = [];
   conductor: any = {};
   flag = false;
-
+  isDisabled:boolean = true;
   myForm: FormGroup;
+  registrandoUsuario:boolean = false;
+  noGuardar:boolean;
 
   constructor(public afDB: AngularFireDatabase,
     public navCtrl: NavController,
@@ -43,7 +45,14 @@ export class DatosPersonalesUsuarioPage {
     public alertCtrl: AlertController,
     public usuarioService: UsuarioServicioProvider) {
 
-    if (this.navParams.get('id')) {
+      if (this.navParams.get('registrandoUsuario')){
+        this.registrandoUsuario = this.navParams.get('registrandoUsuario');
+        this.isDisabled = false;
+        console.log('registrandoUsuario');
+        console.log(this.registrandoUsuario);
+      }
+
+      if (this.navParams.get('id')) {
       var parametro = this.navParams.get('id');
       console.log(parametro);
     }
@@ -77,6 +86,14 @@ export class DatosPersonalesUsuarioPage {
     console.log('ionViewDidLoad DatosPersonalesUsuarioPage');
     //this.fireAuth.user.subscribe(user=> console.log(user));  
     this.fireAuth.user.subscribe(user => this.mostrarPerfilCliente(user));
+  }
+
+  public editarCampos(){
+    this.isDisabled = !this.isDisabled;
+  }
+
+  cancelarGuardar(){
+    this.isDisabled = true;
   }
 
   mostrarPerfilCliente(user) {
@@ -145,6 +162,7 @@ export class DatosPersonalesUsuarioPage {
       return alert('Falta la foto de Perfil ');
     }
     //this.usuario.fotoPerfil = this.myForm.value.fotoPerfilUsuario;
+    
     this.usuario.nombreCompleto = this.myForm.value.nombreCompleto;
     this.usuario.dni = this.myForm.value.dni;
     this.usuario.fechaNacimiento = this.myForm.value.fechaNacimiento;
@@ -152,16 +170,22 @@ export class DatosPersonalesUsuarioPage {
     this.usuario.direccion = this.myForm.value.direccion;
     this.usuario.localidad = this.myForm.value.localidad;
 
-    if (!this.myForm.value.numPiso) {
-      this.usuario.numPiso = '';
+    this.usuario.nombreCompleto = this.myForm.value.nombreCompleto;
+    if (this.usuario.nombreCompleto == '' || this.usuario.fechaNacimiento == ''||
+     this.usuario.numCelular == '' || this.usuario.direccion == '' || this.usuario.localidad == ''){
+      this.noGuardar = true;
     } else {
-      this.usuario.numPiso = this.myForm.value.numPiso;
+      this.noGuardar = false;
     }
+    
 
-    if (!this.myForm.value.numDepto) {
+    if (!this.myForm.value.numPiso && !this.myForm.value.numDepto) {
+      this.usuario.numPiso = '';
       this.usuario.numDepto = '';
-    } else {
-      this.usuario.numDepto = this.myForm.value.numDepto;
+    } else if (!this.myForm.value.numPiso) {
+      return alert('Por favor, ingrese el numero de piso');
+    } else if (!this.myForm.value.numDepto){
+      return alert('Por favor, ingrese el numero de departamento');
     }
 
     this.afDB.database.ref('usuarios/' + this.usuario.id).set(this.usuario);
@@ -179,6 +203,11 @@ export class DatosPersonalesUsuarioPage {
         this.usuarioService.changeMessage('asdasd');
       });
     }
+
+    if (this.noGuardar == true) {
+    
+      return alert('Por favor, complete los datos obligatorios (*)');
+    }else {
 
     if (this.flag == false) {
 
@@ -241,6 +270,8 @@ export class DatosPersonalesUsuarioPage {
       });
       alert.present();
     }
+
+  }
 
   }
 

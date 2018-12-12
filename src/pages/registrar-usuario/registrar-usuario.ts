@@ -56,7 +56,7 @@ registrarUsuario(){
         this.usuario.id = res.user.uid;
         this.usuario.email = res.user.email;
         this.afDB.database.ref('usuarios/'+this.usuario.id).set(this.usuario);
-        this.navCtrl.setRoot('DatosPersonalesUsuarioPage');
+        this.navCtrl.setRoot('DatosPersonalesUsuarioPage', {'registrandoUsuario': true } );
       }, error => {
         this.loading.dismiss().then( () => {
           let alert = this.alertCtrl.create({
@@ -89,6 +89,7 @@ registrarUsuario(){
   }
 
   iraDatosPersonales(){
-    this.navCtrl.push(DatosPersonalesUsuarioPage);
+    this.navCtrl.push('DatosPersonalesUsuario');
+    
   }
 }

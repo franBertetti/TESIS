@@ -8,11 +8,11 @@
 <ion-header>
 
   <ion-navbar>
-      <ion-buttons start>
-          <button ion-button menuToggle>
-          <ion-icon name="menu"></ion-icon>
-        </button>
-        </ion-buttons>
+    <ion-buttons start>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-title>Perfil Cliente </ion-title>
   </ion-navbar>
 
@@ -24,11 +24,11 @@
 
     <ion-item>
       <ion-avatar item-start>
-        <p *ngIf="flag == 1 || flag == 0"><img class="foto" src="{{fotoPerfil}}"></p> 
+        <p *ngIf="flag == 1 || flag == 0"><img class="foto" src="{{fotoPerfil}}"></p>
       </ion-avatar>
-      <h2> Hola,  {{usuario?.nombreCompleto}} </h2>
-     </ion-item>
-    
+      <h2> Hola, {{usuario?.nombreCompleto}} </h2>
+    </ion-item>
+
   </ion-card>
 
   <ion-list>
@@ -37,73 +37,123 @@
     </a>
   </ion-list>
 
-<ion-label text-aling-left>Proximas reservas</ion-label>
+  <ion-label text-aling-left>Proximas reservas</ion-label>
 
-<ion-row>
-    <button ion-button round outline color="primary" col> Como Cliente</button>
-    <button ion-button round outline color="secondary" col>Como Conductor</button>
+  <ion-row>
+    <button ion-button class="btn" [class.btnViajesUsuario]="btnUsuario" col (click)="traerViajesComoUsuario(5)"> Como
+      Cliente</button>
+    <button ion-button class="btn" [class.btnViajesConductor]="btnConductor" col (click)="traerViajesComoConductor(5)">Como
+      Conductor</button>
   </ion-row>
 
+  <div *ngIf="btnUsuario == true && viajesComoUsuario.length == 0">
+    <ion-label text-wrap> No hay reservas </ion-label>
+  </div>
+  <div *ngIf="btnUsuario == true && viajesComoUsuario.length > 0">
+
+      <ion-list>
+          <ion-item *ngFor="let viaje of viajesComoUsuario">
+          <ion-avatar item-start>
+            <img src="{{ viaje.fotoPerfil }}">
+          </ion-avatar>
+          <h2 text-wrap>Numero contratacion: {{ viaje.numeroContratacion }}</h2>
+          <h2 text-wrap>Conductor: {{ viaje.nombreConductor }}</h2>
+          <h2 text-wrap> Contratacion: {{ viaje.tipoContratacion }} </h2>
+          <h2 text-wrap>Estado viaje: {{ viaje.estado }} </h2>
+          <h5 text-wrap>Direccion de busqueda: {{ viaje.direccionDeBusqueda }}</h5>
+          <h5 text-wrap>{{ viaje.fecha }},{{ viaje.hora }}</h5>
+        </ion-item>
+      </ion-list>
 
 
 
+    <!--<ion-row style="border-bottom: groove;">
+      <ion-col col-3>
+        <button ion-item block full *ngFor="let viaje of viajesComoUsuario; let i=index;">
+          [class.active]="isSelected(datosUsuarioConductor.id)">
+          <ion-label text-wrap> {{ viaje.fecha }},{{ viaje.hora }} </ion-label>
+        </button>
+      </ion-col>
+      <ion-col col-3>
+        <button ion-item block full *ngFor="let viaje of viajesComoUsuario; let i=index;">
+          [class.active]="isSelected(datosUsuarioConductor.id)">
+          <ion-label text-wrap> {{ viaje.nombreConductor }} </ion-label>
+        </button>
+      </ion-col>
+      <ion-col col-3>
+        <button ion-item block full *ngFor="let viaje of viajesComoUsuario; let i=index;">
+          [class.active]="isSelected(datosUsuarioConductor.id)">
+          <ion-label text-wrap> {{ viaje.direccionDeBusqueda }} </ion-label>
+        </button>
+      </ion-col>
+      <ion-col col-3>
+        <button ion-item block full *ngFor="let viaje of viajesComoUsuario; let i=index;">
+          [class.active]="isSelected(datosUsuarioConductor.id)">
+          <ion-label text-wrap> {{ viaje.estado }} </ion-label>
+        </button>
+      </ion-col>
+    </ion-row>-->
+  </div>
 
-  <ion-row style="border-bottom: groove; background-color: rgba(0, 0, 0, 0.1)">
-    <ion-col col-3>
-    <ion-label style="font-weight: bold" text-wrap>Fecha y hora</ion-label>
-  </ion-col>
-  <ion-col col-3>
-    <ion-label style="font-weight: bold" text-wrap>Conductor</ion-label>
-  </ion-col>
-    <ion-col col-3>
-    <ion-label style="font-weight: bold" text-wrap>  Destino </ion-label>
-  </ion-col>
-  <ion-col col-3 style="font-weight: bold">
-      <ion-label text-wrap>Estado</ion-label>
-    </ion-col>
-</ion-row>
+  <div *ngIf="btnConductor == true && viajesComoConductor.length == 0">
+    <ion-label text-wrap> No hay reservas </ion-label>
+  </div>
+  <div *ngIf="btnConductor == true && viajesComoConductor.length > 0">
+   
+      <ion-list>
+          <ion-item *ngFor="let viaje of viajesComoConductor" (click)="iraViajeSeleccionado(viaje.numeroContratacion)">
+          <h2 text-wrap>Numero contratacion: {{ viaje.numeroContratacion }}</h2>
+          <h2 text-wrap>Cliente: {{ viaje.nombreCliente }}</h2>
+          <h2 text-wrap> Contratacion: {{ viaje.tipoContratacion }} </h2>
+          <h2 text-wrap>Estado viaje: {{ viaje.estado }} </h2>
+          <h5 text-wrap>Direccion de busqueda: {{ viaje.direccionDeBusqueda }}</h5>
+          <h5 text-wrap>{{ viaje.fecha }},{{ viaje.hora }}</h5>
+        </ion-item>
+      </ion-list>
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+    <!--<ion-row style="border-bottom: groove;">
+      <ion-col col-3>
+        <button ion-item block full *ngFor="let viaje of viajesComoConductor; let i=index;" (click)="iraViajeSeleccionado()">
+          [class.active]="isSelected(datosUsuarioConductor.id)">
+          <ion-label text-wrap> {{ viaje.fecha }},{{ viaje.hora }} </ion-label>
+        </button>
+      </ion-col>
+      <ion-col col-3>
+        <button ion-item block full *ngFor="let viaje of viajesComoConductor; let i=index;" (click)="iraViajeSeleccionado()">
+          [class.active]="isSelected(datosUsuarioConductor.id)">
+          <ion-label text-wrap> {{ viaje.nombreConductor }} </ion-label>
+        </button>
+      </ion-col>
+      <ion-col col-3>
+        <button ion-item block full *ngFor="let viaje of viajesComoConductor; let i=index;" (click)="iraViajeSeleccionado()">
+          [class.active]="isSelected(datosUsuarioConductor.id)">
+          <ion-label text-wrap> {{ viaje.direccionDeBusqueda }} </ion-label>
+        </button>
+      </ion-col>
+      <ion-col col-3>
+        <button ion-item block full *ngFor="let viaje of viajesComoConductor; let i=index;" (click)="iraViajeSeleccionado()" >
+          [class.active]="isSelected(datosUsuarioConductor.id)">
+          <ion-label text-wrap> {{ viaje.estado }} </ion-label>
+        </button>
+      </ion-col>
+    </ion-row> -->
+  </div>
 
-  <ion-row style="border-bottom: groove;" (click)="iraViajeSeleccionado()">
-    <ion-col col-3>
-     <ion-label text-wrap>12/04/2018 20:00</ion-label>
-  </ion-col>
-  <ion-col col-3>
-   <ion-label text-wrap>Lionel Messi</ion-label> 
-  </ion-col>
-    <ion-col col-3>
-   <ion-label text-wrap> Avenida Siempre Viva 123 </ion-label>
-  </ion-col>
-  <ion-col col-3> 
-     <ion-label text-wrap>En espera</ion-label>
-  </ion-col>
-</ion-row>
-<ion-row style="border-bottom: groove;" (click)="iraViajeSeleccionado()">
-  <ion-col col-3>
-   <ion-label text-wrap>12/04/2018 20:30</ion-label>
-</ion-col>
-<ion-col col-3>
-  <ion-label text-wrap>Paul Walker</ion-label>
-</ion-col>
-  <ion-col col-3>
-   <ion-label text-wrap> Avenida Siempre Viva 123 </ion-label>
-</ion-col>
-<ion-col col-3>
-     <ion-label text-wrap> En espera </ion-label>
-  </ion-col>
-</ion-row>
-<ion-row style="border-bottom: groove;" (click)="iraViajeSeleccionado()">
-  <ion-col col-3>
-   <ion-label text-wrap>12/04/2018 20:50</ion-label>
-</ion-col>
-<ion-col col-3>
-   <ion-label text-wrap>Chano</ion-label>
-</ion-col>
-  <ion-col col-3>
-   <ion-label text-wrap> Avenida Siempre Viva 123 </ion-label>
-</ion-col>
-<ion-col col-3>
-     <ion-label text-wrap>En espera confirmación</ion-label>
-  </ion-col>
-</ion-row>
 
 </ion-content>

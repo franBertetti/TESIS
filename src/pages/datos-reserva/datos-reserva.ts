@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, MenuController } from 'ionic-angular';
 import { PerfilClientePage } from '../perfil-cliente/perfil-cliente';
-
+import { AngularFireAuth } from 'angularfire2/auth';
+import firebase from 'firebase';
+import { AngularFireDatabase } from 'angularfire2/database';
+import { UsuarioServicioProvider } from '../../providers/usuario-servicio/usuario-servicio';
 /**
  * Generated class for the DatosReservaPage page.
  *
@@ -24,8 +27,19 @@ export class DatosReservaPage {
   fechaActual;
   fechaActualFormateada;
   horaActual;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public menuCtrl:MenuController) {
+
+  viaje:any = {};
+
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public menuCtrl:MenuController,
+    public fireAuth: AngularFireAuth,
+    public afDB: AngularFireDatabase,
+    public usuarioService: UsuarioServicioProvider) {
     this.menuCtrl.enable(true, 'myMenu');//para desactivar el menu desplegable en esta pagina
+
+    this.getFechaActualFormateada();
     this.datosReserva = this.navParams.get('datosReserva');
     this.usuario = this.navParams.get('usuario');
     this.conductor = this.navParams.get('conductor'); 
@@ -33,9 +47,34 @@ export class DatosReservaPage {
     console.log(this.numeroContratacion);
     console.log(this.datosReserva);
     console.log(this.usuario);
+    console.log(this.usuario.id);
     console.log(this.conductor);
+    console.log(this.conductor.id);
     this.fechaActual = new Date();
-    this.getFechaActualFormateada();
+    
+    this.guardarViajeEnBd();
+    
+  }
+
+  public guardarViajeEnBd(){
+    this.viaje.idUsuario = this.usuario.id;
+    this.viaje.idConductor = this.conductor.id;
+    this.viaje.nombreConductor = this.conductor.nombreCompleto;
+    this.viaje.nombreCliente = this.usuario.nombreCompleto;
+    this.viaje.numeroContratacion = this.numeroContratacion;
+    this.viaje.fecha = this.fechaActualFormateada;
+    this.viaje.hora = this.horaActual;
+    this.viaje.direccionDeBusqueda = this.datosReserva.direccion;
+    this.viaje.vehiculoReserva = this.datosReserva.vehiculoReserva;
+    this.viaje.tipoContratacion = this.datosReserva.tipoReserva;
+    this.viaje.estado = 'Conductor yendo a la ubicación';
+
+    this.afDB.database.ref('conductor/' + this.conductor.id + '/estado').set('Ocupado');
+    if (this.datosReserva.tipoReserva == 'ReservaAnticipada'){
+      //this.viaje.idReservaAnticipada = "idDeLaReserva";
+      //datos de la reserva en caso de ser anticipada
+    }
+    this.afDB.database.ref('viaje/' + this.numeroContratacion).set(this.viaje);
   }
 
   public getFechaActualFormateada(){
@@ -57,9 +96,7 @@ export class DatosReservaPage {
     }
     var arrayMeses = ['Enero','Febrero','Marzo','Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre','Octubre', 'Noviembre', 'Diciembre'];
     this.fechaActualFormateada = dia + ' de ' + arrayMeses[mes] +' de '+ año;
-    var currentMinute = new Date().getMinutes();
     this.horaActual = hora+':'+minutos+':'+segundos; 
-    ;
   }
 
   ionViewDidLoad() {

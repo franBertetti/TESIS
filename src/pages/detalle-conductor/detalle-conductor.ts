@@ -90,7 +90,7 @@ export class DetalleConductorPage {
   actualizarEstadoSolicitud(){
     this.afDB.database.ref('conductor/'+this.id+'/estado').set(this.conductor.estado);
     alert('Estado de solicitud actualizada');
-    this.navCtrl.setRoot(AdminConductoresPage);
+    this.navCtrl.push(AdminConductoresPage);
   }
 
 //

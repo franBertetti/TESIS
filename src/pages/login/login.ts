@@ -157,7 +157,7 @@ export class LoginPage implements OnInit {
     this.afAuth.auth.signOut();
     this.usuarioService.Usuario = {};
   }
-*/  
+*/
 
   loginUsuario() {
 

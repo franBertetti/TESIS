@@ -32,6 +32,17 @@ export class PerfilClientePage {
   fotoPerfil: any;
   fotoPerfilDesdeBd: any;
   flag;
+  viajesComoUsuario: any = [];
+  viajesComoConductor: any = [];
+
+  viajesUsuario: any = [];
+  viajesConductor: any = [];
+
+  viajes: any = [];
+
+  btnUsuario: boolean;
+  btnConductor: boolean;
+
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -51,15 +62,26 @@ export class PerfilClientePage {
       this.fotoPerfil = this.navParams.get('Photo');
       this.flag = 0;
       //this.usuarioService.changeMessage('ASDA');
-     } else {
+    } else {
       this.fotoPerfil = "la otra foto";
       this.flag = 1;
     }
 
-    if (this.navParams.get('flag')){
+    if (this.navParams.get('flag')) {
       this.flag = false;
     }
 
+    console.log("uid:");
+    console.log(this.uid);
+
+    this.getViajesComoUsuario();
+    this.getViajesComoConductor();
+    this.btnUsuario = true;
+    this.btnConductor = false;
+    console.log("viajes como usuario:");
+    console.log(this.viajesComoUsuario);
+    console.log("viajes como conductor:");
+    console.log(this.viajesComoConductor);
   }
 
   ionViewDidLoad() {
@@ -67,23 +89,70 @@ export class PerfilClientePage {
     this.fireAuth.user.subscribe(user => this.mostrarPerfilCliente(user));
   }
 
+  getViajesComoUsuario(){
+    firebase.database().ref('viaje/').orderByChild('idUsuario').equalTo(this.uid).on('child_added', (snapshot) => {
+      var viaje = snapshot.val();
+      firebase.storage().ref('FotosUsuario/' + viaje.idConductor + '/fotoPerfil.png').getDownloadURL().then((url) => {
+        viaje.fotoPerfil = url;
+      });
+      console.log("viaje:");
+      console.log(viaje);
+      this.viajesComoUsuario.push(viaje);     
+      console.log(viaje);
+    });
+    
+  }
+
+  getViajesComoConductor(){
+    
+    firebase.database().ref('viaje/').orderByChild('idConductor').equalTo(this.uid).on('child_added', (snapshot) => {
+      var viaje = snapshot.val();
+      console.log("viaje:");
+      console.log(viaje);
+      this.viajesComoConductor.push(viaje);      
+    });
+
+  }
+
+  traerViajesComoUsuario(id) {
+    this.btnUsuario = true;
+    this.btnConductor = false;
+
+    this.viajesUsuario = this.viajesComoUsuario;
+  } 
+
+
+  traerViajesComoConductor(id) {
+    this.btnUsuario = false;
+    this.btnConductor = true;
+
+    this.viajesConductor = this.viajesComoConductor;
+  }
+
+
   mostrarPerfilCliente(user) {
     if (user) {
       this.afDB.object('usuarios/' + user.uid)
         .valueChanges().subscribe(usuarioGuardado => {
           this.usuario = usuarioGuardado;
-          if (this.flag == 1){
-          firebase.storage().ref('FotosUsuario/' + user.uid + '/fotoPerfil.png').getDownloadURL().then((url) => {
-            this.fotoPerfil = url;
-          });
-        }
+          if (this.flag == 1) {
+            firebase.storage().ref('FotosUsuario/' + user.uid + '/fotoPerfil.png').getDownloadURL().then((url) => {
+              this.fotoPerfil = url;
+            });
+            console.log("uid:");
+            console.log(this.uid);
+          }
 
         });
 
       this.afDB.object('conductor/' + user.uid)
         .valueChanges().subscribe(conductorGuardado => {
           this.conductor = conductorGuardado;
-        }); 
+        });
+
+
+
+
     }
 
   }
@@ -104,8 +173,8 @@ export class PerfilClientePage {
     this.navCtrl.push(PenalizacionesPage);
   }
 
-  iraViajeSeleccionado() {
-    this.navCtrl.push(ViajeSeleccionadoPage);
+  iraViajeSeleccionado(num) {
+    this.navCtrl.push(ViajeSeleccionadoPage, {'numeroContratacion': num});
   }
 
   iraRealizarReserva() {

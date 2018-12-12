@@ -17,7 +17,14 @@ import { InicioViajePage } from '../inicio-viaje/inicio-viaje';
 })
 export class ViajeSeleccionadoPage {
 
+  numeroContratacion;
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+
+    if (this.navParams.get('numeroContratacion')){
+      this.numeroContratacion = this.navParams.get('numeroContratacion');
+    }
+
   }
 
   ionViewDidLoad() {
@@ -25,7 +32,7 @@ export class ViajeSeleccionadoPage {
   }
 
   iraPenalizacion(){
-    this.navCtrl.push(PenalizacionPage);
+    this.navCtrl.push(PenalizacionPage, {'numeroContratacion': this.numeroContratacion});
   }
 
   iraInicioViaje(){

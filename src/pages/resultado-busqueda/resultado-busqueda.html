@@ -28,7 +28,35 @@
 
 
 <ion-content padding>
-<!--
+<ion-list>
+    <ion-item *ngFor="let datosConductor of datosConductores" (click)="setIdConductorSeleccionado(datosConductor.id)">
+    <ion-avatar item-start>
+      <img src="{{ datosConductor.fotoPerfil }}">
+    </ion-avatar>
+    <h1 text-wrap text-bold>{{datosConductor.nombreCompleto}}</h1>
+    <h3 text-wrap>{{datosConductor.tarifa}}$ por kilometro | {{ datosConductor.puntaje}} | A 550 m</h3>
+  </ion-item>
+</ion-list>
+  
+  <ion-card *ngIf="idConductorSeleccionado">
+
+    <ion-card-header>
+      Conductor Seleccionado:
+    </ion-card-header>
+    <ion-card-content>
+        {{idConductorSeleccionado.nombreCompleto }}
+      </ion-card-content> 
+  </ion-card>
+<button ion-button text-center full (click)="confirmarConductor()"> Seleccionar Conductor </button>
+
+</ion-content>
+
+
+
+
+
+
+  <!--
   <ngx-datatable class="fullscreen" [ngClass]="tablestyle" [rows]="rows" [rowClass]="getRowClass" [columnMode]="'force'"
     [sortType]="'multi'" [reorderable]="false" [rowHeight]="50">
     <ngx-datatable-column name="name" [resizeable]="true"></ngx-datatable-column>
@@ -45,10 +73,70 @@
     </ngx-datatable-column>
 
   </ngx-datatable>
--->
 
 
 
+  <ion-row style="border-bottom: groove; background-color: rgba(0, 0, 0, 0.1)">
+    <ion-col col-6>
+      <ion-label style="font-weight: bold; text-align:center">Nombre</ion-label>
+    </ion-col>
+    <ion-col col-3>
+      <ion-label style="font-weight: bold; text-align:center">$ x km</ion-label>
+    </ion-col>
+    <ion-col col-3>
+      <ion-label style="font-weight: bold; text-align:center">
+        <ion-icon item-right name="star"></ion-icon>
+      </ion-label>
+    </ion-col>
+  </ion-row>
+
+  
+  <ion-item *ngFor="let datosUsuarioConductor of datosdeUsuarioConductores" *ngFor="let datosConductor of datosConductores">
+    <ion-avatar item-start>
+      <img src="https://marketingdecontenidos.com/wp-content/uploads/2017/11/foto-de-perfil-para-instagram.png">
+    </ion-avatar>
+    <h1 text-wrap text-bold> {{ datosUsuarioConductor.nombreCompleto}}</h1>
+    <h3 text-wrap>{{datosConductor.tarifa}} por kilometro | +3 | A 550 m</h3>
+  </ion-item>
+
+</ion-list>
+
+  <ion-row style="border-bottom: groove;">
+    <ion-col col-6>
+      <button ion-item block full *ngFor="let datosConductor of datosConductores" (click)="setIdConductorSeleccionado(datosConductor.id)" [class.active]="isSelected(datosConductor.id)">
+        <ion-label text-wrap>  {{datosConductor.nombreCompleto}} </ion-label>
+        <ion-avatar item-start>
+          <img src="{{ datosConductor.fotoPerfil }}">
+        </ion-avatar>
+      </button>
+    </ion-col>
+    <ion-col col-3>
+      <button ion-item block full *ngFor="let datosConductor of datosConductores" (click)="setIdConductorSeleccionado(datosConductor.id)" [class.active]="isSelected(datosConductor.id)">
+        <ion-label text-wrap> {{ datosConductor.tarifa}} </ion-label>
+      </button>
+    </ion-col>
+    <ion-col col-3>
+      <button ion-item block full *ngFor="let datosConductor of datosConductores" (click)="setIdConductorSeleccionado(datosConductor.id)" [class.active]="isSelected(datosConductor.id)">
+        <ion-label text-wrap> {{ datosConductor.puntaje}} </ion-label>
+      </button>
+    </ion-col>
+  </ion-row>
+  <ion-card *ngIf="idConductorSeleccionado">
+
+      <ion-card-header>
+        Conductor Seleccionado:
+      </ion-card-header>
+      <ion-card-content>
+          {{idConductorSeleccionado.nombreCompleto }}
+        </ion-card-content> 
+    </ion-card>
+  <button ion-button text-center full (click)="confirmarConductor()"> Seleccionar Conductor </button>
+
+
+
+ Como deberia ser con 4 columnas
+
+  
   <ion-row style="border-bottom: groove; background-color: rgba(0, 0, 0, 0.1)">
     <ion-col col-3>
       <ion-label style="font-weight: bold">Nombre</ion-label>
@@ -88,21 +176,9 @@
       </button>
     </ion-col>
   </ion-row>
-  <ion-card *ngIf="idConductorSeleccionado">
-
-      <ion-card-header>
-        Conductor Seleccionado:
-      </ion-card-header>
-      <ion-card-content>
-          {{idConductorSeleccionado.nombreCompleto }}
-        </ion-card-content> 
-    </ion-card>
-  <button ion-button text-center full (click)="confirmarConductor()"> Seleccionar Conductor </button>
 
 
-
-
-
+-->
 
 
 
@@ -142,4 +218,3 @@
 
   </ion-grid>
 -->
-</ion-content>

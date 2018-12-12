@@ -1,74 +1,94 @@
 <ion-header>
 
-    <ion-navbar>
-      <ion-title>Datos Personales</ion-title>
-    </ion-navbar>
-  
-  </ion-header>
-  
-  
-  <ion-content *ngIf="usuario" padding>
-  
-  
-      <ion-label text-center> Foto Perfil</ion-label>
-      <ion-row>
-        <button ion-button col-5 offset-1 (click)="tomarFotoPerfil()">Toma una foto</button>
-        <button ion-button col-5 (click)="buscarFotoPerfil()">Seleccionar de galería</button>
-        <p>
-          <img *ngIf="fotoPerfil" class="foto" src="{{fotoPerfil}}">
-        </p>
-      </ion-row>
-  
-    <form [formGroup]="myForm" (ngSubmit)="crearDatosUsuario()">
-      <ion-list>
-  
-        <ion-item>
-          <ion-label floating>Nombre completo </ion-label>
-          <ion-input formControlName="nombreCompleto" type="text" [(ngModel)]="usuario.nombreCompleto"></ion-input>
-        </ion-item>
-  
-        <ion-item>
-          <ion-label floating>DNI</ion-label>
-          <ion-input formControlName="dni" type="tel" [(ngModel)]="usuario.dni"></ion-input>
-        </ion-item>
-  
-        <ion-item>
-          <ion-label floating>Fecha Nacimiento</ion-label>
-          <ion-datetime formControlName="fechaNacimiento" [(ngModel)]="usuario.fechaNacimiento"></ion-datetime>
-        </ion-item>
-  
-        <ion-item>
-          <ion-label floating>Número celular</ion-label>
-          <ion-input formControlName="numCelular" type="tel" [(ngModel)]="usuario.numCelular"></ion-input>
-        </ion-item>
-  
-         <ion-item>
-          <ion-label floating>Dirección Completa</ion-label>
-          <ion-input formControlName="direccion" type="text" [(ngModel)]="usuario.direccion"></ion-input>
-        </ion-item>
-        
-        <ion-item>
-          <ion-label>Localidad</ion-label>
-          <ion-select formControlName="localidad" [(ngModel)]="usuario.localidad" multiple="false">
-            <ion-option *ngFor="let Localidad of Localidades" value="{{Localidad.nombre}}">{{Localidad.nombre}}</ion-option>
-          </ion-select>
-        </ion-item>
+  <ion-navbar>
+    <ion-title>Datos Personales</ion-title>
+  </ion-navbar>
 
-        <ion-row>
-          <ion-item col-6>
-            <ion-label floating>Piso</ion-label>
-            <ion-input  type="number" formControlName="numPiso" [(ngModel)]="usuario.numPiso"></ion-input>
-          </ion-item>
-          <ion-item col-6>
-            <ion-label floating>Dpto</ion-label>
-            <ion-input type="text" formControlName="numDepto" [(ngModel)]="usuario.numDepto"></ion-input>
-          </ion-item>
-        </ion-row>
+</ion-header>
+
+
+<ion-content *ngIf="usuario" padding>
+
+
+  <ion-item>
+    <ion-label floating>Correo Electronico </ion-label>
+    <ion-input type="text" disabled [(ngModel)]="usuario.email"></ion-input>
+  </ion-item>
+
+  <div padding>
+    <button *ngIf="isDisabled == true && registrandoUsuario == false" ion-button block (click)="editarCampos()">Editar Perfil</button>
+  </div>
   
-        <div padding>
-          <button ion-button block type="submit" [disabled]="!myForm.valid">Registrar Datos</button>
-        </div>
-      </ion-list>
-    </form>
-  
-  </ion-content>
+  <ion-label>datos obligatorios (*)</ion-label>
+
+  <ion-label text-center> *Foto Perfil</ion-label>
+  <ion-row>
+    <button *ngIf="isDisabled == false" ion-button col-5 offset-1 (click)="tomarFotoPerfil()">Toma una foto</button>
+    <button *ngIf="isDisabled == false" ion-button col-5 (click)="buscarFotoPerfil()">Seleccionar de galería</button>
+    <p>
+      <img *ngIf="fotoPerfil" class="foto" src="{{fotoPerfil}}">
+    </p>
+  </ion-row>
+
+
+
+
+  <form [formGroup]="myForm" (ngSubmit)="crearDatosUsuario()">
+
+    <ion-list>
+
+      <ion-item>
+        <ion-label floating>*Nombre completo </ion-label>
+        <ion-input disabled="{{isDisabled}}" formControlName="nombreCompleto" type="text" [(ngModel)]="usuario.nombreCompleto"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>*DNI</ion-label>
+        <ion-input disabled="{{isDisabled}}" formControlName="dni" type="tel" [(ngModel)]="usuario.dni"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>*Fecha Nacimiento</ion-label>
+        <ion-datetime disabled="{{isDisabled}}" formControlName="fechaNacimiento" [(ngModel)]="usuario.fechaNacimiento"></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>*Número celular</ion-label>
+        <ion-input disabled="{{isDisabled}}" formControlName="numCelular" type="tel" [(ngModel)]="usuario.numCelular"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>*Dirección Completa</ion-label>
+        <ion-input disabled="{{isDisabled}}" formControlName="direccion" type="text" [(ngModel)]="usuario.direccion"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>*Localidad</ion-label>
+        <ion-select disabled="{{isDisabled}}" formControlName="localidad" [(ngModel)]="usuario.localidad" multiple="false">
+          <ion-option *ngFor="let Localidad of Localidades" value="{{Localidad.nombre}}">{{Localidad.nombre}}</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-row>
+        <ion-item col-6>
+          <ion-label floating>Piso</ion-label>
+          <ion-input disabled="{{isDisabled}}" type="number" formControlName="numPiso" [(ngModel)]="usuario.numPiso"></ion-input>
+        </ion-item>
+        <ion-item col-6>
+          <ion-label floating>Dpto</ion-label>
+          <ion-input disabled="{{isDisabled}}" type="text" formControlName="numDepto" [(ngModel)]="usuario.numDepto"></ion-input>
+        </ion-item>
+      </ion-row>
+
+      <div padding>
+        <button *ngIf="registrandoUsuario == true || (isDisabled == true && flag == false)" ion-button block type="submit" [disabled]="!myForm.valid">Registrar Datos</button>
+      </div>
+
+    </ion-list>
+  </form>
+  <ion-row>
+      <button *ngIf="isDisabled == false && registrandoUsuario == false" ion-button col-5 offset-1 (click)="cancelarGuardar()">Cancelar</button>
+      <button *ngIf="isDisabled == false && registrandoUsuario == false" ion-button col-5 (click)="crearDatosUsuario()">Actualizar Datos</button>
+    </ion-row>
+
+</ion-content>

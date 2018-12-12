@@ -16,8 +16,13 @@ import { PerfilClientePage } from '../perfil-cliente/perfil-cliente';
 })
 export class PenalizacionPage {
 
+  numeroContratacion;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public menuCtrl:MenuController) {
     this.menuCtrl.enable(true, 'myMenu');//para desactivar el menu desplegable en esta pagina
+     if (this.navParams.get('numeroContratacion')){
+       this.numeroContratacion = this.navParams.get('numeroContratacion');
+     }
   }
 
   ionViewDidLoad() {
