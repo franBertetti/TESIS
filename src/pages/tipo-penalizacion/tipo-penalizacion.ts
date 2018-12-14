@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { DetalleTipoPenalizacionPage } from '../detalle-tipo-penalizacion/detalle-tipo-penalizacion';
+import { AngularFireDatabase } from 'angularfire2/database';
 
 /**
  * Generated class for the TipoPenalizacionPage page.
@@ -15,11 +17,31 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class TipoPenalizacionPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  tipoPenalizaciones:any = [];
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public afDB: AngularFireDatabase) {
+
+    this.getTipoPenalizacion()
+    .valueChanges().subscribe(penalizacionesGuardadas => {
+      console.log(penalizacionesGuardadas)
+      this.tipoPenalizaciones = penalizacionesGuardadas;
+    });
+
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad TipoPenalizacionPage');
   }
 
+  public getTipoPenalizacion(){
+    return this.afDB.list('tipoPenalizacion/');
+}
+
+  crearTipoPenalizacion(){
+    this.navCtrl.push(DetalleTipoPenalizacionPage, {id:0});
+  }
+
+  irADetalletipoPenalizacion(id){
+    this.navCtrl.push(DetalleTipoPenalizacionPage, {id:id});
+  }
 }

@@ -29,6 +29,9 @@ export class LoginPage implements OnInit {
   user: Observable<firebase.User>;
   public loading: Loading;
 
+  passwordShown:boolean = false;
+  passwordType: string = 'password';
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -65,6 +68,16 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
 
+  }
+
+  public togglePassword(){
+    if (this.passwordShown){
+      this.passwordShown = false;
+      this.passwordType ='password';
+    } else {
+      this.passwordShown = true;
+      this.passwordType = 'text';
+    }
   }
 
   ionViewDidLoad() {

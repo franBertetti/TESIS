@@ -15,27 +15,41 @@
 
 <ion-content padding>
 
-    <ion-item>
-        <ion-label>Tipo Penalizacion</ion-label>
-        <ion-select [(ngModel)]="tipoPenalizacion">
-          <ion-option value="tipo1">tipo1</ion-option>
-          <ion-option value="tipo2">tipo</ion-option>
-        </ion-select>
-      </ion-item>
+  <ion-item>
+    <ion-label floating>Tipo Penalizacion</ion-label>
+    <ion-select text-wrap (ionChange)="actualizarValoresForm(tipoPenalizacion.nombre)" [(ngModel)]="tipoPenalizacion.nombre">
+      <ion-option text-wrap *ngFor="let tipoPenalizacion of tipoPenalizaciones" value="{{tipoPenalizacion.nombre}}"> {{tipoPenalizacion.nombre}} </ion-option>
+    </ion-select>
+  </ion-item> 
 
-      <ion-item>
-          <ion-textarea placeholder="Descripcion"></ion-textarea>
-      </ion-item>
+  <ion-item>
+    <ion-label floating>Descripción</ion-label>
+    <ion-textarea disabled [(ngModel)]="tipoPenalizacion.descripcion"></ion-textarea>
+  </ion-item>
 
-      <button ion-button full block> Agregar Fotos   <ion-icon name="add"></ion-icon></button>
-      <br>
+  <ion-item>
+    <ion-label text-wrap floating>Describa el motivo de la Penalización (opcional)</ion-label>
+    <ion-textarea text-wrap [(ngModel)]="tipoPenalizacion.descripcionAdicional"></ion-textarea>
+  </ion-item>
 
-      <ion-item>
-          <ion-label col-6>Total</ion-label>
-          <ion-input col-6 type="text"></ion-input>
-      </ion-item>
-      <br>
-      <button ion-button full block (click)="iraPerfilCliente()"> Registrar Penalizacion </button>
+  <ion-row>
+    <button text-wrap ion-button col-5 offset-1 (click)="tomarFoto()">Toma una foto</button>
+    <button text-wrap ion-button col-5 (click)="buscarFoto()">Seleccionar de galería</button>
+  </ion-row>
 
-      
+  <div id="LoadedImages" *ngIf="fotos">
+    <ion-item *ngFor="let item of fotos; let i = index">
+      <ion-icon name="close-circle" (click)="borrarFoto(i)"></ion-icon>
+      <img [src]="item" class="imagenes">
+    </ion-item>
+
+  </div>
+  <ion-item>
+    <ion-label col-6 floating> Total</ion-label>
+    <ion-input disabled [(ngModel)]="tipoPenalizacion.monto" col-6 type="text"></ion-input>
+  </ion-item>
+  <br>
+  <button ion-button full block (click)="registrarFotos()"> Registrar Penalizacion </button>
+
+
 </ion-content>

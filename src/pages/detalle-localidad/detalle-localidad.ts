@@ -49,7 +49,7 @@ export class DetalleLocalidadPage {
     public agregarLocalidad(){
       if(this.id != 0){
         this.editarLocalidad(this.Localidad);
-        alert('Tipo de Vehiculo con exito');
+        alert('Localidad editada con exito');
       }else{
       this.Localidad.id = Date.now();
       this.afDB.database.ref('Localidad/'+this.Localidad.id).set(this.Localidad);

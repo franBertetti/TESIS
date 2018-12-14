@@ -7,12 +7,22 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>tipoPenalizacion</ion-title>
+    <ion-title>Tipo Penalización</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+
+  <ion-list>
+    <ion-label> Tipos de Penalización: </ion-label>
+     <button ion-item *ngFor="let tipoPenalizacion of tipoPenalizaciones" (click)="irADetalletipoPenalizacion(tipoPenalizacion.id)">
+       <span text-wrap>{{ tipoPenalizacion.nombre }}</span>
+     </button>  
+   </ion-list>
+   <div padding>
+       <button ion-button block color="secondary" (click)="crearTipoPenalizacion()"> Agregar Tipo de Penalización </button>  
+   </div>
 
 </ion-content>

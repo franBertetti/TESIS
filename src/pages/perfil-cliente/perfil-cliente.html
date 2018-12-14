@@ -101,7 +101,7 @@
   <div *ngIf="btnConductor == true && viajesComoConductor.length > 0">
    
       <ion-list>
-          <ion-item *ngFor="let viaje of viajesComoConductor" (click)="iraViajeSeleccionado(viaje.numeroContratacion)">
+          <ion-item *ngFor="let viaje of viajesComoConductor" (click)="iraViajeSeleccionado(viaje)">
           <h2 text-wrap>Numero contratacion: {{ viaje.numeroContratacion }}</h2>
           <h2 text-wrap>Cliente: {{ viaje.nombreCliente }}</h2>
           <h2 text-wrap> Contratacion: {{ viaje.tipoContratacion }} </h2>

@@ -13,14 +13,108 @@
 
 
 <ion-content padding>
-    <ion-card-header>
-        Como funciona
-      </ion-card-header>
-      <ion-card-content text-justify>
-          Lorem ipsum sdolor sit amet, consectetur adipiscing elit. Sed ultrices accumsan diam et blandit. Cras pulvinar tristique pharetra. Mauris mollis, mauris ultricies varius feugiat, nunc leo mollis est, ac sagittis nisl justo vitae orci. Donec ornare ligula facilisis, feugiat leo vel, faucibus mauris. Mauris egestas rutrum mattis. Aenean gravida erat nec dolor finibus laoreet. Curabitur vitae magna vel enim luctus placerat a quis turpis. Proin ac dui at eros iaculis congue vitae sit amet ante. Phasellus molestie libero nec ex commodo, sit amet semper augue auctor. Quisque varius odio nec nulla eleifend, at feugiat arcu euismod. Ut facilisis, metus dictum eleifend varius, arcu urna vehicula ligula, interdum tristique elit turpis sed arcu. Praesent sed dictum ipsum. Nunc lobortis eu lorem ac congue. Fusce vehicula, metus vitae ultricies gravida, nunc ipsum finibus felis, vel volutpat nunc eros a diam.
 
-          In vel mi iaculis, egestas neque quis, finibus neque. Aenean ultrices vitae risus sed finibus. Donec sagittis semper erat, ac molestie risus aliquam a. Sed at enim eleifend, feugiat quam quis, lobortis eros. Nulla lobortis mi risus. Nulla efficitur consequat urna, sit amet dapibus odio interdum at. Integer augue lacus, sodales vel felis ut, commodo gravida leo. Praesent in gravida tellus, eget auctor orci. Suspendisse efficitur vitae arcu ut tincidunt.
-          
-      </ion-card-content>
+  <ion-card-header>
+    Introducción
+  </ion-card-header>
+  <ion-card-content text-justify>
+    <br>
+    Esta aplicación tiene como objetivo brindar un servicio de transporte a aquellas
+    personas que se encuentren en un estado de incapacidad momentáneo para poder
+    conducir su vehículo, de modo que estas puedan acudir a un conductor que se
+    encargará de su traslado en el vehículo de quien solicitó el servicio, garantizando la
+    seguridad tanto de la persona como del vehículo.
+    La aplicación constará de una serie de conductores previamente habilitados para
+    cumplir con dicha labor.
+    El usuario de la misma, para solicitar el servicio, debe estar previamente registrado al
+    sistema, brindando sus datos personales (incluyendo un domicilio actual por defecto).
+  </ion-card-content>
+  <br>
+  <h1 text-center> Como Usarla </h1>
+  <br>
+  <ion-card-header>
+    Registrarse
+  </ion-card-header>
+  <ion-card-content text-justify>
+    <br>
+    Una ves que haz ingresado a aplicación, debes cliquear en la parte superior
+    izquierda, en el botón “Registrarme”. Allí deberás loguearte ingresando el
+    correo electrónico y una contraseña de seis dígitos como mínimo. Luego de
+    ingresar dichos datos cliquear en el botón “Registrarme”. Después aparecerá
+    una pantalla donde deberá cargar los siguientes datos personales: foto de perfil
+    que debe estar tomada en el momento o seleccionada de la galería, nombre
+    completo, DNI, fecha de nacimiento, número de teléfono, dirección completa,
+    localidad, piso y número de departamento (cuando corresponda). Finalmente,
+    presionar el botón “Registrar Datos”.
+  </ion-card-content>
+  <br>
+  <ion-card-header>
+     Solicitar un viaje inmediato
+  </ion-card-header>
+  <ion-card-content text-justify>
+    <br>
+    Para solicitar la reserva de un viaje inmediato, debes seleccionar el menú
+    desplegable que se encuentra en la parte superior derecha de la aplicación y
+    cliquear en “Registrar Reserva”. Seleccionar tipo de reserva inmediata, luego,
+    elegir el tipo de vehículo en el cual desea solicitar el servicio, por ejemplo,
+    automóvil, y confirmarlo. Además, debe ingresar en este paso la dirección de
+    destino. A continuación, debes presionar el botón “Buscar Conductores” y allí
+    aparecerá una planilla con los posibles conductores disponibles para realizar el
+    servicio, en la cual, se debe seleccionar uno. Una vez seleccionado, presionar el
+    botón “Seleccionar Conductor”. En el siguiente paso, le aparecerá un mensaje
+    emergente en el cual debe confirmar la reserva del conductor. Una vez
+    confirmada, se generará un resumen de la información solicitada para la
+    contratación, en la cual, deberá cliquear en aceptar.
+  </ion-card-content>
+  <br>
+  <ion-card-header>
+    Solicitar un viaje anticipado
+  </ion-card-header>
+  <ion-card-content text-justify>
+    <br>
+    Para solicitar la reserva de un viaje con anticipación, debes seleccionar el menú
+    desplegable que se encuentra en la parte superior derecha de la aplicación y
+    cliquear en “Registrar Reserva”. Seleccionar tipo de reserva anticipada, luego,
+    elegir el tipo de vehículo en el cual desea solicitar el servicio, por ejemplo,
+
+    camioneta, y confirmarlo. Además, debe ingresar en este paso la dirección de
+    destino, seleccionar la hora de búsqueda y la fecha. A continuación, debes
+    presionar el botón “Buscar Conductores” y allí aparecerá una planilla con los
+    posibles conductores disponibles para realizar el servicio, en la cual, se debe
+    seleccionar uno. Una vez seleccionado, presionar el botón “Seleccionar
+    Conductor”. En el siguiente paso, le aparecerá un mensaje emergente en el cual
+    debe confirmar la reserva del conductor. El sistema actualiza la reserva
+    realizada, a pendiente de aprobación.
+  </ion-card-content>
+  <br>
+  <ion-card-header>
+    Hacerse conductor
+  </ion-card-header>
+  <ion-card-content text-justify>
+    <br>
+    Para hacerse conductor, debes seleccionar el menú desplegable que se
+    encuentra en la parte superior derecha de la aplicación y cliquear en “Hazte
+    Conductor”. En la pantalla siguiente aparecerán dos botones, en los cuales, te
+    solicitarán tomar la foto o subir de la galería una foto personal con el DNI en
+    mano para corroborar los datos y otra del carnet de conducir en las mismas
+    condiciones.
+    Luego, deberás ingresar la tarifa a cobrar por cuadra y la distancia a la cual se
+    restringe tu servicio, es decir, que dentro de un rango especifico te encuentras
+    activo y fuera del mismo no aparecerás como opción.
+  </ion-card-content>
+  <br>
+  <ion-card-header>
+    Registrar una penalización
+  </ion-card-header>
+  <ion-card-content text-justify>
+    <br>
+    Una vez que se cliquea el botón de “Registrar Penalización”, aparecerá una
+    pantalla donde se debe seleccionar el tipo de penalización, por ejemplo,
+    ausencia o faltante de documentación, y luego, se debe justificar el motivo por
+    el cual se realizó la penalización y adjuntar una o varias fotos que demuestren
+    la razón de la misma. A continuación, se debe confirmar la registración
+    correspondiente a la penalización, con el fin de que quede asentada la misma.
+
+  </ion-card-content>
 
 </ion-content>

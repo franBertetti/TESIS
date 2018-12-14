@@ -43,6 +43,8 @@ export class PerfilClientePage {
   btnUsuario: boolean;
   btnConductor: boolean;
 
+  rtaEstado:any;
+
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -71,6 +73,34 @@ export class PerfilClientePage {
       this.flag = false;
     }
 
+    if (this.navParams.get('preguntarEstadoConductor')) {
+      let prompt = this.alertCtrl.create({
+        title: '¿Desea seguir habilitado para conducir?',
+        message: 'Seleccionar:',
+        inputs : [
+        {
+            type:'radio',
+            label:'Continuar En Linea',
+            value:'EnLinea'
+        },
+        {
+            type:'radio',
+            label:'No mostrarme como disponible',
+            value:'Fuera'
+        }],
+        buttons : [
+        {
+            text: "Aceptar",
+            handler: data => {
+            console.log("search clicked");
+            this.rtaEstado = data.value; 
+            console.log(this.rtaEstado);
+            }
+        }]});
+        prompt.present();
+    }
+
+
     console.log("uid:");
     console.log(this.uid);
 
@@ -89,27 +119,35 @@ export class PerfilClientePage {
     this.fireAuth.user.subscribe(user => this.mostrarPerfilCliente(user));
   }
 
-  getViajesComoUsuario(){
+  getViajesComoUsuario() {
     firebase.database().ref('viaje/').orderByChild('idUsuario').equalTo(this.uid).on('child_added', (snapshot) => {
       var viaje = snapshot.val();
-      firebase.storage().ref('FotosUsuario/' + viaje.idConductor + '/fotoPerfil.png').getDownloadURL().then((url) => {
-        viaje.fotoPerfil = url;
-      });
-      console.log("viaje:");
-      console.log(viaje);
-      this.viajesComoUsuario.push(viaje);     
-      console.log(viaje);
+      if (viaje.estado != "cancelado" && viaje.estado != "finalizado") {
+        this.viajesComoConductor.push(viaje);
+
+        firebase.storage().ref('FotosUsuario/' + viaje.idConductor + '/fotoPerfil.png').getDownloadURL().then((url) => {
+          viaje.fotoPerfil = url;
+        });
+        console.log("viaje:");
+        console.log(viaje);
+        this.viajesComoUsuario.push(viaje);
+        console.log(viaje);
+
+      }
+      
     });
-    
+
   }
 
-  getViajesComoConductor(){
-    
+  getViajesComoConductor() {
+
     firebase.database().ref('viaje/').orderByChild('idConductor').equalTo(this.uid).on('child_added', (snapshot) => {
       var viaje = snapshot.val();
       console.log("viaje:");
       console.log(viaje);
-      this.viajesComoConductor.push(viaje);      
+      if (viaje.estado != "cancelado" && viaje.estado != "finalizado") {
+        this.viajesComoConductor.push(viaje);
+      }
     });
 
   }
@@ -119,7 +157,7 @@ export class PerfilClientePage {
     this.btnConductor = false;
 
     this.viajesUsuario = this.viajesComoUsuario;
-  } 
+  }
 
 
   traerViajesComoConductor(id) {
@@ -173,8 +211,8 @@ export class PerfilClientePage {
     this.navCtrl.push(PenalizacionesPage);
   }
 
-  iraViajeSeleccionado(num) {
-    this.navCtrl.push(ViajeSeleccionadoPage, {'numeroContratacion': num});
+  iraViajeSeleccionado(viaje) {
+    this.navCtrl.push(ViajeSeleccionadoPage, { 'viaje': viaje });
   }
 
   iraRealizarReserva() {

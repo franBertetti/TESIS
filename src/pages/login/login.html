@@ -38,7 +38,8 @@
       <ion-item>
         <ion-icon name="key" item-left></ion-icon>
         <ion-label stacked>Contraseña</ion-label>
-        <ion-input  autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" formControlName="password" type="password"></ion-input>
+        <ion-input formControlName="password" [type]="passwordType"></ion-input>
+        <ion-icon name="eye" color="gray" (click)="togglePassword()" item-end></ion-icon>
       </ion-item>
     </ion-list>
 

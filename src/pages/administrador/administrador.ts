@@ -7,6 +7,7 @@ import { LocalidadPage } from '../localidad/localidad';
 import { AdminConductoresPage } from '../admin-conductores/admin-conductores';
 import { EstadoConductoresPage } from '../estado-conductores/estado-conductores';
 import { AdminVehiculosClientePage } from '../admin-vehiculos-cliente/admin-vehiculos-cliente';
+import { TipoPenalizacionPage } from '../tipo-penalizacion/tipo-penalizacion';
 
 
 /**
@@ -51,6 +52,10 @@ export class AdministradorPage {
 
   irAAdminVehiculosCliente(){
     this.navCtrl.push(AdminVehiculosClientePage);
+  }
+
+  irATipoPenalizaciones(){
+    this.navCtrl.push(TipoPenalizacionPage);
   }
 
   cerrarSesion(){

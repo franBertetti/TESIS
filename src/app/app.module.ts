@@ -50,6 +50,8 @@ import { UsuarioServicioProvider } from '../providers/usuario-servicio/usuario-s
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ServicioBusquedaConductoresProvider } from '../providers/servicio-busqueda-conductores/servicio-busqueda-conductores';
 import { Facebook } from '@ionic-native/facebook';
+import { TipoPenalizacionPageModule } from '../pages/tipo-penalizacion/tipo-penalizacion.module';
+import { DetalleTipoPenalizacionPageModule } from '../pages/detalle-tipo-penalizacion/detalle-tipo-penalizacion.module';
 
 
 export const firebaseConfig = {
@@ -103,7 +105,9 @@ export const firebaseConfig = {
     AdminVehiculosClientePageModule,
     DetalleVehiculosClientePageModule,
     HttpClientModule,
-    NgxDatatableModule
+    NgxDatatableModule,
+    TipoPenalizacionPageModule,
+    DetalleTipoPenalizacionPageModule
     /*,
     AdministradorPage*/
   ],

@@ -7,12 +7,34 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>detalleTipoPenalizacion</ion-title>
+    <ion-title>Detalle Tipo Penalizacion</ion-title>
   </ion-navbar>
 
 </ion-header>
 
+<ion-content padding *ngIf="TipoPenalizacion">
+  <ion-list>
 
-<ion-content padding>
+    <ion-item>
+      <ion-label color="primary" floating>Nombre Penalización</ion-label>
+      <!-- para poder comunicar los datos con la bd, se usa el [(ngmodel)]="note.title"-->
+      <ion-input type="text" [(ngModel)]="TipoPenalizacion.nombre"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary" floating>Descripción</ion-label>
+      <ion-input type="textarea" [(ngModel)]="TipoPenalizacion.descripcion"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary" floating>Monto de Penalización</ion-label>
+      <ion-input type="textarea" text-wrap [(ngModel)]="TipoPenalizacion.monto"></ion-input>
+    </ion-item>
 
+  </ion-list>
+  <div padding>
+    <button ion-button block color="secondary" (click)="agregarTipoPenalizacion()"> Guardar Tipo Penalización </button>
+    <br><br><br>
+    <button *ngIf=" id != 0" ion-button block color="danger" (click)="borrarTipoPenalizacion()"> Eliminar Tipo
+      Penalización </button>
+  </div>
+  
 </ion-content>
