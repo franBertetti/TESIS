@@ -216,7 +216,7 @@ export class ResultadoBusquedaPage {
 
             //this.datosdeUsuarioConductores.push(userAGuardar);
             //this.datosConductores.push(opcion);
-
+            //
             console.log("licencias compatibles:");
             console.log(this.licenciasCompatibles);
 
