@@ -281,7 +281,7 @@ export class MyApp implements OnInit {
   }
 
   iraHistoricoViajes() {
-    this.nav.push(HistoricoViajesPage);
+    this.nav.push(HistoricoViajesPage, { 'id': this.id });
   }
 
   iraPenalizaciones() {

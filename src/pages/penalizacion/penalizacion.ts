@@ -162,7 +162,9 @@ export class PenalizacionPage {
                     this.penalizacion.nombreCliente = this.viaje.nombreCliente;
                     this.penalizacion.nombreConductor = this.viaje.nombreConductor;
                     this.penalizacion.fecha = this.viaje.fecha;
+                    this.penalizacion.direccion = this.viaje.direccionDeBusqueda;
                     this.penalizacion.hora = this.viaje.hora;
+                    this.penalizacion.tipoContratacion = this.viaje.tipoContratacion;
                     this.penalizacion.cantFotos = this.fotos.length;
 
                     this.viaje.estado = "cancelado";
