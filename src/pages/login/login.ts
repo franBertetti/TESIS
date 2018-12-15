@@ -211,7 +211,7 @@ export class LoginPage implements OnInit {
 
     let loading = this.loadingCtrl.create({
       spinner: 'crescent',
-      content: 'Please Wait',
+      content: 'Cargando...',
       duration: 3500
     });
 
@@ -250,7 +250,7 @@ export class LoginPage implements OnInit {
 
     let loading = this.loadingCtrl.create({
       spinner: 'crescent',
-      content: 'Please Wait',
+      content: 'Cargando...',
       duration: 3500
     });
 

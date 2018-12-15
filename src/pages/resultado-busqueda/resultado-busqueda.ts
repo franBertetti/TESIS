@@ -54,6 +54,7 @@ export class ResultadoBusquedaPage {
   ];
 
   tablestyle = 'bootstrap';
+  id;
 
   constructor(
     public navCtrl: NavController,
@@ -65,6 +66,7 @@ export class ResultadoBusquedaPage {
     private alertCtrl: AlertController) {
 
     this.datosBusqueda = this.navParams.get('datosBusqueda');
+    this.id = this.navParams.get('id');
     console.log("datos busqueda:");
     console.log(this.datosBusqueda);
 
@@ -190,35 +192,37 @@ export class ResultadoBusquedaPage {
         }
         if (flag == 1) {
           var key = snap.key;
-          firebase.database().ref().child('usuarios').child(key).on('value', (snapshot) => {
-            console.log(snapshot.val());
-            var userAGuardar = snapshot.val();
-            console.log(userAGuardar.nombreCompleto);
-            opcion.direccion = userAGuardar.direccion;
-            opcion.dni = userAGuardar.dni;
-            opcion.email = userAGuardar.email;
-            opcion.fechaNacimiento = userAGuardar.fechaNacimiento;
-            opcion.id = userAGuardar.id;
-            opcion.localidad = userAGuardar.localidad;
-            opcion.nombreCompleto = userAGuardar.nombreCompleto;
-            opcion.numCelular = userAGuardar.numCelular;
-            opcion.numDepto = userAGuardar.numDepto;
-            opcion.numPiso = userAGuardar.numPiso;
-            firebase.storage().ref('FotosUsuario/' + opcion.id + '/fotoPerfil.png').getDownloadURL().then((url) => {
-              opcion.fotoPerfil = url;
+          if (key != this.datosBusqueda.idCliente) {
+            firebase.database().ref().child('usuarios').child(key).on('value', (snapshot) => {
+              console.log(snapshot.val());
+              var userAGuardar = snapshot.val();
+              console.log(userAGuardar.nombreCompleto);
+              opcion.direccion = userAGuardar.direccion;
+              opcion.dni = userAGuardar.dni;
+              opcion.email = userAGuardar.email;
+              opcion.fechaNacimiento = userAGuardar.fechaNacimiento;
+              opcion.id = userAGuardar.id;
+              opcion.localidad = userAGuardar.localidad;
+              opcion.nombreCompleto = userAGuardar.nombreCompleto;
+              opcion.numCelular = userAGuardar.numCelular;
+              opcion.numDepto = userAGuardar.numDepto;
+              opcion.numPiso = userAGuardar.numPiso;
+              firebase.storage().ref('FotosUsuario/' + opcion.id + '/fotoPerfil.png').getDownloadURL().then((url) => {
+                opcion.fotoPerfil = url;
+              });
+              this.datosdeUsuarioConductores.push(userAGuardar);
+              this.datosConductores.push(opcion);
             });
-            this.datosdeUsuarioConductores.push(userAGuardar);
-            this.datosConductores.push(opcion);
-          });
 
-          //this.datosdeUsuarioConductores.push(userAGuardar);
-          //this.datosConductores.push(opcion);
+            //this.datosdeUsuarioConductores.push(userAGuardar);
+            //this.datosConductores.push(opcion);
 
-          console.log("licencias compatibles:");
-          console.log(this.licenciasCompatibles);
+            console.log("licencias compatibles:");
+            console.log(this.licenciasCompatibles);
 
-          j = opcion.VehiculosHabilitado.length;
-          flag = 0;
+            j = opcion.VehiculosHabilitado.length;
+            flag = 0;
+          }
         }
       }
     });
@@ -303,7 +307,7 @@ export class ResultadoBusquedaPage {
             text: 'Confirmar',
             handler: () => {
               console.log('Si clicked');
-              this.navCtrl.setRoot(DatosReservaPage, {'datosReserva': this.datosBusqueda, 'usuario': this.usuario, 'conductor': this.idConductorSeleccionado});
+              this.navCtrl.setRoot(DatosReservaPage, { 'datosReserva': this.datosBusqueda, 'usuario': this.usuario, 'conductor': this.idConductorSeleccionado });
             }
           }
         ]

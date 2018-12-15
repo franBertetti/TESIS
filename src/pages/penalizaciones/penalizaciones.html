@@ -18,17 +18,23 @@
   <ion-label h1 text-center> Penalizaciones </ion-label>
 
   <ion-list>
-    <ion-item *ngFor="let penalizacion of penalizaciones">
+    <ion-item *ngFor="let penalizacion of penalizaciones; let i = index;">
       <ion-avatar item-start>
         <img src="{{ penalizacion.fotoPerfil }}">
       </ion-avatar>
-      <h2 text-wrap>Numero contratacion: {{ penalizacion.numeroContratacion }}</h2>
       <h2 text-wrap>Conductor: {{ penalizacion.nombreConductor }}</h2>
-      <h2 text-wrap> Contratacion: {{ penalizacion.tipoContratacion }} </h2>
-      <h2 text-wrap>Estado penalización: {{ penalizacion.estado }} </h2>
-      <h5 text-wrap>Direccion de busqueda: {{ penalizacion.direccion }}</h5>
-      <h5 text-wrap>{{ penalizacion.fecha }},{{ penalizacion.hora }}</h5>
+      <h2 text-wrap>{{ penalizacion.fecha }}</h2>
+      <h3 text-wrap> {{ penalizacion.hora }} </h3>
+      <ion-icon *ngIf="isCollapsed" name="arrow-dropdown-circle" color="gray" (click)="toggleCollapse()" item-end></ion-icon>
+      <ion-icon  *ngIf="!isCollapsed" name="arrow-dropup-circle" color="gray" (click)="toggleCollapse()" item-end></ion-icon>
+      <div *ngIf="!isCollapsed">
+        <h2 text-wrap [style.color]="penalizacion.estado == 'pagado' ? '#00CC00' : '#FF0000'">Estado: {{ penalizacion.estado }} </h2>
+        <h6 text-wrap>Contratacion: {{ penalizacion.tipoContratacion }} </h6>
+        <h6 text-wrap>Direccion: {{ penalizacion.direccion }} </h6>
+        <h6 text-wrap>Numero contratacion: {{ penalizacion.numContratacion }} </h6>
+      </div>
     </ion-item>
+
   </ion-list>
 
 

@@ -23,6 +23,7 @@ export class PenalizacionesPage {
   penalizaciones: any = [];
   message: string = 'hola';
   fotoPerfil;
+  isCollapsed:boolean  = true;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public fireAuth: AngularFireAuth,
     public afDB: AngularFireDatabase,
@@ -47,17 +48,22 @@ export class PenalizacionesPage {
         });
       }
     })
-
-   *//* usuarioServicio.changeMessage('asda');
+*/
+    usuarioServicio.changeMessage('asda');
 
     usuarioServicio.currentMesagge.subscribe(message => { });
-    usuarioServicio.changeMessage('asda');*/
+    usuarioServicio.changeMessage('asda');
 
+  }
+
+  toggleCollapse(){
+    this.isCollapsed = !this.isCollapsed;
   }
 
   getPenalizaciones() {
     firebase.database().ref('penalizacion/').orderByChild('fecha').on('child_added', (snapshot) => {
       var value = snapshot.val();
+      value.numContratacion = snapshot.key;
       if (value.idCliente == this.id) {
 
         firebase.storage().ref('FotosUsuario/' + value.idConductor + '/fotoPerfil.png').getDownloadURL().then((url) => {

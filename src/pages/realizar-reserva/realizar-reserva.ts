@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, LoadingController, AlertController
 import { MenuController } from 'ionic-angular';
 import { ResultadoBusquedaPage } from '../resultado-busqueda/resultado-busqueda';
 import { AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireAuth } from 'angularfire2/auth';
 /**
  * Generated class for the RealizarReservaPage page.
  *
@@ -23,6 +24,7 @@ export class RealizarReservaPage {
   mensaje;
   faltaTipoVehiculo: boolean;
   faltaDireccion: boolean;
+  usuario;
 
   constructor(
     public navCtrl: NavController,
@@ -30,6 +32,7 @@ export class RealizarReservaPage {
     public navParams: NavParams,
     public loadingCtrl: LoadingController,
     public afDB: AngularFireDatabase,
+    public fireAuth: AngularFireAuth,
     public menuCtrl: MenuController) {
     this.menuCtrl.enable(true, 'myMenu');//para activar el menu desplegable en esta pagina
     this.today = new Date().toISOString();
@@ -52,7 +55,20 @@ export class RealizarReservaPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad RealizarReservaPage');
+    this.fireAuth.user.subscribe(user => this.mostrarPerfilCliente(user));
   }
+
+  mostrarPerfilCliente(user) {
+    if (user) {
+      this.afDB.object('usuarios/' + user.uid)
+        .valueChanges().subscribe(usuarioGuardado => {
+          this.usuario = usuarioGuardado;
+        });
+
+    }
+
+  }
+
 
   buscarConductores() {
 
@@ -116,6 +132,7 @@ export class RealizarReservaPage {
 
       loading.present();
 
+      this.busqueda.idCliente = this.usuario.id;
 
       this.navCtrl.push(ResultadoBusquedaPage, { 'datosBusqueda': this.busqueda });
     }
