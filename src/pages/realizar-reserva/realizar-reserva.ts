@@ -191,8 +191,7 @@ let loading = this.loadingCtrl.create({
       });
       alert.present();
 
-      
-    //}
+
   }
 
 }
