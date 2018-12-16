@@ -72,12 +72,13 @@ export class ResultadoBusquedaPage {
 
     this.servicioBusquedaConductores.setDatosBusqueda(this.datosBusqueda);
 
+    this.buscarTipoLicenciasPosiblesDeVehiculoSeleccionado(); //obtengo los tipos de licencia q pueden ser por la licencia q se ingreso
+
+
     if (this.datosBusqueda.tipoReserva == 'ReservaInmediata') {
       this.conductoresEnLinea = this.buscarEstadoConductoresEnLinea();//obtengo los conductores en linea
       console.log("conductores en linea:");
       console.log(this.conductoresEnLinea);
-
-      this.buscarTipoLicenciasPosiblesDeVehiculoSeleccionado(); //obtengo los tipos de licencia q pueden ser por la licencia q se ingreso
 
       this.traerConductoresEnLineaPorTipoLicencia();
       console.log(this.datosConductores);
@@ -89,44 +90,37 @@ export class ResultadoBusquedaPage {
     usuarioServicio.changeMessage('asda');
 
     if (this.datosBusqueda.tipoReserva == 'ReservaAnticipada') {
-      var a = this.buscarConductoresHabilitados();
-      if (a == 'a') {
-        for (var i = 0, len = this.conductores.length; i < len; i++) {
-          console.log(this.conductores[i]);
-        }
-      }
-      console.log(this.conductores);
+     
 
-      this.buscarTipoLicenciasPosiblesDeVehiculoSeleccionado(); //obtengo los tipos de licencia q pueden ser por la licencia q se ingreso
-      this.traerConductoresReservaAnticipadaPorTipoLicencia();
+        this.buscarConductoresHabilitadosReservaAnticipada();
+  
+        usuarioServicio.changeMessage('asda');
+
+        usuarioServicio.currentMesagge.subscribe(message => { 
+    
+        });
+        usuarioServicio.changeMessage('asda');
+    
     }
     usuarioServicio.changeMessage('asda');
 
-    usuarioServicio.currentMesagge.subscribe(message => { });
+    usuarioServicio.currentMesagge.subscribe(message => { 
+
+    });
     usuarioServicio.changeMessage('asda');
 
 
   }
 
-  buscarConductoresHabilitados() {
-    firebase.database().ref('conductor/').orderByChild('estado').once('child_added', (snapshot) => {
-      var estadoDesdeBd = snapshot.val();
-      if (estadoDesdeBd.estado == 'Aprobado' || estadoDesdeBd.estado == 'EnLinea' || estadoDesdeBd.estado == 'FueraDeLinea' || estadoDesdeBd.estado == 'Ocupado') {
-        console.log(snapshot.val());
-        this.conductores.push(estadoDesdeBd);
-        this.idConductores.push(snapshot.key);
-      }
-    });
-    return 'a';
-  }
+  public buscarConductoresHabilitadosReservaAnticipada() {
+    firebase.database().ref('conductor/').orderByChild('estado').on('child_added', snap => {
+      if (snap.val().estado == 'Aprobado' || snap.val().estado == 'EnLinea' || snap.val().estado == 'Ocupado' || snap.val().estado == 'FueraDeLinea') {
+        //this.conductores.push(snap.val());
+        console.log(snap.val());
 
-  traerConductoresReservaAnticipadaPorTipoLicencia() {
+        var opcion = snap.val();
 
-    for (var q = 0, len = this.conductores.length; q < len; q++) {
-      var opcion = this.conductores[q];
-
-      console.log(opcion.VehiculosHabilitado); //la opcion.vehiculoshabilitado contiene el array de los vehiculos q esta habilitado
-      var flag = 0;
+        var flag = 0;
       for (var j = 0, len = opcion.VehiculosHabilitado.length; j < len; j++) {
         console.log(opcion.VehiculosHabilitado[j]);
 
@@ -140,28 +134,27 @@ export class ResultadoBusquedaPage {
 
         }
         if (flag == 1) {
-          var key = this.idConductores[q];
-          firebase.database().ref().child('usuarios').child(key).on('value', (snapshot) => {
-            console.log(snapshot.val());
+          firebase.database().ref().child('usuarios').child(opcion.id).on('value', (snapshot) => {
+            //console.log(snapshot.val());
             var userAGuardar = snapshot.val();
-            console.log(userAGuardar.nombreCompleto);
+            //console.log(userAGuardar.nombreCompleto);
             opcion.direccion = userAGuardar.direccion;
             opcion.dni = userAGuardar.dni;
             opcion.email = userAGuardar.email;
             opcion.fechaNacimiento = userAGuardar.fechaNacimiento;
-            opcion.id = userAGuardar.id;
             opcion.localidad = userAGuardar.localidad;
             opcion.nombreCompleto = userAGuardar.nombreCompleto;
             opcion.numCelular = userAGuardar.numCelular;
             opcion.numDepto = userAGuardar.numDepto;
             opcion.numPiso = userAGuardar.numPiso;
-            this.datosdeUsuarioConductores.push(userAGuardar);
             this.datosConductores.push(opcion);
+            
           });
 
           //this.datosdeUsuarioConductores.push(userAGuardar);
           //this.datosConductores.push(opcion);
 
+          
           console.log("licencias compatibles:");
           console.log(this.licenciasCompatibles);
 
@@ -169,8 +162,14 @@ export class ResultadoBusquedaPage {
           flag = 0;
         }
       }
-    };
+      }
+
+
+
+    });
+
   }
+  
 
   traerConductoresEnLineaPorTipoLicencia() {
     this.conductoresEnLinea.on('child_added', snap => { //busco cada conductor en linea
@@ -245,20 +244,7 @@ export class ResultadoBusquedaPage {
   buscarEstadoConductoresEnLinea() {
 
     return firebase.database().ref('conductor/').orderByChild('estado').equalTo('EnLinea');
-    /*return firebase.database() .ref('conductor/').orderByChild('estado').equalTo('EnLinea').on('child_added', (snapshot) => {
-
-      let userRef = firebase.database().ref('usuarios/' + snapshot.key);
-      this.datosConductores.push(snapshot.val());
-      console.log('datos conductor:');
-      console.log(snapshot.val());
-      userRef.on('value', userSnap => {
-        console.log(' datos usuario conductor:');
-        console.log(userSnap.val()); // trae bien los datos del usuario
-        this.datosUsuarioConductores.push(userSnap.val());
-      });
-    });
-
-  */  }
+   }
 
 
   ionViewDidLoad() {
