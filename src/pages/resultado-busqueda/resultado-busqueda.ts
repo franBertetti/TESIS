@@ -330,7 +330,7 @@ export class ResultadoBusquedaPage {
 
   /*  getRowClass(row){
       return row.gender == 'male' ? 'male-row' : 'female-row';
-    }
+    }//
   
     open(row){
       let alert = this.alertCtrl.create({
