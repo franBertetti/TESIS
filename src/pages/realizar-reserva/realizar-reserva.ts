@@ -4,6 +4,8 @@ import { MenuController } from 'ionic-angular';
 import { ResultadoBusquedaPage } from '../resultado-busqueda/resultado-busqueda';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 /**
  * Generated class for the RealizarReservaPage page.
  *
@@ -26,12 +28,19 @@ export class RealizarReservaPage {
   faltaDireccion: boolean;
   usuario;
 
+  btnInmediato = true;
+  btnAnticipado = false;
+
+  myFormInmediato: FormGroup;
+  myFormAnticipado: FormGroup;
+
   constructor(
     public navCtrl: NavController,
     public alertCtrl: AlertController,
     public navParams: NavParams,
     public loadingCtrl: LoadingController,
     public afDB: AngularFireDatabase,
+    public formBuilder: FormBuilder,
     public fireAuth: AngularFireAuth,
     public menuCtrl: MenuController) {
     this.menuCtrl.enable(true, 'myMenu');//para activar el menu desplegable en esta pagina
@@ -45,9 +54,36 @@ export class RealizarReservaPage {
 
       });
 
+      this.busqueda.tipoReserva = 'ReservaInmediata'; 
+
+      this.myFormInmediato = this.formBuilder.group({
+      vehiculoReserva: ['', Validators.required],
+      direccion: ['', Validators.required]
+    });
+
+    this.myFormAnticipado = this.formBuilder.group({
+      vehiculoReserva: ['', Validators.required],
+      direccion: ['', Validators.required],
+      horaBusqueda: ['', Validators.required],
+      DiaBusqueda: ['', Validators.required]
+    });
+
+
   }
 
-  //s
+  reservaInmediata(id) {
+    this.btnInmediato = true;
+    this.btnAnticipado = false;
+    this.busqueda.tipoReserva = 'ReservaInmediata';
+  }
+
+
+  reservaAnticipada(id) {
+    this.btnInmediato = false;
+    this.btnAnticipado = true;
+    this.busqueda.tipoReserva = 'ReservaAnticipada';
+  }
+
 
   public getTipoVehiculo() {
     return this.afDB.list('vehiculoCliente/');
@@ -72,17 +108,14 @@ export class RealizarReservaPage {
 
   buscarConductores() {
 
-    if (this.tipoReserva == true) {
-      this.busqueda.tipoReserva = 'ReservaAnticipada';
-    } else {
-      this.busqueda.tipoReserva = 'ReservaInmediata';
-    }
-    
-    if (this.busqueda.direccion) {
-      this.faltaDireccion = false;
-    } else {
-      this.faltaDireccion = true;
-    }
+    /*
+    if (!this.busqueda.horaBusqueda)
+
+      if (this.busqueda.direccion) {
+        this.faltaDireccion = false;
+      } else {
+        this.faltaDireccion = true;
+      }
 
     console.log(this.faltaDireccion);
 
@@ -94,7 +127,7 @@ export class RealizarReservaPage {
 
     console.log(this.faltaTipoVehiculo);
 
-     if (this.faltaDireccion == true && this.faltaTipoVehiculo == true) {
+    if (this.faltaDireccion == true && this.faltaTipoVehiculo == true) {
       this.mensaje = 'Por favor, ingrese el Tipo de vehiculo y la Direccion';
     } else if (this.faltaDireccion == true) {
       this.mensaje = 'Por favor, ingrese la Dirección';
@@ -113,14 +146,30 @@ export class RealizarReservaPage {
         ]
       });
       alert.present();
-    } 
-    
-    if (this.faltaDireccion == false && this.faltaTipoVehiculo == false) {
+    }*/
+
+  //  if (this.faltaDireccion == false && this.faltaTipoVehiculo == false) {
 
       console.log(this.busqueda.direccion);
       console.log(this.busqueda);
 
-      let loading = this.loadingCtrl.create({
+      let alert = this.alertCtrl.create({
+        title: '¿ Buscar Conductores ? ',
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancelar',
+            handler: () => {
+              console.log('Cancelar clicked');
+            }
+          },
+          {
+            text: 'Confirmar',
+            handler: () => {
+              console.log('Si clicked');
+
+
+let loading = this.loadingCtrl.create({
         spinner: 'crescent',
         content: 'Buscando Conductores',
         duration: 3500
@@ -135,7 +184,15 @@ export class RealizarReservaPage {
       this.busqueda.idCliente = this.usuario.id;
 
       this.navCtrl.push(ResultadoBusquedaPage, { 'datosBusqueda': this.busqueda });
-    }
+
+            }
+          }
+        ]
+      });
+      alert.present();
+
+      
+    //}
   }
 
 }

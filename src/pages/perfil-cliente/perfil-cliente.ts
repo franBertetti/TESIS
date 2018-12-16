@@ -123,7 +123,6 @@ export class PerfilClientePage {
     firebase.database().ref('viaje/').orderByChild('idUsuario').equalTo(this.uid).on('child_added', (snapshot) => {
       var viaje = snapshot.val();
       if (viaje.estado != "cancelado" && viaje.estado != "finalizado") {
-        this.viajesComoConductor.push(viaje);
 
         firebase.storage().ref('FotosUsuario/' + viaje.idConductor + '/fotoPerfil.png').getDownloadURL().then((url) => {
           viaje.fotoPerfil = url;
