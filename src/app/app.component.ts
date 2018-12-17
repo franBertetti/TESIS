@@ -167,7 +167,7 @@ export class MyApp implements OnInit {
     }
   });
 
-    // this.newMessage();
+    //// this.newMessage();
 
     console.log('el objeto es:');
     console.log(this.datoPrueba);
