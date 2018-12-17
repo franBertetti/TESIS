@@ -43,8 +43,7 @@ export class DatosPersonalesUsuarioPage {
     public loadingCtrl: LoadingController,
     public camera: Camera,
     public alertCtrl: AlertController,
-    public usuarioService: UsuarioServicioProvider) {
-
+    public usuarioServicio: UsuarioServicioProvider){
       if (this.navParams.get('registrandoUsuario')){
         this.registrandoUsuario = this.navParams.get('registrandoUsuario');
         this.isDisabled = false;
@@ -108,7 +107,7 @@ export class DatosPersonalesUsuarioPage {
             this.fotoPerfil = url;
             console.log(this.fotoPerfil);
           });
-        });  //con el valueChanges le estoy diciendo q ante cualquier cambio de estado se suscriba a los cambios 
+        });  //con el valueChanges le estoy diciendox q ante cualquier cambio de estado se suscriba a los cambios 
     }
   }
 
@@ -200,7 +199,7 @@ export class DatosPersonalesUsuarioPage {
       const selfieRefPerfil = firebase.storage().ref('FotosUsuario/' + this.usuario.id + '/fotoPerfil.png');
       selfieRefPerfil.putString(this.perfilPerfil, 'base64', { contentType: 'image/png' }).then((snapshot) => {
         console.log("snapshot.downloadURL", snapshot.downloadURL);
-        this.usuarioService.changeMessage('asdasd');
+        this.usuarioServicio.changeMessage('asdasd');
       });
     }
 
@@ -227,7 +226,7 @@ export class DatosPersonalesUsuarioPage {
             handler: () => {
               let loading = this.loadingCtrl.create({
                 spinner: 'crescent',
-                content: 'Please Wait',
+                content: 'Cargando..',
                 duration: 3000
               });
 
@@ -262,6 +261,7 @@ export class DatosPersonalesUsuarioPage {
           {
             text: 'Aceptar',
             handler: () => {
+
               this.navCtrl.setRoot('PerfilClientePage', { 'Photo': this.fotoPerfil });
               console.log('Buy clicked');
             }

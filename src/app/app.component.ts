@@ -42,9 +42,13 @@ export class MyApp implements OnInit {
   estado: any;
   email: any;
 
+  estadoConductorSeteado = '-';
+
   showSplash = true; // <-- show animation
 
   id;
+
+  yaSolicitoRegistro: boolean;
 
   pages: Array<{ title: string, component: any }>;
 
@@ -147,11 +151,21 @@ export class MyApp implements OnInit {
           console.log(this.fotoPerfil);
         });
 
+        this.afDB.object('conductor/' + this.id)
+        .valueChanges().subscribe(conductorGuardado => {
+          this.conductor = conductorGuardado;
+          if (this.conductor.estado) {
+            this.estadoConductorSeteado = this.conductor.estado;
+          } else {
+            this.estadoConductorSeteado = '-';
+          }
+
 
         this.message = message;
         console.log(this.message);
-      }
-    });
+      });
+    }
+  });
 
     // this.newMessage();
 
@@ -169,8 +183,6 @@ export class MyApp implements OnInit {
 
     console.log('el objeto es:');
     console.log(this.datoPrueba);
-
-
 
 
 
@@ -214,7 +226,22 @@ export class MyApp implements OnInit {
       this.afDB.object('conductor/' + user.uid)
         .valueChanges().subscribe(conductorGuardado => {
           this.conductor = conductorGuardado;
+          if (this.conductor.estado) {
+            this.estadoConductorSeteado = this.conductor.estado;
+          } else {
+            this.estadoConductorSeteado = '-';
+          }
+
+          /* if (!this.conductor.estado || this.conductor.estado == undefined || this.conductor.estado == null){
+             this.yaSolicitoRegistro = false;
+             this.conductor.estado = '';
+           } else {
+             this.yaSolicitoRegistro = true;
+           }*/
         });
+
+
+
 
       /* if (this.conductor.estado) {
          this.estado = this.conductor.estado;
@@ -245,23 +272,9 @@ export class MyApp implements OnInit {
   }
 
   iraRegistrarConductor() {
-    if (this.conductor.estado != undefined && this.conductor.estado == "PendienteAprobacion") {
-    //console.log("estado: "+this.estado);
-      //alert('Tipoo de Vehiculo con exito');
-      /**/let alert = this.AlertCtrl.create({
-        title: 'Solicitud de conductor pendiente de Aprobación',
-        subTitle: 'Su solicitud aún se encuentra pendiente de revisión, en la brevedad sera revisada',
-        buttons: [
-          {
-            text: "Aceptar",
-            role: 'cancel'
-          }
-        ]
-      });
-      alert.present();/**/
-    } else {
-      this.nav.push(RegistrarConductorPage);
-    }
+
+    this.nav.push(RegistrarConductorPage);
+
 
   }
 
@@ -289,9 +302,24 @@ export class MyApp implements OnInit {
   }
 
   iraDatosConductor() {
-    this.nav.push(RegistrarConductorPage);
+    if (this.conductor.estado == "PendienteAprobacion") {
+      //console.log("estado: "+this.estado);
+        //alert('Tipoo de Vehiculo con exito');
+        /**/let alert = this.AlertCtrl.create({
+        title: 'Solicitud de conductor pendiente de Aprobación',
+        subTitle: 'Su solicitud aún se encuentra pendiente de revisión, en la brevedad sera revisada',
+        buttons: [
+          {
+            text: "Aceptar",
+            role: 'cancel'
+          }
+        ]
+      });
+      alert.present();/**/
+    } else {
+      this.nav.push(RegistrarConductorPage);
+    }
   }
-
 
 
 }

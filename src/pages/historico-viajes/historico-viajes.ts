@@ -36,9 +36,14 @@ export class HistoricoViajesPage {
     public menuCtrl: MenuController,
     public fireAuth: AngularFireAuth,
     public afDB: AngularFireDatabase,
-    public usuarioService: UsuarioServicioProvider,
+    public usuarioServicio: UsuarioServicioProvider,
     public alertCtrl: AlertController) {
       this.menuCtrl.enable(true, 'myMenu');//para desactivar el menu desplegable en esta pagina
+
+        usuarioServicio.changeMessage('asda');
+
+        usuarioServicio.currentMesagge.subscribe(message => { });
+        usuarioServicio.changeMessage('asda');
 
         this.id = this.navParams.get('id');
         console.log(this.id);

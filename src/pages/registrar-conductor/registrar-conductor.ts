@@ -8,6 +8,7 @@ import { firebaseConfig } from '../../app/app.module';
 //import { Storage } from '@ionic/storage';
 import  { initializeApp } from 'firebase';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { UsuarioServicioProvider } from '../../providers/usuario-servicio/usuario-servicio';
 
 
 
@@ -42,6 +43,7 @@ usuario:any = {};
               public afDB: AngularFireDatabase,
               public loadingCtrl: LoadingController,
               public fireAuth:AngularFireAuth,
+              public usuarioServicio: UsuarioServicioProvider,
               public camera: Camera) {
     this.menuCtrl.enable(true, 'myMenu');//para desactivar el menu desplegable en esta pagina
     this.getTipoVehiculo()
@@ -155,7 +157,7 @@ public getTipoVehiculo(){
     
     let loading = this.loadingCtrl.create({
       spinner: 'crescent',
-      content: 'Please Wait',
+      content: 'Guardado solicitud..',
       duration: 3000
     });
 
@@ -165,6 +167,10 @@ public getTipoVehiculo(){
 
     loading.present();
 
+    this.usuarioServicio.changeMessage('asda');
+
+    this.usuarioServicio.currentMesagge.subscribe(message => { });
+    this.usuarioServicio.changeMessage('asda');
 
     this.navCtrl.setRoot('PerfilClientePage', {'flag':false});
   }

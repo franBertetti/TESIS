@@ -73,7 +73,9 @@ registrarUsuario(){
       });
 
       this.loading = this.loadingCtrl.create({
-        dismissOnPageChange: true,
+        spinner: 'crescent',
+        content: 'Cargando..',
+        duration: 3000
       });
       this.loading.present();
     

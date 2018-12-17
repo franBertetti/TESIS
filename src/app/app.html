@@ -18,20 +18,20 @@
       <ion-title>Opciones</ion-title>
     </ion-toolbar>
   </ion-header>
- 
+
   <ion-content>
     <ion-list>
-    
+
 
       <ion-item ng-if="usuario">
-      <ion-avatar item-start>
-        <p><img class="foto" src="{{fotoPerfil}}"></p> 
-      </ion-avatar>
-      <h2>{{usuario?.nombreCompleto}}</h2>
-     </ion-item>
+        <ion-avatar item-start>
+          <p><img class="foto" src="{{fotoPerfil}}"></p>
+        </ion-avatar>
+        <h2>{{usuario?.nombreCompleto}}</h2>
+      </ion-item>
 
     </ion-list>
-    
+
     <ion-list>
       <button menuClose ion-item *ngFor="let feed of feeds" (click)="openFeed(feed)">
         {{feed.title}}
@@ -39,9 +39,9 @@
     </ion-list>
 
     <ion-list>
-    <a ion-button block clear (click)="iraRealizarReserva()" menuClose>
-      Realizar Reserva
-    </a>
+      <a ion-button block clear (click)="iraRealizarReserva()" menuClose>
+        Realizar Reserva
+      </a>
     </ion-list>
 
     <ion-list-header>
@@ -52,42 +52,43 @@
       <a ion-button block clear (click)="iraDatosPersonales()" menuClose>
         Datos personales
       </a>
-      </ion-list>
+    </ion-list>
 
-      <ion-list>
-        <a ion-button block clear (click)="iraHistoricoViajes()" menuClose>
-            Historico viajes
-        </a>
-        </ion-list>
+    <ion-list>
+      <a ion-button block clear (click)="iraHistoricoViajes()" menuClose>
+        Historico viajes
+      </a>
+    </ion-list>
 
-        <ion-list>
-          <a ion-button block clear (click)="iraPenalizaciones()" menuClose>
-              Penalizaciones
-          </a>
-          </ion-list>
+    <ion-list>
+      <a ion-button block clear (click)="iraPenalizaciones()" menuClose>
+        Penalizaciones
+      </a>
+    </ion-list>
 
-          <ion-list>
-              <a ion-button block clear (click)="iraRegistrarConductor()" menuClose>
-                  Hazte conductor
-              </a>
-            </ion-list>
-            
-            <ion-list>
-            <a ion-button block clear (click)="iraDatosConductor()" disabled="true" menuClose>
-                Datos conductor
-            </a>
-          </ion-list>
+    <ion-list *ngIf="estadoConductorSeteado == '-' " >   <!-- *ngIf="yaSolicitoRegistro == false"-->
+      <a ion-button block clear (click)="iraRegistrarConductor()" menuClose>
+        Hazte conductor
+      </a>
+    </ion-list>
 
-                
+    <ion-list *ngIf="estadoConductorSeteado != '-' " > <!--*ngIf="conductor.estado != undefined || conductor.estado != null || conductor.estado == 'Aprobado' || conductor.estado == 'EnLinea' || conductor.estado == 'Ocupado' || conductor.estado == 'FueraDeLinea'"-->
+      <!-- || conductor.estado != undefined || conductor.estado != 'DadoDeBaja' || conductor.estado != 'NoAprobado'"-->
+      <a ion-button block clear (click)="iraDatosConductor()" menuClose>
+        Datos conductor
+      </a>
+    </ion-list>
+
+
 
     <ion-list>
       <a ion-button block clear (click)="CerrarSesion()" menuClose>
-          Cerrar Sesión
+        Cerrar Sesión
       </a>
     </ion-list>
 
   </ion-content>
 
-</ion-menu> 
+</ion-menu>
 
 <ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>

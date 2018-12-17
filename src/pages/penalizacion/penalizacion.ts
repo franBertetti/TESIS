@@ -80,10 +80,9 @@ export class PenalizacionPage {
     }).then(profilePicture => {
       this.perfil = profilePicture;
       this.foto = 'data:image/jpeg;base64,' + this.perfil;
-      this.fotos.push(this.perfil);
+      this.fotos.push(this.foto);
       this.fotosParaGuardar.push(this.perfil);
     });
-
   }
 
   buscarFoto(): void {
@@ -187,7 +186,7 @@ export class PenalizacionPage {
                     this.navCtrl.setRoot(PerfilClientePage, { 'preguntarEstadoConductor': true });
 
                   }
-                
+
                 }
               }
               ]

@@ -67,14 +67,19 @@ export class DatosReservaPage {
     this.viaje.direccionDeBusqueda = this.datosReserva.direccion;
     this.viaje.vehiculoReserva = this.datosReserva.vehiculoReserva;
     this.viaje.tipoContratacion = this.datosReserva.tipoReserva;
+
+    if  (this.datosReserva.tipoReserva == 'ReservaInmediata') {
     this.viaje.estado = 'Conductor yendo a la ubicación';
 
     this.afDB.database.ref('conductor/' + this.conductor.id + '/estado').set('Ocupado');
+    this.afDB.database.ref('viaje/' + this.numeroContratacion).set(this.viaje);    
+  }
+
     if (this.datosReserva.tipoReserva == 'ReservaAnticipada') {
-      //this.viaje.idReservaAnticipada = "idDeLaReserva";
-      //datos de la reserva en caso de ser anticipada
+      this.viaje.estado = 'En espera de confirmación';
+      this.afDB.database.ref('viaje/' + this.numeroContratacion).set(this.viaje);
     }
-    this.afDB.database.ref('viaje/' + this.numeroContratacion).set(this.viaje);
+    
   }
 
   public getFechaActualFormateada() {

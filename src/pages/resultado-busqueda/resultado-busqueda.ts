@@ -90,21 +90,21 @@ export class ResultadoBusquedaPage {
     usuarioServicio.changeMessage('asda');
 
     if (this.datosBusqueda.tipoReserva == 'ReservaAnticipada') {
-     
 
-        this.buscarConductoresHabilitadosReservaAnticipada();
-  
-        usuarioServicio.changeMessage('asda');
 
-        usuarioServicio.currentMesagge.subscribe(message => { 
-    
-        });
-        usuarioServicio.changeMessage('asda');
-    
+      this.buscarConductoresHabilitadosReservaAnticipada();
+
+      usuarioServicio.changeMessage('asda');
+
+      usuarioServicio.currentMesagge.subscribe(message => {
+
+      });
+      usuarioServicio.changeMessage('asda');
+
     }
     usuarioServicio.changeMessage('asda');
 
-    usuarioServicio.currentMesagge.subscribe(message => { 
+    usuarioServicio.currentMesagge.subscribe(message => {
 
     });
     usuarioServicio.changeMessage('asda');
@@ -121,47 +121,52 @@ export class ResultadoBusquedaPage {
         var opcion = snap.val();
 
         var flag = 0;
-      for (var j = 0, len = opcion.VehiculosHabilitado.length; j < len; j++) {
-        console.log(opcion.VehiculosHabilitado[j]);
+        for (var j = 0, len = opcion.VehiculosHabilitado.length; j < len; j++) {
+          console.log(opcion.VehiculosHabilitado[j]);
 
-        for (var i = 0, len = this.licenciasCompatibles.length; i < len; i++) {
-          console.log(this.licenciasCompatibles[i]);
-          if (opcion.VehiculosHabilitado[j] == this.licenciasCompatibles[i]) {
-            //logica parte de cuando coincide la busqueda y es un conductor apto para mostrar
-            var flag = 1;
-            i = this.licenciasCompatibles.length;
+          for (var i = 0, len = this.licenciasCompatibles.length; i < len; i++) {
+            console.log(this.licenciasCompatibles[i]);
+            if (opcion.VehiculosHabilitado[j] == this.licenciasCompatibles[i]) {
+              //logica parte de cuando coincide la busqueda y es un conductor apto para mostrar
+              var flag = 1;
+              i = this.licenciasCompatibles.length;
+            }
+
           }
+          if (flag == 1) {
+            if (opcion.id != this.datosBusqueda.idCliente) {
+              firebase.database().ref().child('usuarios').child(opcion.id).on('value', (snapshot) => {
+                //console.log(snapshot.val());
+                var userAGuardar = snapshot.val();
+                //console.log(userAGuardar.nombreCompleto);
+                opcion.direccion = userAGuardar.direccion;
+                opcion.dni = userAGuardar.dni;
+                opcion.email = userAGuardar.email;
+                opcion.fechaNacimiento = userAGuardar.fechaNacimiento;
+                opcion.localidad = userAGuardar.localidad;
+                opcion.nombreCompleto = userAGuardar.nombreCompleto;
+                opcion.numCelular = userAGuardar.numCelular;
+                opcion.numDepto = userAGuardar.numDepto;
+                opcion.numPiso = userAGuardar.numPiso;
+                firebase.storage().ref('FotosUsuario/' + opcion.id + '/fotoPerfil.png').getDownloadURL().then((url) => {
+                  opcion.fotoPerfil = url;
+                });
+                this.datosConductores.push(opcion);
 
+              });
+
+              //this.datosdeUsuarioConductores.push(userAGuardar);
+              //this.datosConductores.push(opcion);
+
+
+              console.log("licencias compatibles:");
+              console.log(this.licenciasCompatibles);
+
+              j = opcion.VehiculosHabilitado.length;
+              flag = 0;
+            }
+          }
         }
-        if (flag == 1) {
-          firebase.database().ref().child('usuarios').child(opcion.id).on('value', (snapshot) => {
-            //console.log(snapshot.val());
-            var userAGuardar = snapshot.val();
-            //console.log(userAGuardar.nombreCompleto);
-            opcion.direccion = userAGuardar.direccion;
-            opcion.dni = userAGuardar.dni;
-            opcion.email = userAGuardar.email;
-            opcion.fechaNacimiento = userAGuardar.fechaNacimiento;
-            opcion.localidad = userAGuardar.localidad;
-            opcion.nombreCompleto = userAGuardar.nombreCompleto;
-            opcion.numCelular = userAGuardar.numCelular;
-            opcion.numDepto = userAGuardar.numDepto;
-            opcion.numPiso = userAGuardar.numPiso;
-            this.datosConductores.push(opcion);
-            
-          });
-
-          //this.datosdeUsuarioConductores.push(userAGuardar);
-          //this.datosConductores.push(opcion);
-
-          
-          console.log("licencias compatibles:");
-          console.log(this.licenciasCompatibles);
-
-          j = opcion.VehiculosHabilitado.length;
-          flag = 0;
-        }
-      }
       }
 
 
@@ -169,7 +174,7 @@ export class ResultadoBusquedaPage {
     });
 
   }
-  
+
 
   traerConductoresEnLineaPorTipoLicencia() {
     this.conductoresEnLinea.on('child_added', snap => { //busco cada conductor en linea
@@ -244,7 +249,7 @@ export class ResultadoBusquedaPage {
   buscarEstadoConductoresEnLinea() {
 
     return firebase.database().ref('conductor/').orderByChild('estado').equalTo('EnLinea');
-   }
+  }
 
 
   ionViewDidLoad() {

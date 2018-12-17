@@ -64,13 +64,14 @@
 
       <ion-item>
         <ion-label>Hora búsqueda</ion-label>
-        <ion-input ng-required='!btnInmediato' formControlName="horaBusqueda" [(ngModel)]="busqueda.horaBusqueda"
-          text-center type="time"></ion-input>
-      </ion-item>
+        <!--<ion-input  formControlName="horaBusqueda" [(ngModel)]="busqueda.horaBusqueda"
+          text-center type="time"></ion-input>-->
+          <ion-datetime displayFormat="HH : mm" formControlName="horaBusqueda" [(ngModel)]="busqueda.horaBusqueda"></ion-datetime>
+        </ion-item>
 
       <ion-item>
         <ion-label floating>Fecha</ion-label>
-        <ion-datetime ng-required='!btnInmediato' formControlName="DiaBusqueda" [(ngModel)]="busqueda.DiaBusqueda" type="date"></ion-datetime>
+        <ion-datetime  formControlName="DiaBusqueda" [(ngModel)]="busqueda.DiaBusqueda" type="date"></ion-datetime>
       </ion-item>
 
       <div padding>
