@@ -179,7 +179,7 @@ export class PerfilClientePage {
       }
 
     });
-
+//
   }
 
   traerViajesComoUsuario(id) {
