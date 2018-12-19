@@ -85,7 +85,7 @@ export class AdminConductoresPage {
           if (value.estado == 'FueraDeLinea'){ value.color = '#0F0CD1' };
           if (value.estado == 'NoAprobado'){ value.color = '#E80028' };
           if (value.estado == 'Ocupado'){ value.color = '#D1970A' };
-          //console.log(userSnap.val()); // trae bien los datos del usuario
+          //console.log(userSnap.val()); // trae bien los datos del usuari
           this.usuarios.push(value);
         });
       } 
