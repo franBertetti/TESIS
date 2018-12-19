@@ -42,9 +42,9 @@
     <ion-input type="text" hidden [(ngModel)]="conductor.estado" value="PendienteAprobacion"></ion-input>
 
     <ion-item>
-        <ion-label>Tipo Vehiculo</ion-label>
+        <ion-label floating>Tipo Vehiculo</ion-label>
         <ion-select [(ngModel)]="conductor.VehiculosHabilitado" multiple="true">
-          <ion-option  *ngFor="let TipoVehiculo of TipoVehiculos" value="{{TipoVehiculo.nombre}}">{{TipoVehiculo.nombre}}</ion-option>
+          <ion-option  *ngFor="let TipoVehiculo of TipoVehiculos">{{TipoVehiculo.nombre}}</ion-option>
         </ion-select>
       </ion-item>
 

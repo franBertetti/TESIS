@@ -191,6 +191,10 @@ export class RegistrarConductorPage {
       return alert('Por favor, ingrese la distancia maxima de busqueda de conductores.');
     }
 
+    if (!this.conductor.VehiculosHabilitado){
+      return alert('Por favor, ingrese el tipo de vehiculo coincidente a su licencia.');
+    }
+
     let alerta = this.alertCtrl.create({
       title: 'Solicitud de Conductor',
       message: '¿Confirmar Solicitud de conductor?',

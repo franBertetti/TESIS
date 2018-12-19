@@ -32,6 +32,12 @@
   </ion-card>
 
   <ion-list>
+
+      <ion-item *ngIf="conductor.estado">
+          <ion-label>Estado Como Conductor: {{ conductor.estado }}</ion-label>
+          <ion-toggle [(ngModel)]="estaConduciendo"></ion-toggle>
+        </ion-item>
+
     <a ion-button block clear (click)="iraRealizarReserva()">
       Realizar Reserva
     </a>

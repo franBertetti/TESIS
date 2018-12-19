@@ -41,11 +41,17 @@ a {
 }
 
 .select-text {
-  width: 230px !important;
+  width: 300px !important;
   white-space: normal !important;
   ;
 }
 
-ion-select {
-  max-width: 230px !important;
+/*ion-select {
+  max-width: 300px !important;
+}*/
+
+.label-md[stacked], .label-md[floating] {
+  margin-left: 0;
+  white-space: normal !important;
+  margin-bottom: 0;
 }

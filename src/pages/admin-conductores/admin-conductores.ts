@@ -135,7 +135,7 @@ export class AdminConductoresPage {
   irADetalleConductor(id) {
     let loading = this.loadingCtrl.create({
       spinner: 'crescent',
-      content: 'Please Wait',
+      content: 'Cargando..',
       duration: 3000
     });
 

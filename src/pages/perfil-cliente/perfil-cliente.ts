@@ -45,6 +45,8 @@ export class PerfilClientePage {
 
   rtaEstado:any;
 
+  estaConduciendo:boolean;
+
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -191,6 +193,16 @@ export class PerfilClientePage {
       this.afDB.object('conductor/' + user.uid)
         .valueChanges().subscribe(conductorGuardado => {
           this.conductor = conductorGuardado;
+
+          if (this.conductor.estado != undefined){
+            if (this.conductor.estado == 'Aprobado' || this.conductor.estado == 'FueraDeLinea' ){
+              this.estaConduciendo = false;
+            }
+            if (this.conductor.estado == 'EnLinea' || this.conductor.estado == 'Ocupado' ){
+              this.estaConduciendo = true;
+            }
+          }
+
         });
 
 

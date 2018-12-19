@@ -28,12 +28,12 @@
   <form *ngIf="btnInmediato" [formGroup]="myFormInmediato" (ngSubmit)="buscarConductores()">
     <ion-list>
 
-      <ion-item>
-        <ion-label>Tipo Vehiculo</ion-label>
-        <ion-select formControlName="vehiculoReserva" [(ngModel)]="busqueda.vehiculoReserva" multiple="false">
-          <ion-option *ngFor="let TipoVehiculo of TipoVehiculos" value="{{TipoVehiculo.nombre}}">{{TipoVehiculo.nombre}}</ion-option>
-        </ion-select>
-      </ion-item>
+        <ion-item>
+            <ion-label floating>Tipo Vehiculo</ion-label>
+            <ion-select formControlName="vehiculoReserva" [(ngModel)]="busqueda.vehiculoReserva" multiple="false">
+                <ion-option *ngFor="let TipoVehiculo of TipoVehiculos" value="{{TipoVehiculo.nombre}}"><span style="white-space: normal !important">{{TipoVehiculo.nombre}}</span></ion-option>
+              </ion-select>
+          </ion-item>
 
       <ion-item>
         <ion-label floating>Dirección destino..</ion-label>
@@ -48,14 +48,15 @@
   </form>
 
   <form *ngIf="btnAnticipado" [formGroup]="myFormAnticipado" (ngSubmit)="buscarConductores()">
-    <ion-list>
+    <ion-list>    
 
-      <ion-item> 
-        <ion-label>Tipo Vehiculo</ion-label>
-        <ion-select style="white-space: normal !important" formControlName="vehiculoReserva" [(ngModel)]="busqueda.vehiculoReserva" multiple="false">
-          <ion-option style="white-space: normal !important" *ngFor="let TipoVehiculo of TipoVehiculos" value="{{TipoVehiculo.nombre}}"><span style="white-space: normal !important">{{TipoVehiculo.nombre}}</span></ion-option>
-        </ion-select>
-      </ion-item>
+
+        <ion-item>
+            <ion-label floating>Tipo Vehiculo</ion-label>
+            <ion-select formControlName="vehiculoReserva" [(ngModel)]="busqueda.vehiculoReserva" multiple="false">
+                <ion-option *ngFor="let TipoVehiculo of TipoVehiculos" value="{{TipoVehiculo.nombre}}"><span style="white-space: normal !important">{{TipoVehiculo.nombre}}</span></ion-option>
+              </ion-select>
+          </ion-item>
 
       <ion-item>
         <ion-label floating>Dirección destino..</ion-label>
