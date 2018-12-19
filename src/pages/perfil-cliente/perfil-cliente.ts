@@ -10,6 +10,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import firebase from 'firebase';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { UsuarioServicioProvider } from '../../providers/usuario-servicio/usuario-servicio';
+import { SolicitudesConductorPage } from '../solicitudes-conductor/solicitudes-conductor';
 
 
 /**
@@ -46,6 +47,15 @@ export class PerfilClientePage {
   rtaEstado:any;
 
   estaConduciendo:boolean;
+
+  mensajeNoConductor = ' ';
+
+  cantViajesConductor = 0;
+  cantViajesCliente = 0;
+  cantViajesAconfirmar = 0;
+
+  viajesaConfirmar: any = [];
+
 
 
   constructor(public navCtrl: NavController,
@@ -98,6 +108,12 @@ export class PerfilClientePage {
             handler: data => {
             console.log("search clicked");
             this.rtaEstado = data; 
+            if (this.rtaEstado == 'FueraDeLinea'){
+              this.estaConduciendo = false;
+            }
+            if (this.rtaEstado == 'EnLinea'){
+              this.estaConduciendo = true;
+            }
 
             firebase.database().ref('conductor/'+this.uid+'/estado').set(this.rtaEstado);
             }
@@ -130,7 +146,7 @@ export class PerfilClientePage {
   getViajesComoUsuario() {
     firebase.database().ref('viaje/').orderByChild('idUsuario').equalTo(this.uid).on('child_added', (snapshot) => {
       var viaje = snapshot.val();
-      if (viaje.estado != "cancelado" && viaje.estado != "finalizado") {
+      if (viaje.estado != 'Solicitud Rechazada' && viaje.estado != "cancelado" && viaje.estado != "finalizado") {
 
         firebase.storage().ref('FotosUsuario/' + viaje.idConductor + '/fotoPerfil.png').getDownloadURL().then((url) => {
           viaje.fotoPerfil = url;
@@ -138,6 +154,7 @@ export class PerfilClientePage {
         console.log("viaje:");
         console.log(viaje);
         this.viajesComoUsuario.push(viaje);
+        this.cantViajesCliente++;
         console.log(viaje);
 
       }
@@ -152,9 +169,15 @@ export class PerfilClientePage {
       var viaje = snapshot.val();
       console.log("viaje:");
       console.log(viaje);
-      if (viaje.estado != "cancelado" && viaje.estado != "finalizado") {
+      if (viaje.estado != 'Solicitud Rechazada' && viaje.estado != "cancelado" && viaje.estado != "finalizado" && viaje.estado != 'En espera de confirmación') {
+        this.cantViajesConductor++;
         this.viajesComoConductor.push(viaje);
       }
+      if (viaje.estado == 'En espera de confirmación'){
+        this.viajesaConfirmar.push(viaje);
+        this.cantViajesAconfirmar++;
+      }
+
     });
 
   }
@@ -174,6 +197,37 @@ export class PerfilClientePage {
     this.viajesConductor = this.viajesComoConductor;
   }
 
+  cambiarEstado(){
+    console.log(this.estaConduciendo);
+    if (this.estaConduciendo == true){
+       console.log('true');
+       let alert = this.alertCtrl.create({
+        title: 'Usted ahora se encuentra En Linea',
+        buttons: [
+          {
+            text: "Ok",
+            role: 'cancel'
+          }
+        ]
+      });
+      alert.present();
+       firebase.database().ref('conductor/'+this.uid+'/estado').set('EnLinea');
+    }
+    if (this.estaConduciendo == false){
+      let alert = this.alertCtrl.create({
+        title: 'Usted ahora se encuentra Fuera En Linea',
+        buttons: [
+          {
+            text: "Ok",
+            role: 'cancel'
+          }
+        ]
+      });
+      alert.present();
+       console.log('false');
+       firebase.database().ref('conductor/'+this.uid+'/estado').set('FueraDeLinea');
+    }
+  }
 
   mostrarPerfilCliente(user) {
     if (user) {
@@ -194,11 +248,19 @@ export class PerfilClientePage {
         .valueChanges().subscribe(conductorGuardado => {
           this.conductor = conductorGuardado;
 
-          if (this.conductor.estado != undefined){
+          if (this.conductor.estado == undefined){
+            this.mensajeNoConductor = 'Usted no esta registrado como conductor.';
+          }
+
+          if (this.conductor.estado == 'PendienteAprobacion'){
+            this.mensajeNoConductor = 'Usted no esta registrado como conductor.';
+          }
+
+          if (this.conductor.estado != undefined && this.conductor.estado != 'PendienteAprobacion' ) {
             if (this.conductor.estado == 'Aprobado' || this.conductor.estado == 'FueraDeLinea' ){
               this.estaConduciendo = false;
             }
-            if (this.conductor.estado == 'EnLinea' || this.conductor.estado == 'Ocupado' ){
+            if (this.conductor.estado == 'EnLinea'){
               this.estaConduciendo = true;
             }
           }
@@ -210,6 +272,10 @@ export class PerfilClientePage {
 
     }
 
+  }
+
+  irAsolicitudesDeViaje(){
+    this.navCtrl.push(SolicitudesConductorPage, {'viajesaConfirmar': this.viajesaConfirmar,'cant': this.cantViajesAconfirmar});
   }
 
   iraRegistrarConductor() {

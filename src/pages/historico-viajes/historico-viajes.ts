@@ -66,7 +66,7 @@ export class HistoricoViajesPage {
   getViajesComoUsuario() {
     firebase.database().ref('viaje/').orderByChild('idUsuario').equalTo(this.id).on('child_added', (snapshot) => {
       var viaje = snapshot.val();
-      if (viaje.estado == "finalizado") {
+      if (viaje.estado == "finalizado" || viaje.estado == 'Solicitud Rechazada') {
         firebase.storage().ref('FotosUsuario/' + viaje.idConductor + '/fotoPerfil.png').getDownloadURL().then((url) => {
           viaje.fotoPerfil = url;
         });
@@ -87,7 +87,7 @@ export class HistoricoViajesPage {
       var viaje = snapshot.val();
       console.log("viaje:");
       console.log(viaje);
-      if (viaje.estado == "finalizado") {
+      if (viaje.estado == "finalizado" || viaje.estado == 'Solicitud Rechazada') {
         this.viajesComoConductor.push(viaje);
       }
     });

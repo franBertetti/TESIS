@@ -39,10 +39,17 @@
         <ion-label>Tipo de Contratación: {{ datosReserva.tipoReserva }} </ion-label>
     </ion-item>
 
-    <ion-card margin-top>
+    <ion-card *ngIf="datosReserva.tipoReserva == 'ReservaInmediata'   " margin-top>
         <ion-card-content>
           !La Contratación se realizó correctamente ! En unos instantes el conductor {{ conductor.nombreCompleto | uppercase }} 
           se presentará en el lugar a buscarlo.          
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf="datosReserva.tipoReserva == 'ReservaAnticipada' " margin-top>
+        <ion-card-content>
+          !La Contratación se realizó correctamente ! En unos instantes el conductor {{ conductor.nombreCompleto | uppercase }} 
+          confirmara si acepta la reserva.          
         </ion-card-content>
     </ion-card>
 

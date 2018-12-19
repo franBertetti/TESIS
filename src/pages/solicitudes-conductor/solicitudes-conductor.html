@@ -1,0 +1,59 @@
+<!--
+  Generated template for the SolicitudesConductorPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+    <ion-title><button id="flecha" (click)="iraPerfilCliente()"><ion-icon name="arrow-back"></ion-icon></button> Solicitudes Conductor </ion-title>
+  
+  </ion-header>
+  
+  <style>
+    button {
+      min-height: 50px;
+    }
+  
+    .back-button.show-back-button {
+      display: none !important;
+    }
+  
+    #flecha{
+      color: #424242 !important;
+      background-color: white !important;
+      margin: 0 6px !important;
+      min-width: 44px !important;
+      -webkit-box-shadow: none !important;
+      box-shadow: none !important;
+      display: inline-block !important;
+  }
+    
+  </style>
+
+<ion-content padding>
+
+  <div *ngIf="cant == 0">
+    <ion-label text-wrap> Actualmente no hay Solicitudes </ion-label>
+  </div>
+
+  <div *ngIf="cant > 0">
+
+    <ion-list>
+      <ion-item *ngFor="let viaje of viajesComoConductor; let i = index" (click)="iraViajeSeleccionado(viaje)">
+        <h2 text-wrap>Numero contratacion: {{ viaje.numeroContratacion }}</h2>
+        <h2 text-wrap>Pasajero: {{ viaje.nombreCliente }}</h2>
+        <h2 text-wrap> Contratacion: {{ viaje.tipoContratacion }} </h2>
+        <h2 text-wrap>Estado viaje: {{ viaje.estado }} </h2>
+        <h5 text-wrap>Direccion de busqueda: {{ viaje.direccionDeBusqueda }}</h5>
+        <h5 text-wrap>{{ viaje.fecha }},{{ viaje.hora }}</h5>
+        <ion-row>
+            <button ion-button col-5 offset-1 (click)="cancelarSolicitud(i)">Cancelar Solicitud</button>
+            <button ion-button col-5 (click)="aceptarSolicitud(i)">Aceptar Solicitud</button>
+          </ion-row>
+      </ion-item>
+    </ion-list>
+  </div>
+
+
+</ion-content>
