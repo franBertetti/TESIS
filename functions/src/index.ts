@@ -111,7 +111,7 @@ exports.notificarEstadoConductor = functions.firestore
   const db = admin.firestore()
   const devicesRef = db.collection('devices').where('userId', '==', userId)
 
-    // get the user's tokens and send notifications
+    // get the user's tokens and send nottifications
     const devices = await devicesRef.get();
 
     const tokens = [];
