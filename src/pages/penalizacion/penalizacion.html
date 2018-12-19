@@ -17,8 +17,8 @@
 
   <ion-item>
     <ion-label floating>Tipo Penalizacion</ion-label>
-    <ion-select text-wrap (ionChange)="actualizarValoresForm(tipoPenalizacion.nombre)" [(ngModel)]="tipoPenalizacion.nombre">
-      <ion-option text-wrap *ngFor="let tipoPenalizacion of tipoPenalizaciones" value="{{tipoPenalizacion.nombre}}"> {{tipoPenalizacion.nombre}} </ion-option>
+    <ion-select (ionChange)="actualizarValoresForm(tipoPenalizacion.nombre)" [(ngModel)]="tipoPenalizacion.nombre">
+      <ion-option text-wrap *ngFor="let tipoPenalizacion of tipoPenalizaciones" value="{{tipoPenalizacion.nombre}}"><span text-wrap> {{tipoPenalizacion.nombre}} </span></ion-option>
     </ion-select>
   </ion-item> 
 

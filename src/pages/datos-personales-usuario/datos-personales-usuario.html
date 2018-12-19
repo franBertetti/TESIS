@@ -4,6 +4,13 @@
     <ion-title>Datos Personales</ion-title>
   </ion-navbar>
 
+  <style>
+  /*  .text-input[disabled], .datetime-disabled, .item-datetime-disabled, .select-disabled, .item-select-disabled  {
+       opacity: 1; 
+  }*/
+  </style>
+  
+
 </ion-header>
 
 
@@ -16,9 +23,10 @@
   </ion-item>
 
   <div padding>
-    <button *ngIf="isDisabled == true && registrandoUsuario == false" ion-button block (click)="editarCampos()">Editar Perfil</button>
+    <button *ngIf="isDisabled == true && registrandoUsuario == false" ion-button block (click)="editarCampos()">Editar
+      Perfil</button>
   </div>
-  
+
   <ion-label>datos obligatorios (*)</ion-label>
 
   <ion-label text-center> *Foto Perfil</ion-label>
@@ -44,17 +52,17 @@
 
       <ion-item>
         <ion-label floating>*DNI</ion-label>
-        <ion-input disabled="{{isDisabled}}" formControlName="dni" type="tel" [(ngModel)]="usuario.dni"></ion-input>
+        <ion-input  disabled="{{isDisabled}}" formControlName="dni" type="number" [(ngModel)]="usuario.dni"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label floating>*Fecha Nacimiento</ion-label>
-        <ion-datetime disabled="{{isDisabled}}" formControlName="fechaNacimiento" [(ngModel)]="usuario.fechaNacimiento"></ion-datetime>
+        <ion-datetime  disabled="{{isDisabled}}" formControlName="fechaNacimiento" [(ngModel)]="usuario.fechaNacimiento"></ion-datetime>
       </ion-item>
 
       <ion-item>
         <ion-label floating>*Número celular</ion-label>
-        <ion-input disabled="{{isDisabled}}" formControlName="numCelular" type="tel" [(ngModel)]="usuario.numCelular"></ion-input>
+        <ion-input disabled="{{isDisabled}}" formControlName="numCelular" type="number" [(ngModel)]="usuario.numCelular"></ion-input>
       </ion-item>
 
       <ion-item>
@@ -63,7 +71,7 @@
       </ion-item>
 
       <ion-item>
-        <ion-label>*Localidad</ion-label>
+        <ion-label floating>*Localidad</ion-label>
         <ion-select disabled="{{isDisabled}}" formControlName="localidad" [(ngModel)]="usuario.localidad" multiple="false">
           <ion-option *ngFor="let Localidad of Localidades" value="{{Localidad.nombre}}">{{Localidad.nombre}}</ion-option>
         </ion-select>
@@ -80,15 +88,18 @@
         </ion-item>
       </ion-row>
 
+      <ion-row>
+        <button *ngIf="isDisabled == false && registrandoUsuario == false" ion-button col-5 offset-1 (click)="cancelarGuardar()">Cancelar</button>
+        <button *ngIf="isDisabled == false && registrandoUsuario == false" [disabled]="!myForm.valid" ion-button col-5>Actualizar Datos</button>
+      </ion-row>
+
       <div padding>
-        <button *ngIf="registrandoUsuario == true || (isDisabled == true && flag == false)" ion-button block type="submit" [disabled]="!myForm.valid">Registrar Datos</button>
-      </div>
+          <button *ngIf="registrandoUsuario == true || (isDisabled == true && flag == false)" ion-button block type="submit"
+            [disabled]="!myForm.valid">Registrar Datos</button>
+        </div>
 
     </ion-list>
   </form>
-  <ion-row>
-      <button *ngIf="isDisabled == false && registrandoUsuario == false" ion-button col-5 offset-1 (click)="cancelarGuardar()">Cancelar</button>
-      <button *ngIf="isDisabled == false && registrandoUsuario == false" ion-button col-5 (click)="crearDatosUsuario()">Actualizar Datos</button>
-    </ion-row>
+
 
 </ion-content>

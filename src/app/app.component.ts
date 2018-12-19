@@ -1,5 +1,5 @@
 import { FcmProvider } from '../providers/fcm/fcm';
-import { ToastController } from 'ionic-angular';
+import { ToastController, LoadingController } from 'ionic-angular';
 import { Subject } from 'rxjs/Subject';
 import { tap } from 'rxjs/operators';
 
@@ -27,6 +27,7 @@ import { AngularFireObject, AngularFireList } from 'angularfire2/database';
 import { ViewEncapsulation, OnInit } from '@angular/core';
 
 import { timer } from 'rxjs/observable/timer';
+import { DatosConductorPage } from '../pages/datos-conductor/datos-conductor';
 //
 @Component({
   templateUrl: 'app.html'
@@ -57,6 +58,7 @@ export class MyApp implements OnInit {
   private users$: Observable<any[]>;
   message: string = 'hola';
   constructor(public platform: Platform,
+    public loadingCtrl: LoadingController,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
     public fireAuth: AngularFireAuth,
@@ -226,7 +228,7 @@ export class MyApp implements OnInit {
       this.afDB.object('conductor/' + user.uid)
         .valueChanges().subscribe(conductorGuardado => {
           this.conductor = conductorGuardado;
-          if (this.conductor.estado) {
+          if (this.conductor.estado != undefined) {
             this.estadoConductorSeteado = this.conductor.estado;
           } else {
             this.estadoConductorSeteado = '-';
@@ -294,10 +296,23 @@ export class MyApp implements OnInit {
   }
 
   iraHistoricoViajes() {
+    let loading = this.loadingCtrl.create({
+      spinner: 'crescent',
+      content: 'Cargando viajes..',
+      duration: 2000
+    });
+    loading.present();
+
     this.nav.push(HistoricoViajesPage, { 'id': this.id });
   }
 
   iraPenalizaciones() {
+    let loading = this.loadingCtrl.create({
+      spinner: 'crescent',
+      content: 'Cargando..',
+      duration: 2000
+    });
+    loading.present();
     this.nav.push(PenalizacionesPage, { 'id': this.id });
   }
 
@@ -317,7 +332,7 @@ export class MyApp implements OnInit {
       });
       alert.present();/**/
     } else {
-      this.nav.push(RegistrarConductorPage);
+      this.nav.push(DatosConductorPage, {'id': this.id,'flag':true});
     }
   }
 

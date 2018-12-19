@@ -102,12 +102,6 @@ export class ResultadoBusquedaPage {
       usuarioServicio.changeMessage('asda');
 
     }
-    usuarioServicio.changeMessage('asda');
-
-    usuarioServicio.currentMesagge.subscribe(message => {
-
-    });
-    usuarioServicio.changeMessage('asda');
 
 
   }

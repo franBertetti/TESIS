@@ -81,23 +81,29 @@ export class PerfilClientePage {
         {
             type:'radio',
             label:'Continuar En Linea',
-            value:'EnLinea'
+            value:'EnLinea',
+            name:'estado'
         },
         {
             type:'radio',
             label:'No mostrarme como disponible',
-            value:'Fuera'
+            value:'FueraDeLinea', 
+            name:'estado'
         }],
         buttons : [
         {
             text: "Aceptar",
             handler: data => {
             console.log("search clicked");
-            this.rtaEstado = data.value; 
-            console.log(this.rtaEstado);
+            this.rtaEstado = data; 
+
+            firebase.database().ref('conductor/'+this.uid+'/estado').set(this.rtaEstado);
             }
         }]});
+        console.log(this.rtaEstado);
         prompt.present();
+        console.log(name);
+
     }
 
 

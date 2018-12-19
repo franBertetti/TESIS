@@ -31,12 +31,12 @@
 
     <ion-item>
         <ion-label floating>Tarifa por cuadra</ion-label>
-        <ion-input type="text" [(ngModel)]="conductor.tarifa"></ion-input>
+        <ion-input type="number" [(ngModel)]="conductor.tarifa"></ion-input>
     </ion-item>
 
     <ion-item>
         <ion-label floating>Restricción distancia máxima (en metros)</ion-label>
-        <ion-input type="text" [(ngModel)]="conductor.distanciaMaxima"></ion-input>
+        <ion-input type="number" [(ngModel)]="conductor.distanciaMaxima"></ion-input>
     </ion-item>
     
     <ion-input type="text" hidden [(ngModel)]="conductor.estado" value="PendienteAprobacion"></ion-input>

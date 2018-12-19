@@ -1,8 +1,10 @@
 import { Component, Query } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, Loading } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, Loading,  MenuController } from 'ionic-angular';
 import { AngularFireDatabase, snapshotChanges } from 'angularfire2/database';
 import { DetalleConductorPage } from '../detalle-conductor/detalle-conductor';
 import firebase from 'firebase';
+import { UsuarioServicioProvider } from '../../providers/usuario-servicio/usuario-servicio';
+import { AdministradorPage } from '../administrador/administrador';
 
 /**
  * Generated class for the AdminConductoresPage page.
@@ -21,26 +23,48 @@ export class AdminConductoresPage {
   usuarios = [];
   conductores: any = [];
   estados = [];
-
+  conductoresOrdenados:any = [];
+  flag;
   constructor(
     public loadingCtrl: LoadingController,
     public navCtrl: NavController,
     public navParams: NavParams,
+    public menuCtrl: MenuController,
+    public usuarioServicio: UsuarioServicioProvider,
     public afDB: AngularFireDatabase) {
+      this.menuCtrl.enable(false, 'myMenu');//para desactivar el menu desplegable en esta pagina
 
-    this.getUsuarios()
-      .valueChanges().subscribe(usuariosGuardados => {
-        this.conductores = usuariosGuardados;
-        console.log(this.conductores);
-      });
-    console.log("conductores" + this.conductores);
+      console.log(this.navParams.get('flag'));
+      console.log(this.navParams.get('data'));
 
+      
+//    this.getConductoresOrdenados();
+
+    usuarioServicio.changeMessage('asda');
+
+    usuarioServicio.currentMesagge.subscribe(message => {
+    });
+    
+    usuarioServicio.changeMessage('asda');
+    
     this.buscarEstadoConductores();
+  
     console.log(this.estados);
     console.log(this.usuarios);
+
+    usuarioServicio.changeMessage('asda');
+
+    usuarioServicio.currentMesagge.subscribe(message => {
+    });
+
+    usuarioServicio.changeMessage('asda');
+
+
   }
 
-
+  iraMenuAdmin(){
+    this.navCtrl.setRoot(AdministradorPage);
+  }
 
   buscarEstadoConductores() {
 
@@ -49,12 +73,22 @@ export class AdminConductoresPage {
       let userRef = firebase.database().ref('usuarios/' + snapshot.key);
         var evaluarEstado = snapshot.val();
         if (evaluarEstado.estado != "-" && evaluarEstado.estado) {
-        this.estados.push(snapshot.val());
+        //this.estados.push(snapshot.val());
         userRef.on('value', userSnap => {
-          console.log(userSnap.val()); // trae bien los datos del usuario
-          this.usuarios.push(userSnap.val());
+          var value = userSnap.val();
+          var val  = snapshot.val();
+          value.estado = val.estado;
+          if (value.estado == 'PendienteAprobacion'){ value.color = '#E88E0C' };
+          if (value.estado == 'Aprobado'){ value.color = '#32db64' };
+          if (value.estado == 'DadoDeBaja'){ value.color = '#f53d3d' };
+          if (value.estado == 'EnLinea'){ value.color = '#488aff' };
+          if (value.estado == 'FueraDeLinea'){ value.color = '#0F0CD1' };
+          if (value.estado == 'NoAprobado'){ value.color = '#E80028' };
+          if (value.estado == 'Ocupado'){ value.color = '#D1970A' };
+          //console.log(userSnap.val()); // trae bien los datos del usuario
+          this.usuarios.push(value);
         });
-      } //seasdasdasra
+      } 
     });
 
     console.log(this.estados);
@@ -62,9 +96,37 @@ export class AdminConductoresPage {
 
   }
 
-  public getUsuarios() {
-    return this.afDB.list('usuarios/');
+  getConductoresOrdenados() {
+
+    firebase.database().ref('conductor/').orderByChild('estado').on('child_added', (snapshot) => {
+        var evaluarEstado = snapshot.val();
+        if (evaluarEstado.estado != "-" && evaluarEstado.estado) {
+          this.conductoresOrdenados.push(evaluarEstado);
+      } 
+    });
+
   }
+
+  /*public ionViewWillEnter() {
+    this.flag = this.navParams.get('value')|| null;
+    if (this.flag == 'actualizar'){
+      this.conductores = [];
+      this.conductoresOrdenados = [];
+      this.buscarEstadoConductores();
+      console.log(this.estados);
+      console.log(this.usuarios);
+  
+      
+      this.usuarioServicio.changeMessage('asda');
+  
+      this.usuarioServicio.currentMesagge.subscribe(message => {
+      });
+  
+      this.usuarioServicio.changeMessage('asda');
+  
+
+    }
+} */
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AdminConductoresPage');

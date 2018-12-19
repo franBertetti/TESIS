@@ -4,6 +4,7 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import firebase from 'firebase';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AdminConductoresPage } from '../admin-conductores/admin-conductores';
+import { UsuarioServicioProvider } from '../../providers/usuario-servicio/usuario-servicio';
 
 /**
  * Generated class for the DetalleConductorPage page.
@@ -26,11 +27,13 @@ export class DetalleConductorPage {
   fotoCarnet: any;
   tarifa: any;
   estadoConductores: any = [];
+  flag = true;
 
 
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
+    public usuarioServicio: UsuarioServicioProvider,
     public afDB: AngularFireDatabase,
     public fireAuth: AngularFireAuth) {
     this.id = navParams.get('id');/*con navparams tomo el valor que pase en el metodo gotodetail tomando el id que pasa el metodo */
@@ -64,9 +67,9 @@ export class DetalleConductorPage {
 
   }
 
-    public getEstadoConductores(){
+  public getEstadoConductores() {
     return this.afDB.list('estadoConductor/');
-}  
+  }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad DetalleConductorPage');
@@ -83,15 +86,21 @@ export class DetalleConductorPage {
     this.afDB.object('usuarios/' + id)
       .valueChanges().subscribe(UsuarioGuardado => {
         this.conductor = UsuarioGuardado;
+        this.conductor.estado = this.datosConductor.estado;
         console.log("conductor:" + this.conductor);
       });
   }
 
-  actualizarEstadoSolicitud(){
-    this.afDB.database.ref('conductor/'+this.id+'/estado').set(this.conductor.estado);
-    alert('Estado de solicitud actualizada');
-    this.navCtrl.push(AdminConductoresPage);
-  }
-
-//
+  ionViewWillLeave() {
+    this.navCtrl.getPrevious().data.value ='actualizar';
 }
+
+  actualizarEstadoSolicitud() {
+    this.afDB.database.ref('conductor/' + this.id + '/estado').set(this.conductor.estado);
+    alert('Estado de solicitud actualizada');
+    //this.usuarioServicio.changeMessage('asda');
+    this.navCtrl.setRoot(AdminConductoresPage);
+
+  }
+}
+

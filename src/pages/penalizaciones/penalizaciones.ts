@@ -23,13 +23,11 @@ export class PenalizacionesPage {
   penalizaciones: any = [];
   message: string = 'hola';
   fotoPerfil;
-  isCollapsed:boolean  = true;
+  isCollapsed: any = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public fireAuth: AngularFireAuth,
     public afDB: AngularFireDatabase,
     public usuarioServicio: UsuarioServicioProvider) {
-
-
 
     this.id = this.navParams.get('id');
     console.log(this.id);
@@ -56,8 +54,13 @@ export class PenalizacionesPage {
 
   }
 
-  toggleCollapse(){
-    this.isCollapsed = !this.isCollapsed;
+  toggleCollapse(i) {
+    console.log(i);
+    this.isCollapsed[i] = !this.isCollapsed[i];
+/*    this.usuarioServicio.changeMessage('asda');
+
+    this.usuarioServicio.currentMesagge.subscribe(message => { });
+    this.usuarioServicio.changeMessage('asda');*/
   }
 
   getPenalizaciones() {
@@ -66,15 +69,55 @@ export class PenalizacionesPage {
       value.numContratacion = snapshot.key;
       if (value.idCliente == this.id) {
 
+        console.log('num fotos:' + value.cantFotos);
+        console.log('num contratacion:' + value.numContratacion);
+
+        value.fotosPenalizacion = [];
+        var q = 0;
+        for (q; q < value.cantFotos; q++) {
+
+          firebase.storage().ref('Penalizacion/' + value.numContratacion + '/foto' + q + '.png').getDownloadURL().then((url) => {
+              console.log(url);
+              value.fotosPenalizacion[q] = url;
+              console.log('direccionURL:');
+              console.log(value.fotosPenalizacion[q]);
+            });
+          
+        }
+
+        // value.fotosPenalizacion = this.getFotosPenalizacion(value.numContratacion, value.cantFotos);
+
+        /*        for (var q = 0; q < value.cantFotos; q++){
+          firebase.storage().ref('penalizacion/' + value.numContratacion + '/foto'+ q +'.png').getDownloadURL().then((url) => {
+            value.fotosPenalizacion[q] = url;
+          });          
+        
+        }
+  */
+
         firebase.storage().ref('FotosUsuario/' + value.idConductor + '/fotoPerfil.png').getDownloadURL().then((url) => {
           value.fotoPerfil = url;
         });
         console.log("value:");
         console.log(value);
         this.penalizaciones.push(value);
+        this.isCollapsed.push(true);
       }
     });
 
+  }
+
+  getFotosPenalizacion(numContratacion, cantFotos) {
+
+    var fotosPenalizacion = [];
+
+    for (var q = 0; q < cantFotos; q++) {
+      firebase.storage().ref('Penalizacion/' + numContratacion + '/foto' + q + '.png').getDownloadURL().then((url) => {
+        console.log(url);
+        fotosPenalizacion[q] = url;
+      });
+      if (q == cantFotos) { return fotosPenalizacion; }
+    }
   }
 
   ionViewDidLoad() {

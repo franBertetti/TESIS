@@ -45,6 +45,9 @@ export class UsuarioServicioProvider {
 
   usuario:any = {title:'nuse' , description:'velo'};
 
+  private arrayDeServicio = new BehaviorSubject([]);
+  currentArray = this.arrayDeServicio.asObservable();
+
 /*  private objeto = new BehaviorSubject<Object>{title:'nuse', description:'velo'};
   objetoActual = this.objeto.asObservable();*/
 
@@ -113,5 +116,21 @@ export class UsuarioServicioProvider {
     this.Usuario.uid = uid;
     this.Usuario.provider = provider;
   }
+
+
+  getConductoresOrdenados() {
+
+    var conductoresOrdenados:any = [];
+
+    firebase.database().ref('conductor/').orderByChild('estado').on('child_added', (snapshot) => {
+        var evaluarEstado = snapshot.val();
+        if (evaluarEstado.estado != "-" && evaluarEstado.estado) {
+          conductoresOrdenados.push(evaluarEstado);
+      } 
+    });
+    
+    this.currentArray = conductoresOrdenados;
+  }
+
  
 }

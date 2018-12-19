@@ -42,5 +42,20 @@ page-realizar-reserva {
         padding: 0 2.6rem;
     }
 
+    .item.wrap, .item-content.wrap {
+        white-space: normal !important;
+        }
+
+    .alert-md .alert-radio-label{
+    overflow: hidden;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    text-overflow: normal !important;
+    white-space: nowrap;
+    color: initial;
+    padding: 13px 26px;
+    }
 
 }

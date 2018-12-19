@@ -15,8 +15,6 @@
 
 <ion-content padding>
 
-    <ion-label text-aling-left>Proximas reservas</ion-label>
-
     <ion-row>
       <button ion-button class="btn" [class.btnViajesUsuario]="btnUsuario" col (click)="traerViajesComoUsuario(5)"> Como
         Cliente</button>
@@ -25,7 +23,7 @@
     </ion-row>
   
     <div *ngIf="btnUsuario == true && viajesComoUsuario.length == 0">
-      <ion-label text-wrap> No realizo viajes </ion-label>
+      <ion-label text-wrap> No realizó viajes como pasajero </ion-label>
     </div>
     <div *ngIf="btnUsuario == true && viajesComoUsuario.length > 0">
   
@@ -46,7 +44,7 @@
     </div>
   
     <div *ngIf="btnConductor == true && viajesComoConductor.length == 0">
-      <ion-label text-wrap> No realizo viajes </ion-label>
+      <ion-label text-wrap> No realizó viajes como conductor </ion-label>
     </div>
     <div *ngIf="btnConductor == true && viajesComoConductor.length > 0">
      

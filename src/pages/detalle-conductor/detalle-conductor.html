@@ -12,49 +12,68 @@
 
 </ion-header>
 
+<style>
+  .text-input[disabled] {
+     opacity: 1; 
+}
+</style>
 
 <ion-content padding>
 
   <ion-content>
     <ion-list>
 
-      <ion-label> Información de conductor: </ion-label>
+      <ion-label style="font-size: large;" text-center> Información de conductor: </ion-label>
 
-      <ion-label floating>Nombre: {{conductor.nombreCompleto}}</ion-label>
-      <!-- para poder comunicar los datos con la bd, se usa el [(ngmodel)]="note.title"-->
-      <br>
-      <ion-label floating>Tarifa por cuadra: {{datosConductor.tarifa}} $(pesos)</ion-label>
-      <br>
-      <ion-label floating text-wrap>Restricción distancia máxima: {{datosConductor.distanciaMaxima}} m </ion-label>
-      <br>
-      <ion-label floating text-wrap> Tipo de Vehiculo: {{datosConductor.VehiculosHabilitado}} </ion-label>
-      <br>
-      <br>
-      <ion-label text-center> Foto Carnet:</ion-label>
+      <ion-item>
+        <ion-label floating>Nombre completo </ion-label>
+        <ion-input disabled="{{isDisabled}}" type="text" value="{{conductor.nombreCompleto}}"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Tarifa por cuadra </ion-label>
+        <ion-input disabled="{{isDisabled}}" type="text" value="{{datosConductor.tarifa}}$ (pesos)"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Restricción distancia máxima </ion-label>
+        <ion-input disabled="{{isDisabled}}" type="text" value="{{datosConductor.distanciaMaxima}} metros"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Tipo de Vehiculo/s habilitado/s: </ion-label>
+        <ion-input text-wrap disabled="{{isDisabled}}" type="text" value="{{datosConductor.VehiculosHabilitado}}"></ion-input>
+      </ion-item>
+
+
+
+      <ion-label style="font-size: large;" text-center> Foto Carnet:</ion-label>
       <ion-row>
         <p>
           <img class="foto" src="{{fotoCarnet}}">
         </p>
       </ion-row>
       <br>
-      <ion-label text-center> Foto DNI (con conductor incluido en foto):</ion-label>
+      <ion-label style="font-size: large;" text-center> Foto DNI <br>(con conductor incluido en foto):</ion-label>
       <ion-row>
         <p>
           <img class="foto" src="{{fotoDni}}">
         </p>
       </ion-row>
+      <br>
     </ion-list>
-    <br>
 
     <ion-label block full color="primary">Estado Conductor </ion-label>
-    
+
     <ion-item>
       <ion-select [(ngModel)]="conductor.estado" multiple="false">
-        <ion-option  [selected]="datosConductor.estado == estadoConductor.nombre" *ngFor="let estadoConductor of estadoConductores" value="{{estadoConductor.nombre}}">{{estadoConductor.nombre}}</ion-option>
+        <ion-option [selected]="datosConductor.estado == estadoConductor.nombre" text-wrap *ngFor="let estadoConductor of estadoConductores"
+          value="{{estadoConductor.nombre}}">{{estadoConductor.nombre}}</ion-option>
       </ion-select>
     </ion-item>
 
     <div padding>
-      <button ion-button block color="secondary" (click)="actualizarEstadoSolicitud()"> Actualizar Estado Solicitud </button>
+      <button ion-button block color="secondary" (click)="actualizarEstadoSolicitud()"> Actualizar Estado Solicitud
+      </button>
     </div>
   </ion-content>

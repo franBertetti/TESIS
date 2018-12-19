@@ -1,0 +1,65 @@
+<!--
+  Generated template for the DatosConductorPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Datos Conductor</ion-title>
+  </ion-navbar>
+
+  <style>
+/*    .text-input[disabled], .text-input[disabled]  {
+       opacity: 1; 
+  }*/
+  </style>
+  
+
+
+</ion-header>
+
+
+<ion-content padding>
+
+    <div padding>
+        <button *ngIf="isDisabled" ion-button block (click)="editarCampos()">Editar Perfil</button>
+      </div>
+        <h6 text-center>Foto Carnet de  Conducir </h6>
+  <p><img *ngIf="fotoCarnet" class="foto" src="{{fotoCarnet}}"></p>
+
+      <h6 text-center> Foto DNI Conductor </h6>
+  <ion-row>
+    <p><img *ngIf="fotoDni" class="foto" src="{{fotoDni}}"></p>
+  </ion-row>
+
+
+    <form [formGroup]="myForm" (ngSubmit)="setDatosConductor()">
+
+      <ion-list>
+
+        <ion-item>
+          <ion-label floating>Tarifa por cuadra</ion-label>
+          <ion-input formControlName="tarifa" disabled="{{isDisabled}}" type="number" [(ngModel)]="conductor.tarifa"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label floating>Restricción distancia máxima (en metros)</ion-label>
+          <ion-input formControlName="distanciaMaxima" disabled="{{isDisabled}}" type="number"  [(ngModel)]="conductor.distanciaMaxima"></ion-input>
+        </ion-item>
+
+        <!--<div padding>
+          <button *ngIf="isDisabled == false" ion-button block type="submit" >Registrar Datos</button>
+        </div>-->
+
+        <ion-row>
+            <button *ngIf="isDisabled == false" ion-button col-5 offset-1 (click)="cancelarGuardar()">Cancelar</button>
+            <button *ngIf="isDisabled == false" ion-button  [disabled]="!myForm.valid" col-5>Actualizar Datos</button>
+          </ion-row>
+
+      </ion-list>
+    </form>
+
+
+</ion-content>

@@ -262,6 +262,19 @@ export class DatosPersonalesUsuarioPage {
             text: 'Aceptar',
             handler: () => {
 
+
+              let loading = this.loadingCtrl.create({
+                spinner: 'crescent',
+                content: 'Guardado cambios..',
+                duration: 3000
+              });
+  
+              loading.onDidDismiss(() => {
+                console.log('Dismissed loading');
+              });
+  
+              loading.present();
+              
               this.navCtrl.setRoot('PerfilClientePage', { 'Photo': this.fotoPerfil });
               console.log('Buy clicked');
             }

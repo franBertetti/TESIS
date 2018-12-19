@@ -52,6 +52,7 @@ import { ServicioBusquedaConductoresProvider } from '../providers/servicio-busqu
 import { Facebook } from '@ionic-native/facebook';
 import { TipoPenalizacionPageModule } from '../pages/tipo-penalizacion/tipo-penalizacion.module';
 import { DetalleTipoPenalizacionPageModule } from '../pages/detalle-tipo-penalizacion/detalle-tipo-penalizacion.module';
+import { DatosConductorPageModule } from '../pages/datos-conductor/datos-conductor.module';
 
 
 export const firebaseConfig = {
@@ -107,7 +108,8 @@ export const firebaseConfig = {
     HttpClientModule,
     NgxDatatableModule,
     TipoPenalizacionPageModule,
-    DetalleTipoPenalizacionPageModule
+    DetalleTipoPenalizacionPageModule,
+    DatosConductorPageModule
     /*,
     AdministradorPage*/
   ],

@@ -27,3 +27,25 @@ a {
     color: #014c8c!important;
     text-decoration: underline!important;
   }
+  
+  .alert-md .alert-radio-label {
+    overflow: hidden;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    text-overflow: inherit;
+    white-space: normal !important;
+    color: initial;
+    padding: 13px 26px;
+}
+
+.select-text {
+  width: 230px !important;
+  white-space: normal !important;
+  ;
+}
+
+ion-select {
+  max-width: 230px !important;
+}
