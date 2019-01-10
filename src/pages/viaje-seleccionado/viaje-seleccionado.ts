@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { PenalizacionPage } from '../penalizacion/penalizacion';
 import { InicioViajePage } from '../inicio-viaje/inicio-viaje';
+import firebase from 'firebase';
 
 /**
  * Generated class for the ViajeSeleccionadoPage page.
@@ -19,6 +20,7 @@ export class ViajeSeleccionadoPage {
 
   numeroContratacion;
   viaje:any;
+  
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
 
@@ -38,6 +40,7 @@ export class ViajeSeleccionadoPage {
   }
 
   iraInicioViaje(){
+    firebase.database().ref('viaje/' + this.numeroContratacion + '/estado').set('finalizado');    
     this.navCtrl.push(InicioViajePage);
   }
 }

@@ -32,7 +32,7 @@
   <ion-label text-center> *Foto Perfil</ion-label>
   <ion-row>
     <button *ngIf="isDisabled == false" ion-button col-5 offset-1 (click)="tomarFotoPerfil()">Toma una foto</button>
-    <button *ngIf="isDisabled == false" ion-button col-5 (click)="buscarFotoPerfil()">Seleccionar de galería</button>
+    <button text-wrap *ngIf="isDisabled == false" ion-button col-5 (click)="buscarFotoPerfil()">Seleccionar de galería</button>
     <p>
       <img *ngIf="fotoPerfil" class="foto" src="{{fotoPerfil}}">
     </p>
@@ -89,12 +89,12 @@
       </ion-row>
 
       <ion-row>
-        <button *ngIf="isDisabled == false && registrandoUsuario == false" ion-button col-5 offset-1 (click)="cancelarGuardar()">Cancelar</button>
-        <button *ngIf="isDisabled == false && registrandoUsuario == false" [disabled]="!myForm.valid" ion-button col-5>Actualizar Datos</button>
+        <button color="danger" *ngIf="isDisabled == false && registrandoUsuario == false" ion-button col-5 offset-1 (click)="cancelarGuardar()">Cancelar</button>
+        <button color="secondary" *ngIf="isDisabled == false && registrandoUsuario == false" [disabled]="!myForm.valid" ion-button col-5>Actualizar Datos</button>
       </ion-row>
 
       <div padding>
-          <button *ngIf="registrandoUsuario == true || (isDisabled == true && flag == false)" ion-button block type="submit"
+          <button color="secondary" *ngIf="registrandoUsuario == true || (isDisabled == true && flag == false)" ion-button block type="submit"
             [disabled]="!myForm.valid">Registrar Datos</button>
         </div>
 

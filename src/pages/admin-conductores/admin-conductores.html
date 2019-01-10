@@ -34,6 +34,34 @@
 
 <ion-content padding>
 
+
+  <ngx-datatable 
+  class="fullscreen"
+  [ngClass]="tablestyle"
+  [rows]="usuarios"
+  [columnMode]="'force'"
+  [reorderable]="reorderable"
+  [rowHeight]="'auto'"
+  [rowClass]="getRowClass"
+  [summaryRow]="true">
+ 
+    <ngx-datatable-column prop="nombreCompleto" [resizeable]="false"></ngx-datatable-column>
+ 
+<!--    <ngx-datatable-column name="Gender"></ngx-datatable-column>
+    -->
+    <ngx-datatable-column name="estado"></ngx-datatable-column>
+ 
+    <ngx-datatable-column name="id" [resizeable]="false">
+      <ng-template ngx-datatable-header-template>
+        Action
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <button ion-button small outline color="light" (click)="irADetalleConductor(id)">Details</button>
+      </ng-template>
+    </ngx-datatable-column>
+ 
+  </ngx-datatable>
+  
   <h6 text-center> <br> Listado Conductores </h6>
 
   <ion-list>

@@ -34,7 +34,13 @@ export class FcmProvider {
     let token;
   if(this.platform.is('android')){
     token = await this.firebaseNative.getToken();
-  }
+  } 
+
+  if (this.platform.is('ios')) {
+    token = await this.firebaseNative.getToken();
+    await this.firebaseNative.grantPermission();
+  } 
+
   if (!this.platform.is('cordova')){}
     
     return this.saveTokenToFirestore(token);
@@ -51,6 +57,22 @@ public setId(id){
   console.log(this.id);
 }
 
+
+public setEstadoConductor(token){
+  if (!token) return;
+
+  const deviceRef = this.afs.collection('conductores')
+
+  const docData = {
+    token,
+    userId: this.id,
+    estado: 'PendienteAprobacion'
+  }
+  
+  // Add a new document in collection "cities" with ID 'LA'
+  return deviceRef.doc(this.id).set(docData);
+
+}
 
 
 private saveTokenToFirestore(token){ //envia el token a la base de datos de firebase

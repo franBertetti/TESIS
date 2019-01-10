@@ -40,7 +40,7 @@
   <div *ngIf="cant > 0">
 
     <ion-list>
-      <ion-item *ngFor="let viaje of viajesComoConductor; let i = index" (click)="iraViajeSeleccionado(viaje)">
+      <ion-item *ngFor="let viaje of viajesComoConductor; let i = index">
         <h2 text-wrap>Numero contratacion: {{ viaje.numeroContratacion }}</h2>
         <h2 text-wrap>Pasajero: {{ viaje.nombreCliente }}</h2>
         <h2 text-wrap> Contratacion: {{ viaje.tipoContratacion }} </h2>
@@ -48,8 +48,8 @@
         <h5 text-wrap>Direccion de busqueda: {{ viaje.direccionDeBusqueda }}</h5>
         <h5 text-wrap>{{ viaje.fecha }},{{ viaje.hora }}</h5>
         <ion-row>
-            <button ion-button col-5 offset-1 (click)="cancelarSolicitud(i)">Cancelar Solicitud</button>
-            <button ion-button col-5 (click)="aceptarSolicitud(i)">Aceptar Solicitud</button>
+            <button ion-button color="danger" col-5 offset-1 (click)="cancelarSolicitud(i)">Cancelar Solicitud</button>
+            <button ion-button color="secondary" col-5 (click)="aceptarSolicitud(i)">Aceptar Solicitud</button>
           </ion-row>
       </ion-item>
     </ion-list>

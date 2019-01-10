@@ -9,6 +9,7 @@ import { firebaseConfig } from '../../app/app.module';
 import { initializeApp } from 'firebase';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { UsuarioServicioProvider } from '../../providers/usuario-servicio/usuario-servicio';
+import { FcmProvider } from '../../providers/fcm/fcm';
 
 
 
@@ -43,9 +44,11 @@ export class RegistrarConductorPage {
     public afDB: AngularFireDatabase,
     public loadingCtrl: LoadingController,
     public fireAuth: AngularFireAuth,
+    public afAuth: AngularFireAuth,
     public usuarioServicio: UsuarioServicioProvider,
     public alertCtrl: AlertController,
-    public camera: Camera) {
+    public camera: Camera,
+    public fcm: FcmProvider) {
     this.menuCtrl.enable(true, 'myMenu');//para desactivar el menu desplegable en esta pagina
 
     if (this.navParams.get('id')){
@@ -220,6 +223,11 @@ export class RegistrarConductorPage {
             const selfieRefDni = firebase.storage().ref('FotosConductor/' + this.usuario.id + '/fotoDni.png');
             selfieRefDni.putString(this.perfilDni, 'base64', { contentType: 'image/png' });
 
+            var token = firebase.database().ref('usuario/' + this.id + '/token');
+
+            this.fcm.setId(this.id);
+            this.fcm.setEstadoConductor(token);
+
             let loading = this.loadingCtrl.create({
               spinner: 'crescent',
               content: 'Guardado solicitud..',
@@ -236,6 +244,8 @@ export class RegistrarConductorPage {
 
             this.usuarioServicio.currentMesagge.subscribe(message => { });
             this.usuarioServicio.changeMessage('asda');
+
+
 
             this.navCtrl.setRoot('PerfilClientePage', { 'flag': false });
           }

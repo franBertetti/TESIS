@@ -9,6 +9,12 @@ import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 admin.initializeApp();
 
+ export const helloWorld = functions.https.onRequest((request, response) => {
+  console.log('hello');
+  response.send("Hello from Firebase!");
+ });
+
+
 exports.newSubscriberNotification = functions.firestore
     .document('subscribers/{subscriptionId}')
     .onCreate(async event => {
@@ -48,7 +54,6 @@ exports.newSubscriberNotification = functions.firestore
     return admin.messaging().sendToDevice(tokens, payload)
 
 });
-
 
 
 exports.nuevaNotificacionDeConductor = functions.firestore

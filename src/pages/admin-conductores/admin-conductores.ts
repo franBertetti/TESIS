@@ -20,6 +20,9 @@ import { AdministradorPage } from '../administrador/administrador';
 })
 export class AdminConductoresPage {
 
+
+  tablestyle = 'bootstrap';
+ 
   usuarios = [];
   conductores: any = [];
   estados = [];
@@ -59,6 +62,12 @@ export class AdminConductoresPage {
 
     usuarioServicio.changeMessage('asda');
 
+    usuarioServicio.changeMessage('asda');
+
+    usuarioServicio.currentMesagge.subscribe(message => {
+    });
+
+    usuarioServicio.changeMessage('asda');
 
   }
 

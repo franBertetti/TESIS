@@ -23,8 +23,8 @@
 
     <ion-label text-center> Foto DNI (con conductor incluido en foto)</ion-label>
     <ion-row>
-      <button ion-button col-5 offset-1 (click)="tomarFotoDni()">Toma una foto</button>
-      <button ion-button col-5          (click)="buscarFotoDni()">Seleccionar de galería</button>
+      <button ion-button col-5 text-wrap offset-1 (click)="tomarFotoDni()">Toma una foto</button>
+      <button ion-button col-5 text-wrap         (click)="buscarFotoDni()">Seleccionar de galería</button>
     <p><img *ngIf="fotoDni" class="foto" src="{{fotoDni}}"></p> 
     </ion-row>
     <ion-list> 

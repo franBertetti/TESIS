@@ -188,7 +188,8 @@ export class LoginPage implements OnInit {
       });
 
       console.log(this.user);
-      if (this.myForm.value.email == 'admin@admin.com' && this.myForm.value.password == 'admin123') {
+      if (this.myForm.value.email == 'admin@admin.com' && this.myForm.value.password == 'admin123' ||
+      this.myForm.value.email == 'Admin@admin.com' && this.myForm.value.password == 'admin123') {
         this.navCtrl.setRoot('AdministradorPage');
       } else {
         this.navCtrl.setRoot('PerfilClientePage');

@@ -67,7 +67,7 @@
 
   
 
-  <div>
+  <div *ngIf="mensajeNoConductor != 'Usted no esta registrado como conductor.' ">
     <button ion-button clear (click)="irAsolicitudesDeViaje()">
       Solicitudes de Viajes
       <ion-icon *ngIf="cantViajesAconfirmar > 0" name="notifications">

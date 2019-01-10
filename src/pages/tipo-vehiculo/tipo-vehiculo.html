@@ -18,7 +18,7 @@
   <ion-list>
     <ion-label> Tipos de Vehiculos</ion-label>
      <button ion-item *ngFor="let TipoVehiculo of TipoVehiculos" (click)="irADetalleTipoVehiculo(TipoVehiculo.id)">
-       <span>{{ TipoVehiculo.nombre }}</span>
+       <span text-wrap>{{ TipoVehiculo.nombre }}</span>
      </button>  
    </ion-list>
    <div padding>

@@ -13,7 +13,12 @@
   <style>
 /*    .text-input[disabled], .text-input[disabled]  {
        opacity: 1; 
+       
   }*/
+    img{
+      width: 330px !important;
+      height: 200px !important;
+  }
   </style>
   
 
@@ -54,8 +59,8 @@
         </div>-->
 
         <ion-row>
-            <button *ngIf="isDisabled == false" ion-button col-5 offset-1 (click)="cancelarGuardar()">Cancelar</button>
-            <button *ngIf="isDisabled == false" ion-button  [disabled]="!myForm.valid" col-5>Actualizar Datos</button>
+            <button *ngIf="isDisabled == false" color="danger" ion-button col-5 offset-1 (click)="cancelarGuardar()">Cancelar</button>
+            <button *ngIf="isDisabled == false" color="secondary" ion-button  [disabled]="!myForm.valid" col-5>Actualizar Datos</button>
           </ion-row>
 
       </ion-list>
