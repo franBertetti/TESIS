@@ -36,6 +36,7 @@ export class RegistrarConductorPage {
   perfilCarnet: any;
   usuario: any = {};
   id;
+  token;
 
 
   constructor(public navCtrl: NavController,
@@ -168,6 +169,9 @@ export class RegistrarConductorPage {
     this.afDB.object('usuarios/' + user.uid)
       .valueChanges().subscribe(usuarioGuardado => {
         this.usuario = usuarioGuardado;
+        console.log(this.usuario);
+        console.log(this.usuario.token);
+        this.token = this.usuario.token;
       });
     //con el valueChanges le estoy diciendo q ante cualquier cambio de estado se suscriba a los cambios 
   }
@@ -223,10 +227,10 @@ export class RegistrarConductorPage {
             const selfieRefDni = firebase.storage().ref('FotosConductor/' + this.usuario.id + '/fotoDni.png');
             selfieRefDni.putString(this.perfilDni, 'base64', { contentType: 'image/png' });
 
-            var token = firebase.database().ref('usuario/' + this.id + '/token');
-
-            this.fcm.setId(this.id);
-            this.fcm.setEstadoConductor(token);
+            //this.token = this.usuario.token;
+            //console.log(this.token);
+            this.fcm.setId(this.usuario.id);
+            this.fcm.setEstadoConductor(this.usuario.id, this.token, this.usuario.nombreCompleto);
 
             let loading = this.loadingCtrl.create({
               spinner: 'crescent',

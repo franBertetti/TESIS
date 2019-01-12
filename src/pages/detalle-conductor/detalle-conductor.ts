@@ -5,6 +5,7 @@ import firebase from 'firebase';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AdminConductoresPage } from '../admin-conductores/admin-conductores';
 import { UsuarioServicioProvider } from '../../providers/usuario-servicio/usuario-servicio';
+import { FcmProvider } from '../../providers/fcm/fcm';
 
 /**
  * Generated class for the DetalleConductorPage page.
@@ -35,7 +36,8 @@ export class DetalleConductorPage {
     public navParams: NavParams,
     public usuarioServicio: UsuarioServicioProvider,
     public afDB: AngularFireDatabase,
-    public fireAuth: AngularFireAuth) {
+    public fireAuth: AngularFireAuth,
+    public fcm: FcmProvider) {
     this.id = navParams.get('id');/*con navparams tomo el valor que pase en el metodo gotodetail tomando el id que pasa el metodo */
     /*paso el id que tome para q el metodo use dicho id */
 
@@ -98,6 +100,7 @@ export class DetalleConductorPage {
   actualizarEstadoSolicitud() {
     this.afDB.database.ref('conductor/' + this.id + '/estado').set(this.conductor.estado);
     alert('Estado de solicitud actualizada');
+    this.fcm.setNuevoEstadoConductor(this.conductor.id, this.conductor.token, this.conductor.nombreCompleto, this.conductor.estado);
     //this.usuarioServicio.changeMessage('asda');
     this.navCtrl.setRoot(AdminConductoresPage);
 

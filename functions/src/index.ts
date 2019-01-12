@@ -5,7 +5,6 @@ import * as functions from 'firebase-functions';
 // export const helloWorld = functions.https.onRequest((request, response) => {
 //  response.send("Hello from Firebase!");
 // });
-
 import * as admin from 'firebase-admin';
 admin.initializeApp();
 
@@ -57,20 +56,21 @@ exports.newSubscriberNotification = functions.firestore
 
 
 exports.nuevaNotificacionDeConductor = functions.firestore
-    .document('conductores/{conductorId}')
+    .document('conductores/{userId}')
     .onCreate(async event => {
         
     const data = event.data();
 
     const userId = data.userId
-    const conductor = data.conductorId
+    const estado = data.estado
 
     // Notification content
     const payload = {
       notification: {
           title: 'Tesis App te da la bienvenida como conductor ! ',
-          body: `Bienvenido ${conductor},ya estas listo para brindar el servicio!`,
-          icon: 'https://img.icons8.com/metro/1600/idea.png'
+          body: `Su estado es ${estado},ya estas listo para brindar el servicio!`,
+          icon: 'https://img.icons8.com/metro/1600/idea.png',
+          sound: 'default'
       }
     }
 
@@ -95,21 +95,23 @@ exports.nuevaNotificacionDeConductor = functions.firestore
 
 });
 
-exports.notificarEstadoConductor = functions.firestore
-.document('conductores/{conductorId}')
+exports.notificarEstadoAprobadoConductor = functions.firestore
+.document('conductores/{userId}')
 .onUpdate(async event => {
 
   const data = event.after.data();
 
   const userId = data.userId
-  const conductor = data.conductorId
+  const estado = data.estado
+  const nombre = data.nombre
 
    // Notification content
    const payload = {
     notification: {
-        title: 'Tesis App te da la bienvenida como conductor ! ',
-        body: `Bienvenido ${conductor},ya estas listo para brindar el servicio!`,
-        icon: 'https://img.icons8.com/metro/1600/idea.png'
+        title: 'PickApp te da la bienvenida como conductor ! ',
+        body: `Bienvenido ${nombre},has sido autorizado para ser conductor!`,
+        icon: 'https://img.icons8.com/metro/1600/idea.png',
+        sound: 'default'
     }
   }
 
@@ -128,6 +130,10 @@ exports.notificarEstadoConductor = functions.firestore
       tokens.push( token )
     })
 
-    return admin.messaging().sendToDevice(tokens, payload)
+    if (estado === 'Aprobado'){
+       return admin.messaging().sendToDevice(tokens, payload)
+      }
+        return 'No es aprobado'; 
+      
 
 });

@@ -57,20 +57,51 @@ public setId(id){
   console.log(this.id);
 }
 
-
-public setEstadoConductor(token){
-  if (!token) return;
-
+public setNuevoEstadoConductor(id, token, nombre, estado){
   const deviceRef = this.afs.collection('conductores')
 
   const docData = {
     token,
-    userId: this.id,
+    userId: id,
+    nombre: nombre,
+    estado: estado
+  }
+
+  return deviceRef.doc(id).set(docData);
+
+}
+
+
+public setEstadoConductor(id, token, nombre){
+
+  const deviceRef = this.afs.collection('conductores')
+
+  //let token = firebase.database().ref('usuarios/'+ id + '/token');
+  
+  /*firebase.database().ref('usuarios/' + id + '/token').on('child_added', (snapshot) => {  
+    let tokenn = snapshot.val(); 
+    console.log(tokenn);
+  });
+  let toke = this.afDB.database.ref('usuarios/' + id + '/token');
+  console.log(toke);
+
+  if (!token) return;
+  console.log('token:');
+  console.log(token);
+  console.log('id:');
+  console.log(id);
+*/
+  const docData = {
+    token,
+    userId: id,
+    nombre: nombre,
     estado: 'PendienteAprobacion'
   }
   
   // Add a new document in collection "cities" with ID 'LA'
-  return deviceRef.doc(this.id).set(docData);
+  return deviceRef.doc(id).set(docData);
+
+  //return deviceRef.doc(id).set({'token': token, 'userId': id, 'estado': 'PendienteAprobacion' });
 
 }
 
