@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import firebase from 'firebase';
 import { PerfilClientePage } from '../perfil-cliente/perfil-cliente';
+import { FcmProvider } from '../../providers/fcm/fcm';
 
 
 /**
@@ -18,10 +19,12 @@ import { PerfilClientePage } from '../perfil-cliente/perfil-cliente';
 })
 export class SolicitudesConductorPage {
 
+  rta;
   viajesComoConductor: any = [];
   cant;
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    public AlertCtrl: AlertController) {
+    public AlertCtrl: AlertController,
+    public fcm: FcmProvider) {
 
     this.cant = this.navParams.get('cant');
     console.log(this.cant);
@@ -41,6 +44,18 @@ export class SolicitudesConductorPage {
           text: "Ok",
           role: 'cancel',
           handler: data => {
+
+            this.fcm.setConfirmacionSolicitudReserva(
+              this.rta = 'Cancelada',
+              this.viajesComoConductor[i].nombreCliente,
+              this.viajesComoConductor[i].nombreConductor,
+              this.viajesComoConductor[i].direccionDeBusqueda,
+              this.viajesComoConductor[i].fecha,
+              this.viajesComoConductor[i].hora,
+              this.viajesComoConductor[i].numeroContratacion,
+              this.viajesComoConductor[i].idUsuario,
+              this.viajesComoConductor[i].idConductor);
+
             console.log('Cancel clicked');
             firebase.database().ref('viaje/' + this.viajesComoConductor[i].numeroContratacion + '/Solicitud').set('Solicitud Rechazada');
             firebase.database().ref('viaje/' + this.viajesComoConductor[i].numeroContratacion + '/estado').set('Solicitud Rechazada');
@@ -63,16 +78,28 @@ export class SolicitudesConductorPage {
           text: "Ok",
           role: 'cancel',
           handler: data => {
+
+
+            this.fcm.setConfirmacionSolicitudReserva(
+              this.rta = 'Aceptada',
+              this.viajesComoConductor[i].nombreCliente,
+              this.viajesComoConductor[i].nombreConductor,
+              this.viajesComoConductor[i].direccionDeBusqueda,
+              this.viajesComoConductor[i].fecha,
+              this.viajesComoConductor[i].hora,
+              this.viajesComoConductor[i].numeroContratacion,
+              this.viajesComoConductor[i].idUsuario,
+              this.viajesComoConductor[i].idConductor);
+
             firebase.database().ref('viaje/' + this.viajesComoConductor[i].numeroContratacion + '/Solicitud').set('Solicitud Aceptada');
-    firebase.database().ref('viaje/' + this.viajesComoConductor[i].numeroContratacion + '/estado').set('En espera');
-    this.viajesComoConductor.splice(i, 1);
-    this.viajesComoConductor.splice(i, 1);
+            firebase.database().ref('viaje/' + this.viajesComoConductor[i].numeroContratacion + '/estado').set('En espera');
+            this.viajesComoConductor.splice(i, 1);
+            this.viajesComoConductor.splice(i, 1);
           }
         }
       ]
     });
     alert.present();
-   
   }
 
   iraPerfilCliente() {

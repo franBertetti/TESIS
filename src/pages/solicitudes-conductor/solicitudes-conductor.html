@@ -48,8 +48,8 @@
         <h5 text-wrap>Direccion de busqueda: {{ viaje.direccionDeBusqueda }}</h5>
         <h5 text-wrap>{{ viaje.fecha }},{{ viaje.hora }}</h5>
         <ion-row>
-            <button ion-button color="danger" col-5 offset-1 (click)="cancelarSolicitud(i)">Cancelar Solicitud</button>
-            <button ion-button color="secondary" col-5 (click)="aceptarSolicitud(i)">Aceptar Solicitud</button>
+            <button ion-button text-wrap color="danger" col-5 offset-1 (click)="cancelarSolicitud(i)">Cancelar Solicitud</button>
+            <button ion-button text-wrap color="secondary" col-5 (click)="aceptarSolicitud(i)">Aceptar Solicitud</button>
           </ion-row>
       </ion-item>
     </ion-list>

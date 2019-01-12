@@ -5,6 +5,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import firebase from 'firebase';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { UsuarioServicioProvider } from '../../providers/usuario-servicio/usuario-servicio';
+import { FcmProvider } from '../../providers/fcm/fcm';
 /**
  * Generated class for the DatosReservaPage page.
  *
@@ -36,7 +37,8 @@ export class DatosReservaPage {
     public menuCtrl: MenuController,
     public fireAuth: AngularFireAuth,
     public afDB: AngularFireDatabase,
-    public usuarioService: UsuarioServicioProvider) {
+    public usuarioService: UsuarioServicioProvider,
+    public fcm: FcmProvider) {
     this.menuCtrl.enable(true, 'myMenu');//para desactivar el menu desplegable en esta pagina
 
     this.getFechaActualFormateada();
@@ -68,18 +70,30 @@ export class DatosReservaPage {
     this.viaje.vehiculoReserva = this.datosReserva.vehiculoReserva;
     this.viaje.tipoContratacion = this.datosReserva.tipoReserva;
 
-    if  (this.datosReserva.tipoReserva == 'ReservaInmediata') {
-    this.viaje.estado = 'Conductor yendo a la ubicación';
+    const tokenCliente = this.usuario.token;
+    const tokenConductor = this.conductor.token;
 
-    this.afDB.database.ref('conductor/' + this.conductor.id + '/estado').set('Ocupado');
-    this.afDB.database.ref('viaje/' + this.numeroContratacion).set(this.viaje);    
-  }
+    console.log(tokenCliente);
+    console.log(tokenConductor);
+
+    if (this.datosReserva.tipoReserva == 'ReservaInmediata') {
+
+      this.fcm.setViajeReservaInmediata(this.viaje.nombreCliente, this.viaje.direccionDeBusqueda, this.viaje.fecha, this.viaje.hora, this.viaje.numeroContratacion, this.usuario.id, this.conductor.id);
+
+      this.viaje.estado = 'Conductor yendo a la ubicación';
+
+      this.afDB.database.ref('conductor/' + this.conductor.id + '/estado').set('Ocupado');
+      this.afDB.database.ref('viaje/' + this.numeroContratacion).set(this.viaje);
+    }
 
     if (this.datosReserva.tipoReserva == 'ReservaAnticipada') {
+
+      this.fcm.setSolicitudReservaAnticipada(this.viaje.nombreCliente, this.viaje.direccionDeBusqueda, this.viaje.fecha, this.viaje.hora, this.viaje.numeroContratacion, this.usuario.id, this.conductor.id);
+
       this.viaje.estado = 'En espera de confirmación';
       this.afDB.database.ref('viaje/' + this.numeroContratacion).set(this.viaje);
     }
-    
+
   }
 
   public getFechaActualFormateada() {
