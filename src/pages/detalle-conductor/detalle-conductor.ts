@@ -101,7 +101,7 @@ export class DetalleConductorPage {
     this.afDB.database.ref('conductor/' + this.id + '/estado').set(this.conductor.estado);
     alert('Estado de solicitud actualizada');
     this.fcm.setNuevoEstadoConductor(this.conductor.id, this.conductor.token, this.conductor.nombreCompleto, this.conductor.estado);
-    //this.usuarioServicio.changeMessage('asda');
+    //this.usuarioServicio.changeMessage('asdas');
     this.navCtrl.setRoot(AdminConductoresPage);
 
   }
