@@ -44,6 +44,7 @@ export class SolicitudesConductorPage {
           text: "Ok",
           role: 'cancel',
           handler: data => {
+            
 
             this.fcm.setConfirmacionSolicitudReserva(
               this.rta = 'Cancelada',
