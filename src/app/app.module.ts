@@ -7,6 +7,8 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { Firebase } from '@ionic-native/firebase';
+import { Geolocation } from '@ionic-native/geolocation';
+import { AgmCoreModule } from '@agm/core';
 
 import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login';
@@ -54,6 +56,7 @@ import { TipoPenalizacionPageModule } from '../pages/tipo-penalizacion/tipo-pena
 import { DetalleTipoPenalizacionPageModule } from '../pages/detalle-tipo-penalizacion/detalle-tipo-penalizacion.module';
 import { DatosConductorPageModule } from '../pages/datos-conductor/datos-conductor.module';
 import { SolicitudesConductorPageModule } from '../pages/solicitudes-conductor/solicitudes-conductor.module';
+import { UbicacionProvider } from '../providers/ubicacion/ubicacion';
 
 
 export const firebaseConfig = {
@@ -111,7 +114,10 @@ export const firebaseConfig = {
     TipoPenalizacionPageModule,
     DetalleTipoPenalizacionPageModule,
     DatosConductorPageModule,
-    SolicitudesConductorPageModule
+    SolicitudesConductorPageModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyAK63fXQji9i7akGbEnPHQBxWRLjM8sNBs'
+    })
     /*,
     AdministradorPage*/
   ],
@@ -132,7 +138,9 @@ export const firebaseConfig = {
     EstadoUsuarioServiceProvider,
     UsuarioServicioProvider,
     ServicioBusquedaConductoresProvider,
-    Facebook
+    Facebook,
+    UbicacionProvider,
+    Geolocation
     ]
 })
 export class AppModule {}

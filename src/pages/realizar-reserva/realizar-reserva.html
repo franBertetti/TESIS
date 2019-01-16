@@ -28,14 +28,16 @@
   <form *ngIf="btnInmediato" [formGroup]="myFormInmediato" (ngSubmit)="buscarConductores()">
     <ion-list>
 
-        <ion-item>
-            <ion-label floating>Tipo Vehiculo</ion-label>
-            <ion-select formControlName="vehiculoReserva" [(ngModel)]="busqueda.vehiculoReserva" multiple="false">
-                <ion-option *ngFor="let TipoVehiculo of TipoVehiculos" value="{{TipoVehiculo.nombre}}"><span style="white-space: normal !important">{{TipoVehiculo.nombre}}</span></ion-option>
-              </ion-select>
-          </ion-item>
+      <ion-item>
+        <ion-label floating>Tipo Vehiculo</ion-label>
+        <ion-select formControlName="vehiculoReserva" [(ngModel)]="busqueda.vehiculoReserva" multiple="false">
+          <ion-option *ngFor="let TipoVehiculo of TipoVehiculos" value="{{TipoVehiculo.nombre}}"><span style="white-space: normal !important">{{TipoVehiculo.nombre}}</span></ion-option>
+        </ion-select>
+      </ion-item>
 
       <ion-item>
+        <ion-label *ngIf="geolocalizacion"> {{ geolocalizacion.latitud }} </ion-label>
+        <ion-label *ngIf="geolocalizacion"> {{ geolocalizacion.longitud }} </ion-label>
         <ion-label floating>Dirección destino..</ion-label>
         <ion-input formControlName="direccion" [(ngModel)]="busqueda.direccion" type="text"></ion-input>
       </ion-item>
@@ -48,15 +50,15 @@
   </form>
 
   <form *ngIf="btnAnticipado" [formGroup]="myFormAnticipado" (ngSubmit)="buscarConductores()">
-    <ion-list>    
+    <ion-list>
 
 
-        <ion-item>
-            <ion-label floating>Tipo Vehiculo</ion-label>
-            <ion-select formControlName="vehiculoReserva" [(ngModel)]="busqueda.vehiculoReserva" multiple="false">
-                <ion-option *ngFor="let TipoVehiculo of TipoVehiculos" value="{{TipoVehiculo.nombre}}"><span style="white-space: normal !important">{{TipoVehiculo.nombre}}</span></ion-option>
-              </ion-select>
-          </ion-item>
+      <ion-item>
+        <ion-label floating>Tipo Vehiculo</ion-label>
+        <ion-select formControlName="vehiculoReserva" [(ngModel)]="busqueda.vehiculoReserva" multiple="false">
+          <ion-option *ngFor="let TipoVehiculo of TipoVehiculos" value="{{TipoVehiculo.nombre}}"><span style="white-space: normal !important">{{TipoVehiculo.nombre}}</span></ion-option>
+        </ion-select>
+      </ion-item>
 
       <ion-item>
         <ion-label floating>Dirección destino..</ion-label>
@@ -67,12 +69,12 @@
         <ion-label>Hora búsqueda</ion-label>
         <!--<ion-input  formControlName="horaBusqueda" [(ngModel)]="busqueda.horaBusqueda"
           text-center type="time"></ion-input>-->
-          <ion-datetime displayFormat="HH : mm" formControlName="horaBusqueda" [(ngModel)]="busqueda.horaBusqueda"></ion-datetime>
-        </ion-item>
+        <ion-datetime displayFormat="HH : mm" formControlName="horaBusqueda" [(ngModel)]="busqueda.horaBusqueda"></ion-datetime>
+      </ion-item>
 
       <ion-item>
         <ion-label floating>Fecha</ion-label>
-        <ion-datetime  formControlName="DiaBusqueda" [(ngModel)]="busqueda.DiaBusqueda" type="date"></ion-datetime>
+        <ion-datetime formControlName="DiaBusqueda" [(ngModel)]="busqueda.DiaBusqueda" type="date"></ion-datetime>
       </ion-item>
 
       <div padding>

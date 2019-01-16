@@ -5,6 +5,7 @@ import { ResultadoBusquedaPage } from '../resultado-busqueda/resultado-busqueda'
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UbicacionProvider } from '../../providers/ubicacion/ubicacion';
 
 /**
  * Generated class for the RealizarReservaPage page.
@@ -27,6 +28,7 @@ export class RealizarReservaPage {
   faltaTipoVehiculo: boolean;
   faltaDireccion: boolean;
   usuario;
+  geolocalizacion;
 
   btnInmediato = true;
   btnAnticipado = false;
@@ -42,9 +44,21 @@ export class RealizarReservaPage {
     public afDB: AngularFireDatabase,
     public formBuilder: FormBuilder,
     public fireAuth: AngularFireAuth,
-    public menuCtrl: MenuController) {
+    public menuCtrl: MenuController,
+    public _ubicacionProv: UbicacionProvider) {
     this.menuCtrl.enable(true, 'myMenu');//para activar el menu desplegable en esta pagina
     this.today = new Date().toISOString();
+
+    _ubicacionProv.iniciarGeoLocalizacion().then(res => {
+      console.log('rta promesa:');
+      this.geolocalizacion = res;
+      /*console.log(this.geolocalizacion);
+      console.log(this.geolocalizacion.coords);*/
+      this.geolocalizacion.latitud = this.geolocalizacion.coords.latitude;
+      this.geolocalizacion.longitud = this.geolocalizacion.coords.longitude;
+      console.log(this.geolocalizacion.latitud);
+      console.log(this.geolocalizacion.longitud);
+    })
 
     this.getTipoVehiculo()
       .valueChanges().subscribe(TipoVehiculoGuardados => {
@@ -54,9 +68,9 @@ export class RealizarReservaPage {
 
       });
 
-      this.busqueda.tipoReserva = 'ReservaInmediata'; 
+    this.busqueda.tipoReserva = 'ReservaInmediata';
 
-      this.myFormInmediato = this.formBuilder.group({
+    this.myFormInmediato = this.formBuilder.group({
       vehiculoReserva: ['', Validators.required],
       direccion: ['', Validators.required]
     });
@@ -148,48 +162,48 @@ export class RealizarReservaPage {
       alert.present();
     }*/
 
-  //  if (this.faltaDireccion == false && this.faltaTipoVehiculo == false) {
+    //  if (this.faltaDireccion == false && this.faltaTipoVehiculo == false) {
 
-      console.log(this.busqueda.direccion);
-      console.log(this.busqueda);
+    console.log(this.busqueda.direccion);
+    console.log(this.busqueda);
 
-      let alert = this.alertCtrl.create({
-        title: '¿ Buscar Conductores ? ',
-        buttons: [
-          {
-            text: 'Cancelar',
-            role: 'cancelar',
-            handler: () => {
-              console.log('Cancelar clicked');
-            }
-          },
-          {
-            text: 'Confirmar',
-            handler: () => {
-              console.log('Si clicked');
-
-
-let loading = this.loadingCtrl.create({
-        spinner: 'crescent',
-        content: 'Buscando Conductores',
-        duration: 3500
-      });
-
-      loading.onDidDismiss(() => {
-        console.log('Dismissed loading');
-      });
-
-      loading.present();
-
-      this.busqueda.idCliente = this.usuario.id;
-
-      this.navCtrl.push(ResultadoBusquedaPage, { 'datosBusqueda': this.busqueda });
-
-            }
+    let alert = this.alertCtrl.create({
+      title: '¿ Buscar Conductores ? ',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancelar',
+          handler: () => {
+            console.log('Cancelar clicked');
           }
-        ]
-      });
-      alert.present();
+        },
+        {
+          text: 'Confirmar',
+          handler: () => {
+            console.log('Si clicked');
+
+
+            let loading = this.loadingCtrl.create({
+              spinner: 'crescent',
+              content: 'Buscando Conductores',
+              duration: 3500
+            });
+
+            loading.onDidDismiss(() => {
+              console.log('Dismissed loading');
+            });
+
+            loading.present();
+
+            this.busqueda.idCliente = this.usuario.id;
+
+            this.navCtrl.push(ResultadoBusquedaPage, { 'datosBusqueda': this.busqueda });
+
+          }
+        }
+      ]
+    });
+    alert.present();
 
 
   }

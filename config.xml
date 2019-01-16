@@ -97,7 +97,13 @@
         <variable name="APP_NAME" value="TESIS" />
         <variable name="FACEBOOK_ANDROID_SDK_VERSION" value="4.38.1" />
     </plugin>
+    <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
+        <string>We use your location for full functionality of certain app features.</string>
+    </edit-config>
     <engine name="ios" spec="4.5.5" />
     <engine name="android" spec="7.0.0" />
     <engine name="browser" spec="5.0.4" />
+    <plugin name="cordova-plugin-geolocation" spec="4.0.1">
+        <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="To locate you" />
+    </plugin>
 </widget>
