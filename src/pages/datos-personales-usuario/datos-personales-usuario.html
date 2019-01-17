@@ -5,11 +5,11 @@
   </ion-navbar>
 
   <style>
-  /*  .text-input[disabled], .datetime-disabled, .item-datetime-disabled, .select-disabled, .item-select-disabled  {
+    /*  .text-input[disabled], .datetime-disabled, .item-datetime-disabled, .select-disabled, .item-select-disabled  {
        opacity: 1; 
   }*/
   </style>
-  
+
 
 </ion-header>
 
@@ -38,9 +38,6 @@
     </p>
   </ion-row>
 
-
-
-
   <form [formGroup]="myForm" (ngSubmit)="crearDatosUsuario()">
 
     <ion-list>
@@ -52,12 +49,12 @@
 
       <ion-item>
         <ion-label floating>*DNI</ion-label>
-        <ion-input  disabled="{{isDisabled}}" formControlName="dni" type="number" [(ngModel)]="usuario.dni"></ion-input>
+        <ion-input disabled="{{isDisabled}}" formControlName="dni" type="number" [(ngModel)]="usuario.dni"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label floating>*Fecha Nacimiento</ion-label>
-        <ion-datetime  disabled="{{isDisabled}}" formControlName="fechaNacimiento" [(ngModel)]="usuario.fechaNacimiento"></ion-datetime>
+        <ion-datetime disabled="{{isDisabled}}" formControlName="fechaNacimiento" [(ngModel)]="usuario.fechaNacimiento"></ion-datetime>
       </ion-item>
 
       <ion-item>
@@ -67,6 +64,20 @@
 
       <ion-item>
         <ion-label floating>*Dirección Completa</ion-label>
+        <ion-input disabled="{{isDisabled}}" formControlName="direccion" id="txtHome" [(ngModel)]="usuario.direccion" type="text"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>*Localidad</ion-label>
+        <ion-input disabled="true" formControlName="localidad" [(ngModel)]="usuario.localidad" type="text"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Provincia</ion-label>
+        <ion-input disabled="true" formControlName="provincia" [(ngModel)]="usuario.provincia" type="text"></ion-input>
+      </ion-item>
+<!--      <ion-item>
+        <ion-label floating>*Dirección Completa</ion-label>
         <ion-input disabled="{{isDisabled}}" formControlName="direccion" type="text" [(ngModel)]="usuario.direccion"></ion-input>
       </ion-item>
 
@@ -75,7 +86,7 @@
         <ion-select disabled="{{isDisabled}}" formControlName="localidad" [(ngModel)]="usuario.localidad" multiple="false">
           <ion-option *ngFor="let Localidad of Localidades" value="{{Localidad.nombre}}">{{Localidad.nombre}}</ion-option>
         </ion-select>
-      </ion-item>
+      </ion-item>-->
 
       <ion-row>
         <ion-item col-6>
@@ -89,14 +100,16 @@
       </ion-row>
 
       <ion-row>
-        <button color="danger" *ngIf="isDisabled == false && registrandoUsuario == false" ion-button col-5 offset-1 (click)="cancelarGuardar()">Cancelar</button>
-        <button color="secondary" *ngIf="isDisabled == false && registrandoUsuario == false" [disabled]="!myForm.valid" ion-button col-5>Actualizar Datos</button>
+        <button color="danger" *ngIf="isDisabled == false && registrandoUsuario == false" ion-button col-5 offset-1
+          (click)="cancelarGuardar()">Cancelar</button>
+        <button color="secondary" *ngIf="isDisabled == false && registrandoUsuario == false" [disabled]="!myForm.valid"
+          ion-button col-5>Actualizar Datos</button>
       </ion-row>
 
       <div padding>
-          <button color="secondary" *ngIf="registrandoUsuario == true || (isDisabled == true && flag == false)" ion-button block type="submit"
-            [disabled]="!myForm.valid">Registrar Datos</button>
-        </div>
+        <button color="secondary" *ngIf="registrandoUsuario == true || (isDisabled == true && flag == false)"
+          ion-button block type="submit" [disabled]="!myForm.valid">Registrar Datos</button>
+      </div>
 
     </ion-list>
   </form>
