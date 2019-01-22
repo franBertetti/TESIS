@@ -36,11 +36,10 @@
       </ion-item>
 
       <ion-item>
-        <ion-label *ngIf="geolocalizacion"> {{ geolocalizacion.latitud }} </ion-label>
-        <ion-label *ngIf="geolocalizacion"> {{ geolocalizacion.longitud }} </ion-label>
-        <ion-label floating>Dirección destino..</ion-label>
-        <ion-input formControlName="direccion" [(ngModel)]="busqueda.direccion" type="text"></ion-input>
+        <ion-label floating>*Dirección Completa</ion-label>
+        <ion-input formControlName="direccion" id="txtHome" [(ngModel)]="busqueda.direccion" type="text"></ion-input>
       </ion-item>
+
 
       <div padding>
         <button ion-button block type="submit" [disabled]="!myFormInmediato.valid"> Buscar Conductores </button>
@@ -61,8 +60,8 @@
       </ion-item>
 
       <ion-item>
-        <ion-label floating>Dirección destino..</ion-label>
-        <ion-input formControlName="direccion" [(ngModel)]="busqueda.direccion" type="text"></ion-input>
+        <ion-label floating>*Dirección Completa</ion-label>
+        <ion-input formControlName="direccion" id="txtHome" [(ngModel)]="busqueda.direccion" type="text"></ion-input>
       </ion-item>
 
       <ion-item>
@@ -83,5 +82,5 @@
 
     </ion-list>
   </form>
-
+  <div id="map"></div>
 </ion-content>

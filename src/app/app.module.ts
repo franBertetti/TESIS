@@ -117,7 +117,7 @@ export const firebaseConfig = {
     SolicitudesConductorPageModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAK63fXQji9i7akGbEnPHQBxWRLjM8sNBs',
-      libraries: ["places"]
+      libraries: ['geometry','places']
     })
     /*,
     AdministradorPage*/
