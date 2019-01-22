@@ -189,7 +189,7 @@ export class RealizarReservaPage {
           this.provinciaFormateada = divisiones[2].trim();
           this.usuario.provincia = this.provinciaFormateada;
 
-          //verify result
+          //verify results
           if (place.geometry === undefined || place.geometry === null) {
             return;
           }
