@@ -7,7 +7,7 @@ declare var google;
  * Generated class for the Pruebadist2puntosPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
+ * Ionic pages and navigation.s
  */
 
 @IonicPage()
