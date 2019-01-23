@@ -25,7 +25,7 @@
   </ion-row>
 
 
-  <form *ngIf="btnInmediato" [formGroup]="myFormInmediato" (ngSubmit)="buscarConductores()">
+  <form [formGroup]="myFormInmediato" (ngSubmit)="buscarConductores()">
     <ion-list>
 
       <ion-item>
@@ -40,6 +40,17 @@
         <ion-input formControlName="direccion" id="txtHome" [(ngModel)]="busqueda.direccion" type="text"></ion-input>
       </ion-item>
 
+      <div *ngIf="btnAnticipado">
+        <ion-item>
+          <ion-label>Hora búsqueda</ion-label>
+          <ion-datetime displayFormat="HH : mm" formControlName="horaBusqueda" [(ngModel)]="busqueda.horaBusqueda"></ion-datetime>
+        </ion-item>
+  
+        <ion-item>
+          <ion-label floating>Fecha</ion-label>
+          <ion-datetime formControlName="DiaBusqueda" [(ngModel)]="busqueda.DiaBusqueda" type="date"></ion-datetime>
+        </ion-item>
+      </div>
 
       <div padding>
         <button ion-button block type="submit" [disabled]="!myFormInmediato.valid"> Buscar Conductores </button>
@@ -48,39 +59,5 @@
     </ion-list>
   </form>
 
-  <form *ngIf="btnAnticipado" [formGroup]="myFormAnticipado" (ngSubmit)="buscarConductores()">
-    <ion-list>
-
-
-      <ion-item>
-        <ion-label floating>Tipo Vehiculo</ion-label>
-        <ion-select formControlName="vehiculoReserva" [(ngModel)]="busqueda.vehiculoReserva" multiple="false">
-          <ion-option *ngFor="let TipoVehiculo of TipoVehiculos" value="{{TipoVehiculo.nombre}}"><span style="white-space: normal !important">{{TipoVehiculo.nombre}}</span></ion-option>
-        </ion-select>
-      </ion-item>
-
-      <ion-item>
-        <ion-label floating>*Dirección Completa</ion-label>
-        <ion-input formControlName="direccion" id="txtHome" [(ngModel)]="busqueda.direccion" type="text"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label>Hora búsqueda</ion-label>
-        <!--<ion-input  formControlName="horaBusqueda" [(ngModel)]="busqueda.horaBusqueda"
-          text-center type="time"></ion-input>-->
-        <ion-datetime displayFormat="HH : mm" formControlName="horaBusqueda" [(ngModel)]="busqueda.horaBusqueda"></ion-datetime>
-      </ion-item>
-
-      <ion-item>
-        <ion-label floating>Fecha</ion-label>
-        <ion-datetime formControlName="DiaBusqueda" [(ngModel)]="busqueda.DiaBusqueda" type="date"></ion-datetime>
-      </ion-item>
-
-      <div padding>
-        <button ion-button block type="submit" [disabled]="!myFormAnticipado.valid"> Buscar Conductores </button>
-      </div>
-
-    </ion-list>
-  </form>
-  <div id="map"></div>
+  <div hidden id="map"></div>
 </ion-content>

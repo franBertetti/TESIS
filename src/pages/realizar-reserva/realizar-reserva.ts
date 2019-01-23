@@ -33,6 +33,7 @@ export class RealizarReservaPage {
   map;
   infowindow;
   latilng;
+  cargarUbicacion;
 
   //declaraciones autocompletar
 
@@ -91,11 +92,7 @@ export class RealizarReservaPage {
       console.log(this.geolocalizacion.latitud);
       console.log(this.geolocalizacion.longitud);
 
-     /* this._ubicacionProv.getDireccionActual(this.geolocalizacion.latitud, this.geolocalizacion)
-        .then(res => {
-          var s = res;
-          console.log(s);
-        })*/
+      this.initMap(this.geolocalizacion);
     })
 
     this.getTipoVehiculo()
@@ -113,20 +110,18 @@ export class RealizarReservaPage {
       direccion: ['', Validators.required]
     });
 
-    this.myFormAnticipado = this.formBuilder.group({
-      vehiculoReserva: ['', Validators.required],
-      direccion: ['', Validators.required],
-      horaBusqueda: ['', Validators.required],
-      DiaBusqueda: ['', Validators.required]
-    });
-
-
   }
 
   reservaInmediata(id) {
     this.btnInmediato = true;
     this.btnAnticipado = false;
     this.busqueda.tipoReserva = 'ReservaInmediata';
+    var vehiculo = this.myFormInmediato.value.vehiculoReserva;
+    var direccion = this.myFormInmediato.value.direccion;
+    this.myFormInmediato = this.formBuilder.group({
+      vehiculoReserva: [vehiculo, Validators.required],
+      direccion: [direccion, Validators.required],
+    });
   }
 
 
@@ -134,6 +129,14 @@ export class RealizarReservaPage {
     this.btnInmediato = false;
     this.btnAnticipado = true;
     this.busqueda.tipoReserva = 'ReservaAnticipada';
+    var vehiculo = this.myFormInmediato.value.vehiculoReserva;
+    var direccion = this.myFormInmediato.value.direccion;
+    this.myFormInmediato = this.formBuilder.group({
+      vehiculoReserva: [vehiculo, Validators.required],
+      direccion: [direccion, Validators.required],
+      horaBusqueda: ['', Validators.required],
+      DiaBusqueda: ['', Validators.required]
+    });
   }
 
 
@@ -142,13 +145,18 @@ export class RealizarReservaPage {
   }
 
   ionViewDidLoad() {
+
+    this.cargarUbicacion = this.loadingCtrl.create({
+      spinner: 'crescent',
+      content: 'Cargando ubicación...'
+    });
+    this.cargarUbicacion.present();
+
+
     console.log('ionViewDidLoad RealizarReservaPage');
     this.fireAuth.user.subscribe(user => this.mostrarPerfilCliente(user));
 
     this.zoom = 15;
-    this.latitude = 39.8282;
-    this.longitude = -98.5795;
-
 
     //create search FormControl
     this.searchControl = new FormControl();
@@ -159,7 +167,7 @@ export class RealizarReservaPage {
     this.mapsAPILoader.load().then(() => {
 
       let nativeHomeInputBox = document.getElementById('txtHome').getElementsByTagName('input')[0];
-  
+
       let autocomplete = new google.maps.places.Autocomplete(nativeHomeInputBox, {
         types: ["address"]
       });
@@ -206,37 +214,83 @@ export class RealizarReservaPage {
       });
     });
 
-  
-    this.initMap();
-  
+
+    //this.initMap();
+
   }
 
-  initMap() {
+  initMap(geolocalizacion) {
     this.map = new google.maps.Map(document.getElementById('map'), {
       zoom: 8,
       center: { lat: 40.731, lng: -73.997 }
     });
     this.geocoder = new google.maps.Geocoder;
-    this.infowindow = new google.maps.InfoWindow; 
-    this.geocodeLatLng('-32.4027606,-63.2415736');
+    this.infowindow = new google.maps.InfoWindow;
+    var infoLatLong = geolocalizacion.latitud + ','+ geolocalizacion.longitud;
+    console.log(infoLatLong);
+    var infoLatLong2 = this.geolocalizacion.latitud + ','+ this.geolocalizacion.longitud;
+    console.log(infoLatLong2);
+    console.log('-32.4027606,-63.2415736');
+    this.geocodeLatLng(infoLatLong).then( res => {
+      console.log('ubicacion cargada');
+      this.myFormInmediato.value.direccion = res;
+      this.busqueda.direccion = res;
+      this.cargarUbicacion.dismiss();
+    });
+  }
+
+  geocodeLatLng(latitudlongitud){
+    return new Promise((resolve, reject) => {
+
+      var input = latitudlongitud;
+      var latlngStr = input.split(',', 2);
+      var latlng = { lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1]) };
+      this.geocoder.geocode({ 'location': latlng }, (results, status) => {
+        if (status === 'OK') {
+          if (results[0]) {
+            this.map.setZoom(16);
+            var marker = new google.maps.Marker({
+              position: latlng,
+              map: this.map,
+              center: { lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1]) }
+            });
+            this.infowindow.setContent(results[0].formatted_address);
+            console.log(results[0].formatted_address);
+            this.busqueda.direccion = results[0].formatted_address;
+            this.infowindow.open(this.map, marker);
+          } else {
+            window.alert('No results found');
+          }
+        } else {
+          window.alert('Geocoder failed due to: ' + status);
+        }
+      });
+  
+      resolve(this.busqueda.direccion);
+
+    }).catch((error) => {
+      console.log('Error getting location', error);
+    });
   }
 
 
-  geocodeLatLng(latitudlongitud) {
+
+  geocodeLatLngs(latitudlongitud) {
     var input = latitudlongitud;
     var latlngStr = input.split(',', 2);
-    var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
+    var latlng = { lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1]) };
     this.geocoder.geocode({ 'location': latlng }, (results, status) => {
       if (status === 'OK') {
         if (results[0]) {
           this.map.setZoom(16);
           var marker = new google.maps.Marker({
             position: latlng,
-            map: this.map
+            map: this.map,
+            center: { lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1]) }
           });
           this.infowindow.setContent(results[0].formatted_address);
           console.log(results[0].formatted_address);
-          this.busqueda.direccion = results[0].formatted_address;          
+          this.busqueda.direccion = results[0].formatted_address;
           this.infowindow.open(this.map, marker);
         } else {
           window.alert('No results found');
