@@ -22,7 +22,7 @@ export class UbicacionProvider {
 
 
   posicion: AngularFirestoreDocument<any>; //lo defino de ese tipo para poder controlar los doc de la firestore
-  watch: Subscription; //es como definir un observador
+  watch: Subscription; ///es como definir un observador
   geolocalizacion: any = {};
 
   constructor(private geolocation: Geolocation,
