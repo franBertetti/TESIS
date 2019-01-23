@@ -57,6 +57,7 @@ import { DetalleTipoPenalizacionPageModule } from '../pages/detalle-tipo-penaliz
 import { DatosConductorPageModule } from '../pages/datos-conductor/datos-conductor.module';
 import { SolicitudesConductorPageModule } from '../pages/solicitudes-conductor/solicitudes-conductor.module';
 import { UbicacionProvider } from '../providers/ubicacion/ubicacion';
+import { Pruebadist2puntosPageModule } from '../pages/pruebadist2puntos/pruebadist2puntos.module';
 
 
 export const firebaseConfig = {
@@ -115,6 +116,7 @@ export const firebaseConfig = {
     DetalleTipoPenalizacionPageModule,
     DatosConductorPageModule,
     SolicitudesConductorPageModule,
+    Pruebadist2puntosPageModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAK63fXQji9i7akGbEnPHQBxWRLjM8sNBs',
       libraries: ['geometry','places']

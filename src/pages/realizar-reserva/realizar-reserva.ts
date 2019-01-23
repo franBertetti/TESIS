@@ -148,7 +148,8 @@ export class RealizarReservaPage {
 
     this.cargarUbicacion = this.loadingCtrl.create({
       spinner: 'crescent',
-      content: 'Cargando ubicación...'
+      content: 'Cargando ubicación...',
+      duration: 10000
     });
     this.cargarUbicacion.present();
 
