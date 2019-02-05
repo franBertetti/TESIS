@@ -20,6 +20,7 @@
   button {
     min-height: 50px;
   }
+
   label {
     min-height: 50px;
   }
@@ -28,26 +29,38 @@
 
 
 <ion-content padding>
-<ion-list>
+  <ion-list>
+
+    <div *ngIf="datosConductores.length <= 0 && resultados == true">
+      <ion-card>
+        <ion-card-header>
+          No se encontraron resultados ..
+        </ion-card-header>
+        <ion-card-content>
+          De momento no hay conductores de acuerdo a su búsqueda, intentelo nuevamente..
+        </ion-card-content>
+      </ion-card>
+    </div>
+
     <ion-item *ngFor="let datosConductor of datosConductores" (click)="setIdConductorSeleccionado(datosConductor.id)">
-    <ion-avatar item-start>
-      <img src="{{ datosConductor.fotoPerfil }}">
-    </ion-avatar>
-    <h1 text-wrap text-bold>{{datosConductor.nombreCompleto}}</h1>
-    <h3 text-wrap>{{datosConductor.tarifa}}$ por kilometro | {{ datosConductor.puntaje}} | A 550 m</h3>
-  </ion-item>
-</ion-list>
-  
+      <ion-avatar item-start>
+        <img src="{{ datosConductor.fotoPerfil }}">
+      </ion-avatar>
+      <h1 text-wrap text-bold>{{datosConductor.nombreCompleto}}</h1>
+      <h3 text-wrap>{{datosConductor.tarifa}}$ por kilometro | {{ datosConductor.puntaje}} | A 550 m</h3>
+    </ion-item>
+  </ion-list>
+
   <ion-card *ngIf="idConductorSeleccionado">
 
     <ion-card-header>
       Conductor Seleccionado:
     </ion-card-header>
     <ion-card-content>
-        {{idConductorSeleccionado.nombreCompleto }}
-      </ion-card-content> 
+      {{idConductorSeleccionado.nombreCompleto }}
+    </ion-card-content>
   </ion-card>
-<button ion-button text-center full (click)="confirmarConductor()"> Seleccionar Conductor </button>
+  <button ion-button text-center full (click)="confirmarConductor()"> Seleccionar Conductor </button>
 
 </ion-content>
 
@@ -56,7 +69,7 @@
 
 
 
-  <!--
+<!--
   <ngx-datatable class="fullscreen" [ngClass]="tablestyle" [rows]="rows" [rowClass]="getRowClass" [columnMode]="'force'"
     [sortType]="'multi'" [reorderable]="false" [rowHeight]="50">
     <ngx-datatable-column name="name" [resizeable]="true"></ngx-datatable-column>

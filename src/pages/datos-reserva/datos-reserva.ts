@@ -69,6 +69,9 @@ export class DatosReservaPage {
     this.viaje.direccionDeBusqueda = this.datosReserva.direccion;
     this.viaje.vehiculoReserva = this.datosReserva.vehiculoReserva;
     this.viaje.tipoContratacion = this.datosReserva.tipoReserva;
+    this.viaje.latitud = this.datosReserva.latitud;
+    this.viaje.longitud = this.datosReserva.longitud;
+    
 
     const tokenCliente = this.usuario.token;
     const tokenConductor = this.conductor.token;

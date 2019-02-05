@@ -15,19 +15,21 @@
 
 <ion-content padding>
 
-    <ion-row>
-      <ion-label col-6 text-wrap> Origen:</ion-label>
-      <ion-label col-6 text-wrap> Destino:</ion-label>
-    </ion-row>
-
-    <ion-img width="270" height="150" src="http://www.gpstec.com.ar/wp-content/uploads/2014/04/mapas-gps.jpg"></ion-img>
-
+  <ion-list>
     <ion-item>
-        <ion-label col-6>Total</ion-label>
-        <ion-input col-6 type="text"></ion-input>
+      <ion-label floating> Destino: </ion-label>
+      <ion-input type="text" [(ngModel)]="Destination"> </ion-input>
     </ion-item>
-    <br>
+  </ion-list>
+  <button ion-button full (click)="calculateAndDisplayRoute()"> Get Direccion </button>
+  <div id="map"></div>
 
-    <button ion-button full block (click)="iraFinalViaje()"> Finalizar Viaje </button>
+  <ion-item>
+    <ion-label col-6>Total</ion-label>
+    <ion-input col-6 type="text"></ion-input>
+  </ion-item>
+  <br>
+
+  <button ion-button full block (click)="iraFinalViaje()"> Finalizar Viaje </button>
 
 </ion-content>

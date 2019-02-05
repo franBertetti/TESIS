@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController, } from 'ionic-angular';
 import { DatosReservaPage } from '../datos-reserva/datos-reserva';
 import { AngularFireDatabase, snapshotChanges } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -27,13 +27,15 @@ export class ResultadoBusquedaPage {
   consulta: any = {};
   licenciasCompatibles: any = []; //array con los tipos de licencia de acuerdo al vehiculo que puso el usuario q hizo la busqueda
   datosdeUsuarioConductores: any = []; //array que tiene los datos de usuario de los conductores que coincidieron con la busqueda
-  datosConductores = []; //array con la info de conductore de los conductores que coincidieron con la busqueda
+  datosConductores: any = []; //array con la info de conductore de los conductores que coincidieron con la busqueda
   conductores: any = []; //array con los conductores q pueden ser mostrados para busqueda anticipada
   idConductores: any = []; //array con los id de los conductores q pueden ser llamados para busqueda anticipada
   conductoresHabilitados: any = []; //array q trae los condcutors del tipo reserva anticipada
   todoJunto: any = [];
 
   idConductorSeleccionado: any;
+
+  Loading;
 
   rows = [
     {
@@ -55,8 +57,10 @@ export class ResultadoBusquedaPage {
 
   tablestyle = 'bootstrap';
   id;
+  resultados:boolean = false;
 
   constructor(
+    public loadingCtrl: LoadingController,
     public navCtrl: NavController,
     public navParams: NavParams,
     public afDB: AngularFireDatabase,
@@ -65,12 +69,35 @@ export class ResultadoBusquedaPage {
     public servicioBusquedaConductores: ServicioBusquedaConductoresProvider,
     private alertCtrl: AlertController) {
 
+      this.Loading = this.loadingCtrl.create({
+        spinner: 'crescent',
+        content: 'Buscando Conductores',
+        duration: 7000
+      });
+  
+      this.Loading.present();
+
     this.datosBusqueda = this.navParams.get('datosBusqueda');
     this.id = this.navParams.get('id');
     console.log("datos busqueda:");
     console.log(this.datosBusqueda);
 
     this.servicioBusquedaConductores.setDatosBusqueda(this.datosBusqueda);
+
+    if (this.datosBusqueda.tipoReserva == 'ReservaInmediata') {
+      this.servicioBusquedaConductores.getConductoresReservaInmediata().then(rta => {
+        console.log(rta);
+        /*var datUsCond = rta['datosDeUsuarioConductores'];
+        var datCond = rta['datosConductores']; 
+        console.log('datUsCond:');
+        console.log(datUsCond);
+        console.log('dataCond:');
+        console.log(datCond);*/
+      });
+    }
+    if (this.datosBusqueda.tipoReserva == 'ReservaAnticipada') {
+      this.servicioBusquedaConductores.getConductoresReservaAnticipada();
+    }
 
     this.buscarTipoLicenciasPosiblesDeVehiculoSeleccionado(); //obtengo los tipos de licencia q pueden ser por la licencia q se ingreso
 
@@ -80,40 +107,128 @@ export class ResultadoBusquedaPage {
       console.log("conductores en linea:");
       console.log(this.conductoresEnLinea);
 
-      this.traerConductoresEnLineaPorTipoLicencia();
+      this.traerConductoresEnLineaPorTipoLicencia().then(res => {
+        
+        this.datosdeUsuarioConductores = res['datosdeUcond'];
+        this.datosConductores = res['datosCond'];
+        //this.Loading.dismiss();
+          this.resultados = true;
+      });
       console.log(this.datosConductores);
       console.log(this.datosdeUsuarioConductores);
     }
-    usuarioServicio.changeMessage('asda');
-
-    usuarioServicio.currentMesagge.subscribe(message => { });
-    usuarioServicio.changeMessage('asda');
+    /*    usuarioServicio.changeMessage('asda');
+    
+        usuarioServicio.currentMesagge.subscribe(message => { });
+        usuarioServicio.changeMessage('asda');*/
 
     if (this.datosBusqueda.tipoReserva == 'ReservaAnticipada') {
 
 
-      this.buscarConductoresHabilitadosReservaAnticipada();
+      this.buscarConductoresHabilitadosReservaAnticipada().then(res => {
+        this.datosConductores  = res;
+          this.resultados = true;
+        //this.Loading.dismiss();
+      })
 
+      /*
       usuarioServicio.changeMessage('asda');
 
       usuarioServicio.currentMesagge.subscribe(message => {
 
       });
       usuarioServicio.changeMessage('asda');
-
+*/
     }
 
 
   }
 
   public buscarConductoresHabilitadosReservaAnticipada() {
-    firebase.database().ref('conductor/').orderByChild('estado').on('child_added', snap => {
-      if (snap.val().estado == 'Aprobado' || snap.val().estado == 'EnLinea' || snap.val().estado == 'Ocupado' || snap.val().estado == 'FueraDeLinea') {
-        //this.conductores.push(snap.val());
-        console.log(snap.val());
 
-        var opcion = snap.val();
+    return new Promise((resolve, reject) => {
 
+      var datosConductores:any = [];
+ 
+      firebase.database().ref('conductor/').orderByChild('estado').on('child_added', snap => {
+        if (snap.val().estado == 'Aprobado' || snap.val().estado == 'EnLinea' || snap.val().estado == 'Ocupado' || snap.val().estado == 'FueraDeLinea') {
+          //this.conductores.push(snap.val());
+          console.log(snap.val());
+
+          var opcion = snap.val();
+
+          var flag = 0;
+          for (var j = 0, len = opcion.VehiculosHabilitado.length; j < len; j++) {
+            console.log(opcion.VehiculosHabilitado[j]);
+
+            for (var i = 0, len = this.licenciasCompatibles.length; i < len; i++) {
+              console.log(this.licenciasCompatibles[i]);
+              if (opcion.VehiculosHabilitado[j] == this.licenciasCompatibles[i]) {
+                //logica parte de cuando coincide la busqueda y es un conductor apto para mostrar
+                var flag = 1;
+                i = this.licenciasCompatibles.length;
+              }
+
+            }
+            if (flag == 1) {
+              if (opcion.id != this.datosBusqueda.idCliente) {
+                firebase.database().ref().child('usuarios').child(opcion.id).on('value', (snapshot) => {
+                  //console.log(snapshot.val());
+                  var userAGuardar = snapshot.val();
+                  //console.log(userAGuardar.nombreCompleto);
+                  opcion.direccion = userAGuardar.direccion;
+                  opcion.dni = userAGuardar.dni;
+                  opcion.email = userAGuardar.email;
+                  opcion.fechaNacimiento = userAGuardar.fechaNacimiento;
+                  opcion.localidad = userAGuardar.localidad;
+                  opcion.nombreCompleto = userAGuardar.nombreCompleto;
+                  opcion.numCelular = userAGuardar.numCelular;
+                  opcion.numDepto = userAGuardar.numDepto;
+                  opcion.numPiso = userAGuardar.numPiso;
+                  firebase.storage().ref('FotosUsuario/' + opcion.id + '/fotoPerfil.png').getDownloadURL().then((url) => {
+                    opcion.fotoPerfil = url;
+                  });
+
+                  datosConductores.push(opcion);
+
+                });
+
+                //this.datosdeUsuarioConductores.push(userAGuardar);
+                //this.datosConductores.push(opcion);
+
+
+                console.log("licencias compatibles:");
+                console.log(this.licenciasCompatibles);
+
+                j = opcion.VehiculosHabilitado.length;
+                flag = 0;
+              }
+            }
+          }
+        }
+
+        resolve(datosConductores);
+
+      });
+
+    });
+
+  }
+
+
+  traerConductoresEnLineaPorTipoLicencia() {
+
+    return new Promise((resolve, reject) => {
+
+
+      var datosdeUsuarioConductores: any = [];
+      var datosConductores: any = [];
+
+
+      this.conductoresEnLinea.on('child_added', snap => { //busco cada conductor en linea
+        var opcion = snap.val();  //tomo el valor del conductor
+
+        console.log(opcion.VehiculosHabilitado); //la opcion.vehiculoshabilitado contiene el array de los vehiculos q esta habilitado
         var flag = 0;
         for (var j = 0, len = opcion.VehiculosHabilitado.length; j < len; j++) {
           console.log(opcion.VehiculosHabilitado[j]);
@@ -128,15 +243,17 @@ export class ResultadoBusquedaPage {
 
           }
           if (flag == 1) {
-            if (opcion.id != this.datosBusqueda.idCliente) {
-              firebase.database().ref().child('usuarios').child(opcion.id).on('value', (snapshot) => {
-                //console.log(snapshot.val());
+            var key = snap.key;
+            if (key != this.datosBusqueda.idCliente) {
+              firebase.database().ref().child('usuarios').child(key).on('value', (snapshot) => {
+                console.log(snapshot.val());
                 var userAGuardar = snapshot.val();
-                //console.log(userAGuardar.nombreCompleto);
+                console.log(userAGuardar.nombreCompleto);
                 opcion.direccion = userAGuardar.direccion;
                 opcion.dni = userAGuardar.dni;
                 opcion.email = userAGuardar.email;
                 opcion.fechaNacimiento = userAGuardar.fechaNacimiento;
+                opcion.id = userAGuardar.id;
                 opcion.localidad = userAGuardar.localidad;
                 opcion.nombreCompleto = userAGuardar.nombreCompleto;
                 opcion.numCelular = userAGuardar.numCelular;
@@ -145,14 +262,15 @@ export class ResultadoBusquedaPage {
                 firebase.storage().ref('FotosUsuario/' + opcion.id + '/fotoPerfil.png').getDownloadURL().then((url) => {
                   opcion.fotoPerfil = url;
                 });
-                this.datosConductores.push(opcion);
-
+                datosdeUsuarioConductores.push(userAGuardar);
+                datosConductores.push(opcion);
+                //                this.datosdeUsuarioConductores.push(userAGuardar);
+                //                this.datosConductores.push(opcion);
               });
 
               //this.datosdeUsuarioConductores.push(userAGuardar);
               //this.datosConductores.push(opcion);
-
-
+              //
               console.log("licencias compatibles:");
               console.log(this.licenciasCompatibles);
 
@@ -161,69 +279,13 @@ export class ResultadoBusquedaPage {
             }
           }
         }
-      }
 
+        resolve({ 'datosdeUcond': datosdeUsuarioConductores, 'datosCond': datosConductores });
 
+      });
 
     });
 
-  }
-
-
-  traerConductoresEnLineaPorTipoLicencia() {
-    this.conductoresEnLinea.on('child_added', snap => { //busco cada conductor en linea
-      var opcion = snap.val();  //tomo el valor del conductor
-
-      console.log(opcion.VehiculosHabilitado); //la opcion.vehiculoshabilitado contiene el array de los vehiculos q esta habilitado
-      var flag = 0;
-      for (var j = 0, len = opcion.VehiculosHabilitado.length; j < len; j++) {
-        console.log(opcion.VehiculosHabilitado[j]);
-
-        for (var i = 0, len = this.licenciasCompatibles.length; i < len; i++) {
-          console.log(this.licenciasCompatibles[i]);
-          if (opcion.VehiculosHabilitado[j] == this.licenciasCompatibles[i]) {
-            //logica parte de cuando coincide la busqueda y es un conductor apto para mostrar
-            var flag = 1;
-            i = this.licenciasCompatibles.length;
-          }
-
-        }
-        if (flag == 1) {
-          var key = snap.key;
-          if (key != this.datosBusqueda.idCliente) {
-            firebase.database().ref().child('usuarios').child(key).on('value', (snapshot) => {
-              console.log(snapshot.val());
-              var userAGuardar = snapshot.val();
-              console.log(userAGuardar.nombreCompleto);
-              opcion.direccion = userAGuardar.direccion;
-              opcion.dni = userAGuardar.dni;
-              opcion.email = userAGuardar.email;
-              opcion.fechaNacimiento = userAGuardar.fechaNacimiento;
-              opcion.id = userAGuardar.id;
-              opcion.localidad = userAGuardar.localidad;
-              opcion.nombreCompleto = userAGuardar.nombreCompleto;
-              opcion.numCelular = userAGuardar.numCelular;
-              opcion.numDepto = userAGuardar.numDepto;
-              opcion.numPiso = userAGuardar.numPiso;
-              firebase.storage().ref('FotosUsuario/' + opcion.id + '/fotoPerfil.png').getDownloadURL().then((url) => {
-                opcion.fotoPerfil = url;
-              });
-              this.datosdeUsuarioConductores.push(userAGuardar);
-              this.datosConductores.push(opcion);
-            });
-
-            //this.datosdeUsuarioConductores.push(userAGuardar);
-            //this.datosConductores.push(opcion);
-            //
-            console.log("licencias compatibles:");
-            console.log(this.licenciasCompatibles);
-
-            j = opcion.VehiculosHabilitado.length;
-            flag = 0;
-          }
-        }
-      }
-    });
   }
 
 

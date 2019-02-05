@@ -84,11 +84,11 @@ export class RealizarReservaPage {
     _ubicacionProv.iniciarGeoLocalizacion().then(res => {
       console.log('rta promesa:');
       this.geolocalizacion = res;
-      console.log(res);
       /*console.log(this.geolocalizacion);
       console.log(this.geolocalizacion.coords);*/
-      this.geolocalizacion.latitud = this.geolocalizacion.coords.latitude;
-      this.geolocalizacion.longitud = this.geolocalizacion.coords.longitude;
+
+      this.geolocalizacion.latitud = res['lat'];
+      this.geolocalizacion.longitud = res['lng'];
       console.log(this.geolocalizacion.latitud);
       console.log(this.geolocalizacion.longitud);
 
@@ -227,12 +227,12 @@ export class RealizarReservaPage {
     });
     this.geocoder = new google.maps.Geocoder;
     this.infowindow = new google.maps.InfoWindow;
-    var infoLatLong = geolocalizacion.latitud + ','+ geolocalizacion.longitud;
+    var infoLatLong = geolocalizacion.latitud + ',' + geolocalizacion.longitud;
     console.log(infoLatLong);
-    var infoLatLong2 = this.geolocalizacion.latitud + ','+ this.geolocalizacion.longitud;
+    var infoLatLong2 = this.geolocalizacion.latitud + ',' + this.geolocalizacion.longitud;
     console.log(infoLatLong2);
     console.log('-32.4027606,-63.2415736');
-    this.geocodeLatLng(infoLatLong).then( res => {
+    this.geocodeLatLng(infoLatLong).then(res => {
       console.log('ubicacion cargada');
       this.myFormInmediato.value.direccion = res;
       this.busqueda.direccion = res;
@@ -240,7 +240,7 @@ export class RealizarReservaPage {
     });
   }
 
-  geocodeLatLng(latitudlongitud){
+  geocodeLatLng(latitudlongitud) {
     return new Promise((resolve, reject) => {
 
       var input = latitudlongitud;
@@ -266,7 +266,7 @@ export class RealizarReservaPage {
           window.alert('Geocoder failed due to: ' + status);
         }
       });
-  
+
       resolve(this.busqueda.direccion);
 
     }).catch((error) => {
@@ -368,6 +368,8 @@ export class RealizarReservaPage {
     }*/
 
     //  if (this.faltaDireccion == false && this.faltaTipoVehiculo == false) {
+    this.busqueda.latitud = this.latitude;
+    this.busqueda.longitud = this.longitude;
 
     console.log(this.busqueda.direccion);
     console.log(this.busqueda);
@@ -388,7 +390,7 @@ export class RealizarReservaPage {
             console.log('Si clicked');
 
 
-            let loading = this.loadingCtrl.create({
+/*            let loading = this.loadingCtrl.create({
               spinner: 'crescent',
               content: 'Buscando Conductores',
               duration: 3500
@@ -398,9 +400,10 @@ export class RealizarReservaPage {
               console.log('Dismissed loading');
             });
 
-            loading.present();
+            loading.present();*/
 
             this.busqueda.idCliente = this.usuario.id;
+
 
             this.navCtrl.push(ResultadoBusquedaPage, { 'datosBusqueda': this.busqueda });
 

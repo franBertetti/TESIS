@@ -6,21 +6,30 @@
 -->
 <ion-header>
 
-    <ion-navbar color="danger">
-        <ion-title> Direccion </ion-title>
+  <ion-navbar color="danger">
+    <ion-title> Direccion </ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+  <form [formGroup]="myForm" (ngSubmit)="calculateAndDisplayRoute()">
     <ion-list>
-        <ion-item>
-          <ion-label floating>Destination</ion-label>
-          <ion-input type="text" [(ngModel)]="Destination"></ion-input>
-        </ion-item>
-      </ion-list>
-      <button ion-button full (click)="calculateAndDisplayRoute(rta, rta)">Get Direction</button>
-    
-      <div id="map"></div>
+      <ion-item>
+        <ion-label floating>Ingresar Dirección</ion-label>
+        <ion-input  formControlName="direccion" id="txtHome" [(ngModel)]="direccion"></ion-input>
+
+      </ion-item>
+      <div padding>
+        <button ion-button block type="submit" [disabled]="!myForm.valid"> Comenzar Viaje </button>
+      </div>
+
+    </ion-list>
+  </form>
+
+  <ion-label *ngIf="lngPosActual"> {{latPosActual}} / {{lngPosActual}} </ion-label>
+  
+  <div id="map"></div>
+
 </ion-content>

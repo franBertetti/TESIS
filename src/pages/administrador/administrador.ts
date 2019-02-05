@@ -8,6 +8,7 @@ import { AdminConductoresPage } from '../admin-conductores/admin-conductores';
 import { EstadoConductoresPage } from '../estado-conductores/estado-conductores';
 import { AdminVehiculosClientePage } from '../admin-vehiculos-cliente/admin-vehiculos-cliente';
 import { TipoPenalizacionPage } from '../tipo-penalizacion/tipo-penalizacion';
+import { EstadoUsuarioServiceProvider } from '../../providers/estado-usuario-service/estado-usuario-service';
 
 
 /**
@@ -24,11 +25,14 @@ import { TipoPenalizacionPage } from '../tipo-penalizacion/tipo-penalizacion';
 })
 export class AdministradorPage {
 
+usuarios:any = [];
+cantUsuarios:any;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public menuCtrl: MenuController,
               public loadingCtrl: LoadingController,
+              public estadoUsuarioServicio: EstadoUsuarioServiceProvider,
               public fireAuth:AngularFireAuth) {
                 this.menuCtrl.enable(true, 'myMenu');//para desactivar el menu desplegable en esta pagina
 
@@ -36,6 +40,10 @@ export class AdministradorPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AdministradorPage');
+    this.estadoUsuarioServicio.buscarEstadoConductores().then(res => {
+      this.usuarios = res['usuarios'];
+      this.cantUsuarios = res['cant'];  
+    });
   }
 
   irATipoVehiculo(){
@@ -54,7 +62,7 @@ export class AdministradorPage {
     });
     loading.present();
 
-    this.navCtrl.push(AdminConductoresPage);
+      this.navCtrl.push(AdminConductoresPage, {'usuarios': this.usuarios, 'cantUsuarios': this.cantUsuarios});
   }
 
   irAEstadoConductores(){

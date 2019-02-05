@@ -14,8 +14,9 @@
 
 
 <ion-content padding>
-  <br>
-  <button color="secondary" ion-button full block (click)="iraInicioViaje()"> Iniciar Viaje</button>
-  <br>
-  <button ion-button full block (click)="iraPenalizacion()"> Registrar Penalización</button>  
+    <div id="map"></div>
+  <ion-row>
+    <button ion-button class="btn" color="secondary" text-wrap col (click)="iraInicioViaje()"> Iniciar Viaje </button>
+    <button ion-button class="btn" color="danger"  text-wrap col (click)="iraPenalizacion()"> Registrar Penalización </button>
+  </ion-row>
 </ion-content>

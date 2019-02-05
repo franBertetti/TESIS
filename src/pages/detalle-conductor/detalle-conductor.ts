@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { AngularFireDatabase } from 'angularfire2/database';
 import firebase from 'firebase';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AdminConductoresPage } from '../admin-conductores/admin-conductores';
 import { UsuarioServicioProvider } from '../../providers/usuario-servicio/usuario-servicio';
 import { FcmProvider } from '../../providers/fcm/fcm';
+import { EstadoUsuarioServiceProvider } from '../../providers/estado-usuario-service/estado-usuario-service';
 
 /**
  * Generated class for the DetalleConductorPage page.
@@ -30,13 +31,16 @@ export class DetalleConductorPage {
   estadoConductores: any = [];
   flag = true;
 
-
-
+  usuarios:any = [];
+  cantUsuarios:any;
+  
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public usuarioServicio: UsuarioServicioProvider,
     public afDB: AngularFireDatabase,
     public fireAuth: AngularFireAuth,
+    public loadingCtrl: LoadingController,
+    public estadoUsuarioServicio: EstadoUsuarioServiceProvider,
     public fcm: FcmProvider) {
     this.id = navParams.get('id');/*con navparams tomo el valor que pase en el metodo gotodetail tomando el id que pasa el metodo */
     /*paso el id que tome para q el metodo use dicho id */
@@ -98,11 +102,28 @@ export class DetalleConductorPage {
 }
 
   actualizarEstadoSolicitud() {
+    var usuarios:any = [];
+    var cantUsuarios: any;
+    
     this.afDB.database.ref('conductor/' + this.id + '/estado').set(this.conductor.estado);
     alert('Estado de solicitud actualizada');
     this.fcm.setNuevoEstadoConductor(this.conductor.id, this.conductor.token, this.conductor.nombreCompleto, this.conductor.estado);
     //this.usuarioServicio.changeMessage('asdas');
-    this.navCtrl.setRoot(AdminConductoresPage);
+    let loading = this.loadingCtrl.create({
+      spinner: 'crescent',
+      content: 'Cargando..',
+      duration: 2000
+    });
+    loading.present();
+
+    this.estadoUsuarioServicio.buscarEstadoConductores().then(res => {
+      usuarios = res['usuarios'];
+      cantUsuarios = res['cant'];  
+      console.log(usuarios);
+      console.log(cantUsuarios);
+
+      this.navCtrl.setRoot(AdminConductoresPage, {'usuar': 'hola'});
+    });
 
   }
 }

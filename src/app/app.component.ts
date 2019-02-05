@@ -29,6 +29,8 @@ import { ViewEncapsulation, OnInit } from '@angular/core';
 import { timer } from 'rxjs/observable/timer';
 import { DatosConductorPage } from '../pages/datos-conductor/datos-conductor';
 import { Pruebadist2puntosPage } from '../pages/pruebadist2puntos/pruebadist2puntos';
+import { PruebaDatosConductorPage } from '../pages/prueba-datos-conductor/prueba-datos-conductor';
+import { AdministradorPage } from '../pages/administrador/administrador';
 //
 @Component({
   templateUrl: 'app.html'
@@ -36,7 +38,7 @@ import { Pruebadist2puntosPage } from '../pages/pruebadist2puntos/pruebadist2pun
 export class MyApp implements OnInit {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = Pruebadist2puntosPage;
+  rootPage: any = AdministradorPage;
 
   usuario: any;
   conductor: any = {};

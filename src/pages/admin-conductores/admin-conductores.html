@@ -7,7 +7,9 @@
 
 <ion-header>
 
-  <ion-title><button id="flecha" (click)="iraMenuAdmin()"><ion-icon name="arrow-back"></ion-icon></button> Administrar Conductores</ion-title>
+  <ion-title><button id="flecha" (click)="iraMenuAdmin()">
+      <ion-icon name="arrow-back"></ion-icon>
+    </button> Administrar Conductores</ion-title>
 
 </ion-header>
 
@@ -20,7 +22,7 @@
     display: none !important;
   }
 
-  #flecha{
+  #flecha {
     color: #424242 !important;
     background-color: white !important;
     margin: 0 6px !important;
@@ -28,41 +30,61 @@
     -webkit-box-shadow: none !important;
     box-shadow: none !important;
     display: inline-block !important;
-}
-  
+  }
 </style>
 
 <ion-content padding>
 
 
-  <ngx-datatable 
-  class="fullscreen"
-  [ngClass]="tablestyle"
-  [rows]="usuarios"
+
+<!--
+  <ngx-datatable
+  #table
+  class="material striped scroll-vertical"
+  [rows]="data"
+  [columns]="cols"
   [columnMode]="'force'"
-  [reorderable]="reorderable"
+  [headerHeight]="35"
+  [footerHeight]="35"
   [rowHeight]="'auto'"
-  [rowClass]="getRowClass"
-  [summaryRow]="true">
+  [limit]="pageSize"
+  [selectionType]="'single'">
  
-    <ngx-datatable-column prop="nombreCompleto" [resizeable]="false"></ngx-datatable-column>
+ <input type="text" (keyup)='filterDatatable($event)'>
  
-<!--    <ngx-datatable-column name="Gender"></ngx-datatable-column>
+</ngx-datatable>
+-->
+
+  <ngx-datatable 
+    class="fullscreen"
+    [ngClass]="tablestyle"
+    [rows]="usuarios"
+    [columnMode]="'force'"
+    [reorderable]="reorderable"
+    [rowHeight]="'auto'"
+    [rowClass]="getRowClass"
+    [summaryRow]="true"
+    [selectionType]="'single'"
+    (select)='onSelect($event)'>
+>
+
+    <ngx-datatable-column prop="nombreCompleto"  [resizeable]="false"></ngx-datatable-column>
+    <!--    <ngx-datatable-column name="Gender"></ngx-datatable-column>
     -->
     <ngx-datatable-column name="estado"></ngx-datatable-column>
- 
+
     <ngx-datatable-column name="id" [resizeable]="false">
       <ng-template ngx-datatable-header-template>
-        Action
       </ng-template>
       <ng-template let-row="row" ngx-datatable-cell-template>
-        <button ion-button small outline color="light" (click)="irADetalleConductor(id)">Details</button>
+        <button ion-button small outline color="light" (click)="detalleConductor($event)">Ir a Conductor</button>
       </ng-template>
     </ngx-datatable-column>
- 
+
   </ngx-datatable>
-  
+
   <h6 text-center> <br> Listado Conductores </h6>
+
 
   <ion-list>
     <button ion-item *ngFor="let usuario of usuarios" (click)="irADetalleConductor(usuario.id)">

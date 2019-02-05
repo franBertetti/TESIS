@@ -58,6 +58,9 @@ import { DatosConductorPageModule } from '../pages/datos-conductor/datos-conduct
 import { SolicitudesConductorPageModule } from '../pages/solicitudes-conductor/solicitudes-conductor.module';
 import { UbicacionProvider } from '../providers/ubicacion/ubicacion';
 import { Pruebadist2puntosPageModule } from '../pages/pruebadist2puntos/pruebadist2puntos.module';
+import { PruebaDatosConductorPageModule } from '../pages/prueba-datos-conductor/prueba-datos-conductor.module';
+import { AdministradorPageModule } from '../pages/administrador/administrador.module';
+
 
 
 export const firebaseConfig = {
@@ -102,6 +105,7 @@ export const firebaseConfig = {
     PerfilClientePageModule,
     TipoVehiculoPageModule,
     DetalletipoVehiculoPageModule,
+    AdministradorPageModule,
     LocalidadPageModule,
     DetalleLocalidadPageModule,
     AdminConductoresPageModule,
@@ -117,9 +121,10 @@ export const firebaseConfig = {
     DatosConductorPageModule,
     SolicitudesConductorPageModule,
     Pruebadist2puntosPageModule,
+    PruebaDatosConductorPageModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAK63fXQji9i7akGbEnPHQBxWRLjM8sNBs',
-      libraries: ['geometry','places']
+      libraries: ['geometry', 'places']
     })
     /*,
     AdministradorPage*/
@@ -134,7 +139,7 @@ export const firebaseConfig = {
     StatusBar,
     SplashScreen,
     Camera,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
     Firebase,
     FcmProvider,
     FotoPerfilServiceProvider,
@@ -144,6 +149,6 @@ export const firebaseConfig = {
     Facebook,
     UbicacionProvider,
     Geolocation
-    ]
+  ]
 })
-export class AppModule {}
+export class AppModule { }
