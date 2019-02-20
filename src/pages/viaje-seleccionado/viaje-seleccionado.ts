@@ -176,7 +176,7 @@ export class ViajeSeleccionadoPage {
       map: this.map,
       scale: 1,
       title: 'aca estoy!',
-      icon: image // Path al nuevo icono
+      icon: image // Path al nuevo icon
     });
 
 
