@@ -40,6 +40,9 @@ export class ViajeSeleccionadoPage {
 
   numeroContratacion;
   viaje: any;
+  image1: any;
+  marker:any;
+  map:any;
 
 
   constructor(public navCtrl: NavController,
@@ -68,6 +71,23 @@ export class ViajeSeleccionadoPage {
       this.mostrarPerfilCliente(user).then(res => {
         console.log('res:');
         if (res == true) {
+          setInterval(() => { 
+            console.log('Intervalo timeout');
+            this._ubicacionProv.iniciarGeoLocalizacion().then(res => {
+              console.log('rta promesa:');
+  
+              this.posActual = res;
+  
+              this.latPosActual = res['lat'];
+              this.lngPosActual = res['lng'];
+              console.log(this.latPosActual);
+              console.log(this.lngPosActual);
+  
+              this.calculateAndDisplayRoute(this.latPosActual, this.lngPosActual);
+            })
+
+          },10000);
+
           this._ubicacionProv.iniciarGeoLocalizacion().then(res => {
             console.log('rta promesa:');
 
@@ -77,10 +97,24 @@ export class ViajeSeleccionadoPage {
             this.lngPosActual = res['lng'];
             console.log(this.latPosActual);
             console.log(this.lngPosActual);
+
             this.calculateAndDisplayRoute(this.latPosActual, this.lngPosActual);
           })
+          
         }
       });
+/*
+      this._ubicacionProv.ubicacionEnTiempoReal().then(rta => {
+        this.marker = new google.maps.Marker({
+          //position: new google.maps.LatLng(rta['lat'], rta['lng']),
+          position: new google.maps.LatLng(-32.4227045,-63.2617904),          
+          map: this.map,
+          scale: 1,
+          title: 'aca estoy!',
+          icon: this.image1 // Path al nuevo icono
+        });
+     
+      })*/
     });
   }
 
@@ -94,7 +128,7 @@ export class ViajeSeleccionadoPage {
             this.usuario = usuarioGuardado;
             console.log(this.usuario);
             firebase.storage().ref('FotosUsuario/' + user.uid + '/fotoPerfil.png').getDownloadURL().then((url) => {
-              this.fotoPerfil = url;
+              this.fotoPerfil = url;  
               resolve(true);
             });
           });
@@ -110,35 +144,36 @@ export class ViajeSeleccionadoPage {
     var infoWindow;
     infoWindow = new google.maps.InfoWindow;
 
-    var that = this;
-    var directionsService = new google.maps.DirectionsService;
-    var directionsDisplay = new google.maps.DirectionsRenderer;
-    var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 10,
-      center: { lat: lat, lng: lng }
-    });
-
-    var image1 = {
+    this.image1 = {
       url: this.fotoPerfil, // image is 512 x 512
       scaledSize : new google.maps.Size(50, 50)
   };
 
-    var marker = new google.maps.Marker({
-      position: new google.maps.LatLng(lat, lng),
-      map: map,
-      scale: 1,
-      title: 'aca estoy!',
-      icon: image1 // Path al nuevo icono
+  var image = {
+    url: this.fotoPerfilCliente, // image is 512 x 512
+    scaledSize : new google.maps.Size(50, 50)
+};
+
+    var that = this;
+    var directionsService = new google.maps.DirectionsService;
+    var directionsDisplay = new google.maps.DirectionsRenderer;
+    this.map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 10,
+      center: { lat: lat, lng: lng },
+      icon: this.image1
     });
 
-    var image = {
-      url: this.fotoPerfilCliente, // image is 512 x 512
-      scaledSize : new google.maps.Size(50, 50)
-  };
+    this.marker = new google.maps.Marker({
+      position: new google.maps.LatLng(lat, lng),
+      map: this.map,
+      scale: 1,
+      title: 'aca estoy!',
+      icon: this.image1 // Path al nuevo icono
+    });
 
     var marker2 = new google.maps.Marker({
       position: new google.maps.LatLng(this.viaje.latitud, this.viaje.longitud),
-      map: map,
+      map: this.map,
       scale: 1,
       title: 'aca estoy!',
       icon: image // Path al nuevo icono
@@ -147,11 +182,12 @@ export class ViajeSeleccionadoPage {
 
 
 
-    directionsDisplay.setMap(map);
+    directionsDisplay.setMap(this.map);
 
     var pos = {
       lat: lat,
-      lng: lng
+      lng: lng,
+      icon: image
     };
 
 

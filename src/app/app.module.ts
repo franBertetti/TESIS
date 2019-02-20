@@ -60,6 +60,7 @@ import { UbicacionProvider } from '../providers/ubicacion/ubicacion';
 import { Pruebadist2puntosPageModule } from '../pages/pruebadist2puntos/pruebadist2puntos.module';
 import { PruebaDatosConductorPageModule } from '../pages/prueba-datos-conductor/prueba-datos-conductor.module';
 import { AdministradorPageModule } from '../pages/administrador/administrador.module';
+import { PruebadistconkmPageModule } from '../pages/pruebadistconkm/pruebadistconkm.module';
 
 
 
@@ -121,6 +122,7 @@ export const firebaseConfig = {
     DatosConductorPageModule,
     SolicitudesConductorPageModule,
     Pruebadist2puntosPageModule,
+    PruebadistconkmPageModule,
     PruebaDatosConductorPageModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAK63fXQji9i7akGbEnPHQBxWRLjM8sNBs',

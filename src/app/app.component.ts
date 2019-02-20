@@ -31,6 +31,7 @@ import { DatosConductorPage } from '../pages/datos-conductor/datos-conductor';
 import { Pruebadist2puntosPage } from '../pages/pruebadist2puntos/pruebadist2puntos';
 import { PruebaDatosConductorPage } from '../pages/prueba-datos-conductor/prueba-datos-conductor';
 import { AdministradorPage } from '../pages/administrador/administrador';
+import { PruebadistconkmPage } from '../pages/pruebadistconkm/pruebadistconkm';
 //
 @Component({
   templateUrl: 'app.html'
@@ -38,7 +39,7 @@ import { AdministradorPage } from '../pages/administrador/administrador';
 export class MyApp implements OnInit {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = AdministradorPage;
+  rootPage: any = LoginPage;
 
   usuario: any;
   conductor: any = {};
@@ -231,7 +232,7 @@ export class MyApp implements OnInit {
       this.afDB.object('conductor/' + user.uid)
         .valueChanges().subscribe(conductorGuardado => {
           this.conductor = conductorGuardado;
-          if (this.conductor.estado != undefined) {
+          if (conductorGuardado !=null && this.conductor.estado != undefined) {
             this.estadoConductorSeteado = this.conductor.estado;
           } else {
             this.estadoConductorSeteado = '-';

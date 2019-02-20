@@ -192,7 +192,7 @@ export class LoginPage implements OnInit {
       this.myForm.value.email == 'Admin@admin.com' && this.myForm.value.password == 'admin123') {
         this.navCtrl.setRoot('AdministradorPage');
       } else {
-        this.navCtrl.setRoot('PerfilClientePage');
+        this.navCtrl.setRoot(PerfilClientePage);
       };
 
     }, (err) => {
@@ -263,7 +263,7 @@ export class LoginPage implements OnInit {
 
 
 
-    this.navCtrl.setRoot('PerfilClientePage');
+    this.navCtrl.setRoot(PerfilClientePage);
   }
 
 

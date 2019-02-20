@@ -102,9 +102,46 @@ export class UbicacionProvider {
     this.conductor = this.afDB.doc(`/conductores/${id}`);
   }
 
+  ubicacionEnTiempoReal(){
+
+    return new Promise((resolve, reject) => {
+
+    let options = { timeOut: 5000,  enableHighAccuracy: true };
+    let watch = this.geolocation.watchPosition(options);
+    watch.subscribe((data) => {
+      // data can be a set of coordinates, or an error (if an error occurred).
+      // data.coords.latitude
+      // data.coords.longitude
+        var latPosActual =  data.coords.latitude;
+        var lngPosActual =  data.coords.longitude;
+        
+        console.log(data.coords);
+ 
+        resolve({ 'lat': latPosActual, 'lng': lngPosActual });        
+    });
+
+  });
+
+
+
+
+/*    return new Promise((resolve, reject) => {
+    
+      this.watch = this.geolocation.watchPosition().subscribe((data) => {
+        // data can be a set of coordinates, or an error (if an error occurred).
+        // data.coords.latitude
+        // data.coords.longitude
+        resolve({ 'lat': data.coords.latitude, 'lng': data.coords.longitude });        
+      });
+      
+    });
+  */  
+  }
+
+
   comenzarGeolocalizacion(id) {
 
-    let options = { timeOut: 2000, enableHighAccuracy: true };
+    let options = { enableHighAccuracy: true };
       this.geolocation.getCurrentPosition().then((resp) => {
         // resp.coords.latitude
         // resp.coords.longitude
@@ -176,7 +213,7 @@ export class UbicacionProvider {
 
 
 metodoPrueba(){
-  let options  = {timeOut:5000, enableHighAccuracy:true};
+  let options  = {/*timeOut:5000,*/ enableHighAccuracy:true};
 
   let locationObs = Observable.create(observable => {
     this.geolocation.getCurrentPosition(options).then(resp => {
