@@ -61,6 +61,7 @@ import { Pruebadist2puntosPageModule } from '../pages/pruebadist2puntos/pruebadi
 import { PruebaDatosConductorPageModule } from '../pages/prueba-datos-conductor/prueba-datos-conductor.module';
 import { AdministradorPageModule } from '../pages/administrador/administrador.module';
 import { PruebadistconkmPageModule } from '../pages/pruebadistconkm/pruebadistconkm.module';
+import { PruebadragdirPageModule } from '../pages/pruebadragdir/pruebadragdir.module';
 
 
 
@@ -127,7 +128,8 @@ export const firebaseConfig = {
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAK63fXQji9i7akGbEnPHQBxWRLjM8sNBs',
       libraries: ['geometry', 'places']
-    })
+    }),
+    PruebadragdirPageModule
     /*,
     AdministradorPage*/
   ],

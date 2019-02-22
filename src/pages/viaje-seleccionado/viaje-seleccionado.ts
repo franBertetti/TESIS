@@ -43,7 +43,7 @@ export class ViajeSeleccionadoPage {
   image1: any;
   marker:any;
   map:any;
-
+  cont = 0;
 
   constructor(public navCtrl: NavController,
     public fireAuth: AngularFireAuth,
@@ -141,7 +141,7 @@ export class ViajeSeleccionadoPage {
 
 
   calculateAndDisplayRoute(lat, lng) {
-    var infoWindow;
+   var infoWindow;
     infoWindow = new google.maps.InfoWindow;
 
     this.image1 = {
@@ -157,11 +157,13 @@ export class ViajeSeleccionadoPage {
     var that = this;
     var directionsService = new google.maps.DirectionsService;
     var directionsDisplay = new google.maps.DirectionsRenderer;
+    if (this.cont < 1 ){
     this.map = new google.maps.Map(document.getElementById('map'), {
       zoom: 10,
       center: { lat: lat, lng: lng },
       icon: this.image1
     });
+  }
 
     this.marker = new google.maps.Marker({
       position: new google.maps.LatLng(lat, lng),
@@ -203,6 +205,7 @@ export class ViajeSeleccionadoPage {
       }
     });
 
+    this.cont++;
   }
 
   iraPenalizacion() {

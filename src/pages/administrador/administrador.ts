@@ -9,6 +9,7 @@ import { EstadoConductoresPage } from '../estado-conductores/estado-conductores'
 import { AdminVehiculosClientePage } from '../admin-vehiculos-cliente/admin-vehiculos-cliente';
 import { TipoPenalizacionPage } from '../tipo-penalizacion/tipo-penalizacion';
 import { EstadoUsuarioServiceProvider } from '../../providers/estado-usuario-service/estado-usuario-service';
+import { PruebadragdirPage } from '../pruebadragdir/pruebadragdir';
 
 
 /**
@@ -44,6 +45,10 @@ cantUsuarios:any;
       this.usuarios = res['usuarios'];
       this.cantUsuarios = res['cant'];  
     });
+  }
+
+  irApruebaDragDir(){
+    this.navCtrl.push(PruebadragdirPage);
   }
 
   irATipoVehiculo(){

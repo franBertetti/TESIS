@@ -32,6 +32,7 @@ import { Pruebadist2puntosPage } from '../pages/pruebadist2puntos/pruebadist2pun
 import { PruebaDatosConductorPage } from '../pages/prueba-datos-conductor/prueba-datos-conductor';
 import { AdministradorPage } from '../pages/administrador/administrador';
 import { PruebadistconkmPage } from '../pages/pruebadistconkm/pruebadistconkm';
+import { PruebadragdirPage } from '../pages/pruebadragdir/pruebadragdir';
 //
 @Component({
   templateUrl: 'app.html'
@@ -39,7 +40,7 @@ import { PruebadistconkmPage } from '../pages/pruebadistconkm/pruebadistconkm';
 export class MyApp implements OnInit {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = LoginPage;
+  rootPage: any = AdministradorPage;
 
   usuario: any;
   conductor: any = {};

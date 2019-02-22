@@ -106,8 +106,8 @@ export class UbicacionProvider {
 
     return new Promise((resolve, reject) => {
 
-    let options = { timeOut: 5000,  enableHighAccuracy: true };
-    let watch = this.geolocation.watchPosition(options);
+//    let options = { timeOut: 5000,  enableHighAccuracy: true };
+    let watch = this.geolocation.watchPosition();
     watch.subscribe((data) => {
       // data can be a set of coordinates, or an error (if an error occurred).
       // data.coords.latitude
