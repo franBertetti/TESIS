@@ -35,7 +35,7 @@ cantUsuarios:any;
               public loadingCtrl: LoadingController,
               public estadoUsuarioServicio: EstadoUsuarioServiceProvider,
               public fireAuth:AngularFireAuth) {
-                this.menuCtrl.enable(true, 'myMenu');//para desactivar el menu desplegable en esta pagina
+                this.menuCtrl.enable(true, 'myMenu');//para desactivar el menu desplegable en esta pag
 
   }
 
