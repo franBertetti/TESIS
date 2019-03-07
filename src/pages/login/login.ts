@@ -16,11 +16,15 @@ import { UsuarioServicioProvider } from '../../providers/usuario-servicio/usuari
 import { PerfilClientePage } from '../perfil-cliente/perfil-cliente';
 import { Facebook } from '@ionic-native/facebook';
 
+declare var window;
+
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
 })
 export class LoginPage implements OnInit {
+
+  locations: any;
 
   splash = true;
   //secondPage = SecondPagePage;
@@ -29,7 +33,7 @@ export class LoginPage implements OnInit {
   user: Observable<firebase.User>;
   public loading: Loading;
 
-  passwordShown:boolean = false;
+  passwordShown: boolean = false;
   passwordType: string = 'password';
 
   constructor(
@@ -43,8 +47,10 @@ export class LoginPage implements OnInit {
     public fcm: FcmProvider,
     public usuarioService: UsuarioServicioProvider,
     public toastCtrl: ToastController,
-    public fb:Facebook,
+    public fb: Facebook,
     public platform: Platform) {
+
+    this.locations = [];
 
     if (this.navParams.get('splash')) {
       this.splash = this.navParams.get('splash');
@@ -70,10 +76,28 @@ export class LoginPage implements OnInit {
 
   }
 
-  public togglePassword(){
-    if (this.passwordShown){
+  startBackgroundTracking() {
+    window.app.backgroundGeolocation.start();
+  }
+
+  stopBackgroundGeolocation() {
+    window.app.backgroundGeolocation.stop();
+  }
+
+  getLocations(){
+    this.locations = (JSON.parse(localStorage.getItem
+      ("location"))==null)?[]:JSON.parse(localStorage.getItem
+        ("location"));
+  }
+
+  clearLocations(){
+    localStorage.removeItem("location");
+  }
+
+  public togglePassword() {
+    if (this.passwordShown) {
       this.passwordShown = false;
-      this.passwordType ='password';
+      this.passwordType = 'password';
     } else {
       this.passwordShown = true;
       this.passwordType = 'text';
@@ -103,15 +127,44 @@ export class LoginPage implements OnInit {
     )
   }
 
-/*  signInWithFacebook() {
-
-    if (this.platform.is('cordova')){
-      //celular
-      this.fb.login(['email', 'public_profile']).then(res=> {
-        const facebookCredential = firebase.auth.FacebookAuthProvider.credential(res.authResponse.accessToken);
-        firebase.auth().signInWithCredential(facebookCredential)
-        .then(user => {
-          console.log(user);
+  /*  signInWithFacebook() {
+  
+      if (this.platform.is('cordova')){
+        //celular
+        this.fb.login(['email', 'public_profile']).then(res=> {
+          const facebookCredential = firebase.auth.FacebookAuthProvider.credential(res.authResponse.accessToken);
+          firebase.auth().signInWithCredential(facebookCredential)
+          .then(user => {
+            console.log(user);
+            this.usuarioService.cargarUsuario(
+              user.displayName,
+              user.email,
+              user.photoURL,
+              user.uid,
+              'facebook'
+            )
+          });
+    
+        this.afAuth.user.subscribe(snap => {
+          this.fcm.setId(snap.uid);
+          this.fcm.getToken();
+        });
+    
+        let loading = this.loadingCtrl.create({
+          spinner: 'crescent',
+          content: 'Please Wait',
+          duration: 3500
+        });
+        loading.present();
+    
+        this.navCtrl.setRoot(PerfilClientePage);
+          }).catch(e => console.log('Error con el login' + JSON.stringify(e)));
+      }else{
+      this.afAuth.auth
+        .signInWithPopup(new firebase.auth.FacebookAuthProvider())
+        .then(res => {
+          console.log(res);
+          let user = res.user;
           this.usuarioService.cargarUsuario(
             user.displayName,
             user.email,
@@ -134,43 +187,14 @@ export class LoginPage implements OnInit {
       loading.present();
   
       this.navCtrl.setRoot(PerfilClientePage);
-        }).catch(e => console.log('Error con el login' + JSON.stringify(e)));
-    }else{
-    this.afAuth.auth
-      .signInWithPopup(new firebase.auth.FacebookAuthProvider())
-      .then(res => {
-        console.log(res);
-        let user = res.user;
-        this.usuarioService.cargarUsuario(
-          user.displayName,
-          user.email,
-          user.photoURL,
-          user.uid,
-          'facebook'
-        )
-      });
-
-    this.afAuth.user.subscribe(snap => {
-      this.fcm.setId(snap.uid);
-      this.fcm.getToken();
-    });
-
-    let loading = this.loadingCtrl.create({
-      spinner: 'crescent',
-      content: 'Please Wait',
-      duration: 3500
-    });
-    loading.present();
-
-    this.navCtrl.setRoot(PerfilClientePage);
+    }
   }
-}
-
-  signOut(){
-    this.afAuth.auth.signOut();
-    this.usuarioService.Usuario = {};
-  }
-*/
+  
+    signOut(){
+      this.afAuth.auth.signOut();
+      this.usuarioService.Usuario = {};
+    }
+  */
 
   loginUsuario() {
 
@@ -189,7 +213,7 @@ export class LoginPage implements OnInit {
 
       console.log(this.user);
       if (this.myForm.value.email == 'admin@admin.com' && this.myForm.value.password == 'admin123' ||
-      this.myForm.value.email == 'Admin@admin.com' && this.myForm.value.password == 'admin123') {
+        this.myForm.value.email == 'Admin@admin.com' && this.myForm.value.password == 'admin123') {
         this.navCtrl.setRoot('AdministradorPage');
       } else {
         this.navCtrl.setRoot(PerfilClientePage);

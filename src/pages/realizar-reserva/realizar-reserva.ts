@@ -184,6 +184,8 @@ export class RealizarReservaPage {
             console.log(place.address_components[i]);
           }
 
+          console.log(place.geometry.location.lat);
+          console.log(place.geometry.location.lng);
           console.log(place.formatted_address);
           this.direccionFormateada = place.formatted_address;
           this.busqueda.direccion = this.direccionFormateada;

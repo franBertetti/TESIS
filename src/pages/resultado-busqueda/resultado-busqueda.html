@@ -1,16 +1,10 @@
-<!--
-  Generated template for the ResultadoBusquedaPage page.
 
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar color="dark">
     <ion-title>Resultados de Búsqueda</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="switchStyle()">
-        <!--<ion-icon name="bulb"></ion-icon>-->
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -47,7 +41,7 @@
         <img src="{{ datosConductor.fotoPerfil }}">
       </ion-avatar>
       <h1 text-wrap text-bold>{{datosConductor.nombreCompleto}}</h1>
-      <h3 text-wrap>{{datosConductor.tarifa}}$ por kilometro | {{ datosConductor.puntaje}} | A 550 m</h3>
+      <h3 text-wrap>{{datosConductor.tarifa}}$ por kilometro | {{ datosConductor.puntaje}} | A {{ datosConductor.distancia }} m | Alrededor de {{ datosConductor.demora }} min.</h3>
     </ion-item>
   </ion-list>
 
@@ -64,170 +58,5 @@
 
 </ion-content>
 
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?libraries=geometry&sensor=true_or_false"></script>
 
-
-
-
-
-<!--
-  <ngx-datatable class="fullscreen" [ngClass]="tablestyle" [rows]="rows" [rowClass]="getRowClass" [columnMode]="'force'"
-    [sortType]="'multi'" [reorderable]="false" [rowHeight]="50">
-    <ngx-datatable-column name="name" [resizeable]="true"></ngx-datatable-column>
-    <ngx-datatable-column name="gender" [resizeable]="true"></ngx-datatable-column>
-    <ngx-datatable-column name="age" [resizeable]="true"></ngx-datatable-column>
-
-    <ngx-datatable-column name="id" [resizeable]="false">
-      <ng-template ngx-datatable-header-template>
-        Action
-      </ng-template>
-      <ng-template ngx-datatable-cell-template let-row="row">
-        <button ion-button small outline color="light" (click)="open(row)">Details</button>
-      </ng-template>
-    </ngx-datatable-column>
-
-  </ngx-datatable>
-
-
-
-  <ion-row style="border-bottom: groove; background-color: rgba(0, 0, 0, 0.1)">
-    <ion-col col-6>
-      <ion-label style="font-weight: bold; text-align:center">Nombre</ion-label>
-    </ion-col>
-    <ion-col col-3>
-      <ion-label style="font-weight: bold; text-align:center">$ x km</ion-label>
-    </ion-col>
-    <ion-col col-3>
-      <ion-label style="font-weight: bold; text-align:center">
-        <ion-icon item-right name="star"></ion-icon>
-      </ion-label>
-    </ion-col>
-  </ion-row>
-
-  
-  <ion-item *ngFor="let datosUsuarioConductor of datosdeUsuarioConductores" *ngFor="let datosConductor of datosConductores">
-    <ion-avatar item-start>
-      <img src="https://marketingdecontenidos.com/wp-content/uploads/2017/11/foto-de-perfil-para-instagram.png">
-    </ion-avatar>
-    <h1 text-wrap text-bold> {{ datosUsuarioConductor.nombreCompleto}}</h1>
-    <h3 text-wrap>{{datosConductor.tarifa}} por kilometro | +3 | A 550 m</h3>
-  </ion-item>
-
-</ion-list>
-
-  <ion-row style="border-bottom: groove;">
-    <ion-col col-6>
-      <button ion-item block full *ngFor="let datosConductor of datosConductores" (click)="setIdConductorSeleccionado(datosConductor.id)" [class.active]="isSelected(datosConductor.id)">
-        <ion-label text-wrap>  {{datosConductor.nombreCompleto}} </ion-label>
-        <ion-avatar item-start>
-          <img src="{{ datosConductor.fotoPerfil }}">
-        </ion-avatar>
-      </button>
-    </ion-col>
-    <ion-col col-3>
-      <button ion-item block full *ngFor="let datosConductor of datosConductores" (click)="setIdConductorSeleccionado(datosConductor.id)" [class.active]="isSelected(datosConductor.id)">
-        <ion-label text-wrap> {{ datosConductor.tarifa}} </ion-label>
-      </button>
-    </ion-col>
-    <ion-col col-3>
-      <button ion-item block full *ngFor="let datosConductor of datosConductores" (click)="setIdConductorSeleccionado(datosConductor.id)" [class.active]="isSelected(datosConductor.id)">
-        <ion-label text-wrap> {{ datosConductor.puntaje}} </ion-label>
-      </button>
-    </ion-col>
-  </ion-row>
-  <ion-card *ngIf="idConductorSeleccionado">
-
-      <ion-card-header>
-        Conductor Seleccionado:
-      </ion-card-header>
-      <ion-card-content>
-          {{idConductorSeleccionado.nombreCompleto }}
-        </ion-card-content> 
-    </ion-card>
-  <button ion-button text-center full (click)="confirmarConductor()"> Seleccionar Conductor </button>
-
-
-
- Como deberia ser con 4 columnas
-
-  
-  <ion-row style="border-bottom: groove; background-color: rgba(0, 0, 0, 0.1)">
-    <ion-col col-3>
-      <ion-label style="font-weight: bold">Nombre</ion-label>
-    </ion-col>
-    <ion-col col-3>
-      <ion-label style="font-weight: bold">$ x km</ion-label>
-    </ion-col>
-    <ion-col col-3>
-      <ion-label style="font-weight: bold">
-        <ion-icon name="star"></ion-icon>
-      </ion-label>
-    </ion-col>
-    <ion-col col-3 style="font-weight: bold">
-      <ion-label text-wrap>Distancia</ion-label>
-    </ion-col>
-  </ion-row>
-
-  <ion-row style="border-bottom: groove;">
-    <ion-col col-3>
-      <button ion-item block full *ngFor="let datosUsuarioConductor of datosdeUsuarioConductores; let i=index;" (click)="setIdConductorSeleccionado(datosUsuarioConductor.id)" [class.active]="isSelected(datosUsuarioConductor.id)">
-        <ion-label text-wrap> {{ datosUsuarioConductor.nombreCompleto}}</ion-label>
-      </button>
-    </ion-col>
-    <ion-col col-3>
-      <button ion-item block full *ngFor="let datosConductor of datosConductores;let i=index;" (click)="setIdConductorSeleccionado(datosConductor.id)" [class.active]="isSelected(datosConductor.id)">
-        <ion-label text-wrap> {{ datosConductor.tarifa}} </ion-label>
-      </button>
-    </ion-col>
-    <ion-col col-3>
-      <button ion-item block full *ngFor="let datosConductor of datosConductores;let i=index;" (click)="setIdConductorSeleccionado(datosConductor.id)" [class.active]="isSelected(datosConductor.id)">
-        <ion-label text-wrap> {{ datosConductor.puntaje}} </ion-label>
-      </button>
-    </ion-col>
-    <ion-col col-3>
-      <button ion-item block full *ngFor="let datosConductor of datosConductores;let i=index;" (click)="setIdConductorSeleccionado(datosConductor.id)" [class.active]="isSelected(datosConductor.id)">
-        <ion-label text-wrap> {{ datosConductor.distanciaMaxima}} </ion-label>
-      </button>
-    </ion-col>
-  </ion-row>
-
-
--->
-
-
-
-
-
-<!--
-  <ion-grid>
-    <ion-row>
-      <ion-col col-3>
-        <ion-label block text-wrap>Texto Sarpado </ion-label>
-      </ion-col>
-      <ion-col col-3>
-        <ion-label block text-wrap>Texto Sarpado en </ion-label>
-      </ion-col>
-      <ion-col col-3>
-        <ion-label block text-wrap>Texto Sarpado en largo</ion-label>
-      </ion-col>
-      <ion-col col-3>
-        <ion-label block text-wrap>Texto Sarpado en largo monoBastanteeasd Largoo</ion-label>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col col-3>
-        <button ion-button block text-wrap>Primer boton</button>
-      </ion-col>
-      <ion-col col-3>
-        <button ion-button block text-wrap>segundo boton</button>
-      </ion-col>
-      <ion-col col-3>
-        <button ion-button block text-wrap>Texto Bastante Largo</button>
-      </ion-col>
-      <ion-col col-3>
-        <ion-label text-wrap>Texto Sarpado en largo mono Bastanteeasd Largoo</ion-label>
-      </ion-col>
-    </ion-row>
-
-
-  </ion-grid>
--->

@@ -1,26 +1,20 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { UbicacionProvider } from '../../providers/ubicacion/ubicacion';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Geolocation } from '@ionic-native/geolocation';
+import firebase from 'firebase';
 
 
 declare var google: any;
 
-/**
- * Generated class for the PruebadragdirPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @IonicPage()
 @Component({
-  selector: 'page-pruebadragdir',
-  templateUrl: 'pruebadragdir.html',
+  selector: 'page-buscar-conductor',
+  templateUrl: 'buscar-conductor.html',
 })
-export class PruebadragdirPage {
+export class BuscarConductorPage {
 
   latPosActual;
   lngPosActual;
@@ -33,18 +27,44 @@ export class PruebadragdirPage {
   directionsDisplay: any;
   watch: any;
   marker: any;
+  viaje:any;
+  mensaje:any;
 
+  numeroContratacion:any;
+  destino:any;
+  fotoPerfilCliente:any;
   marker1:any;
   marker2:any;
   markerPar:boolean = true;
   markerImpar:boolean = false;
+  banderaAlertaMensaje:boolean = true;
+  cargando:any;
 
   constructor(public navCtrl: NavController,
+    public loadingCtrl: LoadingController,
     public fireAuth: AngularFireAuth,
     public afDB: AngularFireDatabase,
     public navParams: NavParams,
+    public alertCtrl: AlertController,
     public _ubicacionProv: UbicacionProvider,
     private geolocation: Geolocation) {
+
+      this.cargando = this.loadingCtrl.create({
+        spinner: 'crescent',
+        content: 'Buscando Conductores',
+        duration: 7000
+      });
+    this.cargando.present();
+
+      if (this.navParams.get('viaje')) {
+        this.viaje = this.navParams.get('viaje');
+        this.numeroContratacion = this.viaje.numeroContratacion;
+        this.destino = this.viaje.latitud + ',' + this.viaje.longitud;
+        var id = this.viaje.idUsuario;
+        firebase.storage().ref('FotosUsuario/' + id + '/fotoPerfil.png').getDownloadURL().then((url) => {
+          this.fotoPerfilCliente = url;
+        });
+      }
 
     this.watch = this.geolocation.watchPosition();
     this.watch.subscribe((data) => {
@@ -59,7 +79,7 @@ export class PruebadragdirPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad PruebadragdirPage');
+    console.log('ionViewDidLoad BuscarConductorPage');
 
     this.map = new google.maps.Map(document.getElementById('map'), {
       zoom: 4,
@@ -145,7 +165,7 @@ export class PruebadragdirPage {
       this.computeTotalDistance(result);
     });
 
-    this.displayRoute(this.posActual, 'Corrientes 1400, Villa María, Córdoba', this.directionsService,
+    this.displayRoute(this.posActual, this.destino, this.directionsService,
       this.directionsDisplay);
 
   }
@@ -172,6 +192,25 @@ export class PruebadragdirPage {
     var total = 0;
     console.log('resultados:');
     console.log(result.routes['0'].legs['0'].distance.text);
+    this.mensaje = result.routes['0'].legs['0'].distance.text + '.' + 'Alrededor de '+ result.routes['0'].legs['0'].duration.text ;
+    
+    if (this.banderaAlertaMensaje == true){
+
+      this.cargando.dismiss();
+      let alert = this.alertCtrl.create({
+        title: 'Vamos por el pasajero !',
+        subTitle: 'Se encuentra a ' +this.mensaje,
+        buttons: [
+          {
+            text: "Ok",
+            role: 'cancel'
+          }
+        ]
+      });
+      alert.present();
+      this.banderaAlertaMensaje = false;
+    }
+
     console.log(result.routes['0'].legs['0'].distance.value);
     console.log(result.routes['0'].legs['0'].duration.text);
     console.log(result.routes['0'].legs['0'].duration.value);
@@ -192,6 +231,22 @@ export class PruebadragdirPage {
     total = total / 1000;
     document.getElementById('total').innerHTML = total + ' km';
     this.total = total;
+
+ /*   if (this.banderaAlertaMensaje == true){
+
+    this.cargando.dismiss();
+    let alert = this.alertCtrl.create({
+      title: this.mensaje,
+      buttons: [
+        {
+          text: "Vamos por el pasajero !",
+          role: 'cancel'
+        }
+      ]
+    });
+    alert.present();
+    this.banderaAlertaMensaje = false;
+  }*/
   }
 
 

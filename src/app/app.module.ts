@@ -62,6 +62,8 @@ import { PruebaDatosConductorPageModule } from '../pages/prueba-datos-conductor/
 import { AdministradorPageModule } from '../pages/administrador/administrador.module';
 import { PruebadistconkmPageModule } from '../pages/pruebadistconkm/pruebadistconkm.module';
 import { PruebadragdirPageModule } from '../pages/pruebadragdir/pruebadragdir.module';
+import { BackgroundGeolocation } from '@ionic-native/background-geolocation/ngx';
+import { BuscarConductorPageModule } from '../pages/buscar-conductor/buscar-conductor.module';
 
 
 
@@ -129,7 +131,8 @@ export const firebaseConfig = {
       apiKey: 'AIzaSyAK63fXQji9i7akGbEnPHQBxWRLjM8sNBs',
       libraries: ['geometry', 'places']
     }),
-    PruebadragdirPageModule
+    PruebadragdirPageModule,
+    BuscarConductorPageModule
     /*,
     AdministradorPage*/
   ],
@@ -151,7 +154,8 @@ export const firebaseConfig = {
     UsuarioServicioProvider,
     ServicioBusquedaConductoresProvider,
     Facebook,
-    UbicacionProvider,
+    UbicacionProvider,    
+    BackgroundGeolocation,
     Geolocation
   ]
 })

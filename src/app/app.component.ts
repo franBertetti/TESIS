@@ -3,6 +3,13 @@ import { ToastController, LoadingController } from 'ionic-angular';
 import { Subject } from 'rxjs/Subject';
 import { tap } from 'rxjs/operators';
 
+import {
+  BackgroundGeolocation,
+  BackgroundGeolocationConfig,
+  BackgroundGeolocationResponse,
+  BackgroundGeolocationEvents
+} from '@ionic-native/background-geolocation/ngx';
+
 
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, AlertController } from 'ionic-angular';
@@ -34,19 +41,25 @@ import { AdministradorPage } from '../pages/administrador/administrador';
 import { PruebadistconkmPage } from '../pages/pruebadistconkm/pruebadistconkm';
 import { PruebadragdirPage } from '../pages/pruebadragdir/pruebadragdir';
 //
+declare var window;
+
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp implements OnInit {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = AdministradorPage;
+  rootPage: any = LoginPage;
 
   usuario: any;
   conductor: any = {};
   fotoPerfil: any;
   estado: any;
   email: any;
+
+  arr: any;
+
+  logs: string[] = [];
 
   estadoConductorSeteado = '-';
 
@@ -65,6 +78,7 @@ export class MyApp implements OnInit {
   constructor(public platform: Platform,
     public loadingCtrl: LoadingController,
     public statusBar: StatusBar,
+    private backgroundGeolocation: BackgroundGeolocation,
     public splashScreen: SplashScreen,
     public fireAuth: AngularFireAuth,
     public afDB: AngularFireDatabase,
@@ -124,7 +138,7 @@ export class MyApp implements OnInit {
       });
 
       */
-
+    this.arr = [];
     this.initializeApp();
     this.fireAuth.user.subscribe(user => this.mostrarPerfilCliente(user));
 
@@ -159,20 +173,20 @@ export class MyApp implements OnInit {
         });
 
         this.afDB.object('conductor/' + this.id)
-        .valueChanges().subscribe(conductorGuardado => {
-          this.conductor = conductorGuardado;
-          if (this.conductor.estado) {
-            this.estadoConductorSeteado = this.conductor.estado;
-          } else {
-            this.estadoConductorSeteado = '-';
-          }
+          .valueChanges().subscribe(conductorGuardado => {
+            this.conductor = conductorGuardado;
+            if (this.conductor.estado) {
+              this.estadoConductorSeteado = this.conductor.estado;
+            } else {
+              this.estadoConductorSeteado = '-';
+            }
 
 
-        this.message = message;
-        console.log(this.message);
-      });
-    }
-  });
+            this.message = message;
+            console.log(this.message);
+          });
+      }
+    });
 
     //// this.newMessage();
 
@@ -193,6 +207,7 @@ export class MyApp implements OnInit {
 
 
 
+
   }
 
   ngOnInit() {
@@ -206,6 +221,9 @@ export class MyApp implements OnInit {
     this.newMessage();
     
   */}
+
+
+
 
   newMessage() {
     this.usuarioService.changeMessage('hello from appComponent');
@@ -233,7 +251,7 @@ export class MyApp implements OnInit {
       this.afDB.object('conductor/' + user.uid)
         .valueChanges().subscribe(conductorGuardado => {
           this.conductor = conductorGuardado;
-          if (conductorGuardado !=null && this.conductor.estado != undefined) {
+          if (conductorGuardado != null && this.conductor.estado != undefined) {
             this.estadoConductorSeteado = this.conductor.estado;
           } else {
             this.estadoConductorSeteado = '-';
@@ -271,6 +289,32 @@ export class MyApp implements OnInit {
       this.statusBar.styleDefault();
       //  this.splashScreen.hide();
       // timer(3000).subscribe(() => this.showSplash = false) // <-- hide animation after 3s
+
+      const config: BackgroundGeolocationConfig = {
+        desiredAccuracy: 10,
+        stationaryRadius: 20,
+        distanceFilter: 30,
+        debug: true,
+        stopOnTerminate: false
+      };
+
+      this.backgroundGeolocation.configure(config).then(() => {
+        this.backgroundGeolocation.on
+          (BackgroundGeolocationEvents.location).subscribe(
+            (location: BackgroundGeolocationResponse) => {
+              var locationstr = localStorage.getItem("location");
+              if (locationstr == null) {
+                this.arr.push(location);
+              }
+              else {
+                var locationarr = JSON.parse(locationstr);
+                this.arr = locationstr;
+              }
+              localStorage.setItem("location", JSON.stringify(this.arr));
+            }) 
+      })
+      window.app = this;
+
     });
   }
 
@@ -337,7 +381,7 @@ export class MyApp implements OnInit {
       });
       alert.present();/**/
     } else {
-      this.nav.push(DatosConductorPage, {'id': this.id,'flag':true});
+      this.nav.push(DatosConductorPage, { 'id': this.id, 'flag': true });
     }
   }
 

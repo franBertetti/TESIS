@@ -59,13 +59,18 @@
         <ion-toggle [(ngModel)]="estaConduciendo" (ionChange)="cambiarEstado()"></ion-toggle>
       </ion-item>
     </div>
+    <div>
+      <ion-item *ngIf="conductor.estado == 'Ocupado'">
+        <ion-label> Hay un pasajero esperando por ti, vamos a buscarlo ! </ion-label>
+      </ion-item>
+    </div>
 
     <a ion-button block clear (click)="iraRealizarReserva()">
       Realizar Reserva
     </a>
   </ion-list>
 
-  
+
 
   <div *ngIf="mensajeNoConductor != 'Usted no esta registrado como conductor.' ">
     <button ion-button clear (click)="irAsolicitudesDeViaje()">
@@ -76,7 +81,7 @@
     </button>
   </div>
 
-<ion-label text-aling-left>Proximas reservas</ion-label>
+  <ion-label text-aling-left>Proximas reservas</ion-label>
 
   <ion-row>
     <button ion-button id="notification-button" class="btn" [class.btnViajesUsuario]="btnUsuario" col (click)="traerViajesComoUsuario(5)">

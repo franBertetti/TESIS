@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController, } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { DatosReservaPage } from '../datos-reserva/datos-reserva';
 import { AngularFireDatabase, snapshotChanges } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -7,6 +7,8 @@ import firebase from 'firebase';
 import { UsuarioServicioProvider } from '../../providers/usuario-servicio/usuario-servicio';
 import { DetalleConductorPage } from '../detalle-conductor/detalle-conductor';
 import { ServicioBusquedaConductoresProvider } from '../../providers/servicio-busqueda-conductores/servicio-busqueda-conductores';
+
+declare var google: any;
 /**
  * Generated class for the ResultadoBusquedaPage page.
  *
@@ -68,6 +70,7 @@ export class ResultadoBusquedaPage {
     public usuarioServicio: UsuarioServicioProvider,
     public servicioBusquedaConductores: ServicioBusquedaConductoresProvider,
     private alertCtrl: AlertController) {
+  
 
       this.Loading = this.loadingCtrl.create({
         spinner: 'crescent',
@@ -258,12 +261,24 @@ export class ResultadoBusquedaPage {
                 opcion.nombreCompleto = userAGuardar.nombreCompleto;
                 opcion.numCelular = userAGuardar.numCelular;
                 opcion.numDepto = userAGuardar.numDepto;
-                opcion.numPiso = userAGuardar.numPiso;
+                opcion.numPiso = userAGuardar.numPiso; 
+
+                var latLngConductor = new google.maps.LatLng(opcion.posicion.latitud, opcion.posicion.longitud);
+                var latLngDeBusqueda = new google.maps.LatLng(this.datosBusqueda.latitud,this.datosBusqueda.longitud);
+                opcion.distancia = parseInt(google.maps.geometry.spherical.computeDistanceBetween(latLngDeBusqueda, latLngConductor));  
+                console.log(opcion.distancia);
+
+                opcion.demora = Math.round(opcion.distancia / 340) + 1;
+
                 firebase.storage().ref('FotosUsuario/' + opcion.id + '/fotoPerfil.png').getDownloadURL().then((url) => {
                   opcion.fotoPerfil = url;
                 });
+
+                if (opcion.distanciaMaxima >= opcion.distancia ){
+                
                 datosdeUsuarioConductores.push(userAGuardar);
                 datosConductores.push(opcion);
+              }
                 //                this.datosdeUsuarioConductores.push(userAGuardar);
                 //                this.datosConductores.push(opcion);
               });

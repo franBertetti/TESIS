@@ -7,6 +7,19 @@
 </div>
 
 <ion-content padding>
+  <button ion-button full block (click)="startBackgroundTracking()">star background</button><br>
+  <button ion-button full block (click)="stopBackgroundGeolocation()">stop background</button><br>
+  <button ion-button full block (click)="getLocations()">get locations</button><br>
+  <button ion-button full block (click)="clearLocations()">clear locations</button><br>
+
+  <ion-list *ngFor="let location of locations">
+    <ion-item> <ion-label>Latitud:<b>{{location.latitude}} </b> </ion-label> </ion-item>  
+    <ion-item> <ion-label>Longitud:<b>{{location.longitude}} </b> </ion-label> </ion-item>  
+    <ion-item> <ion-label>Speed:<b>{{location.speed}}</b> </ion-label> </ion-item>  
+    <ion-item> <ion-label>Time:<b>{{location.time}}</b> </ion-label> </ion-item>  
+
+  </ion-list>
+
   <ion-list>
       <ion-row>
           <ion-col col-5>

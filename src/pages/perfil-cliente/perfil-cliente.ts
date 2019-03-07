@@ -11,6 +11,7 @@ import firebase from 'firebase';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { UsuarioServicioProvider } from '../../providers/usuario-servicio/usuario-servicio';
 import { SolicitudesConductorPage } from '../solicitudes-conductor/solicitudes-conductor';
+import { BuscarConductorPage } from '../buscar-conductor/buscar-conductor';
 
 
 /**
@@ -295,7 +296,7 @@ export class PerfilClientePage {
   }
 
   iraViajeSeleccionado(viaje) {
-    this.navCtrl.push(ViajeSeleccionadoPage, { 'viaje': viaje });
+    this.navCtrl.push(BuscarConductorPage, { 'viaje': viaje });
   }
 
   iraRealizarReserva() {
