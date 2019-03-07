@@ -268,7 +268,7 @@ export class ResultadoBusquedaPage {
                 opcion.distancia = parseInt(google.maps.geometry.spherical.computeDistanceBetween(latLngDeBusqueda, latLngConductor));  
                 console.log(opcion.distancia);
 
-                opcion.demora = Math.round(opcion.distancia / 340) + 1;
+                opcion.demora = Math.round(opcion.distancia / 340) + 1 ;
 
                 firebase.storage().ref('FotosUsuario/' + opcion.id + '/fotoPerfil.png').getDownloadURL().then((url) => {
                   opcion.fotoPerfil = url;
