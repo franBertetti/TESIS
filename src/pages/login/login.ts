@@ -15,6 +15,8 @@ import { RealizarReservaPage } from '../realizar-reserva/realizar-reserva';
 import { UsuarioServicioProvider } from '../../providers/usuario-servicio/usuario-servicio';
 import { PerfilClientePage } from '../perfil-cliente/perfil-cliente';
 import { Facebook } from '@ionic-native/facebook';
+import { PruebadistconkmPage } from '../pruebadistconkm/pruebadistconkm';
+import { InicioViajePage } from '../inicio-viaje/inicio-viaje';
 
 declare var window;
 
@@ -91,7 +93,8 @@ export class LoginPage implements OnInit {
   }
 
   clearLocations(){
-    localStorage.removeItem("location");
+    this.navCtrl.push(InicioViajePage);
+ //   localStorage.removeItem("location");
   }
 
   public togglePassword() {

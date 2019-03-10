@@ -1,0 +1,41 @@
+<!--
+  Generated template for the ConductorEnDestinoPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Conductor en Destino</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <div>
+    <h4 text-center>Destino: </h4>
+    <p text-center>{{viaje.direccionDeBusqueda}}</p>
+    <ion-item>
+      <ion-avatar item-start>
+        <img *ngIf="viaje.fotoPerfil" id="foto" src="{{viaje.fotoPerfil}}">
+      </ion-avatar>
+    </ion-item>
+    <h4 text-center> Pasajero: </h4>
+    <h3 text-center>{{viaje.nombreCliente}}</h3>
+    <button ion-button block clear>
+      <ion-icon name="call" (click)="llamarPasajero()"></ion-icon> Llamar Pasajero 
+    </button>
+
+    <ion-row>
+      <button ion-button class="btn" color="secondary" text-wrap col (click)="iraInicioViaje()"> Iniciar Viaje </button>
+      <button ion-button class="btn" color="danger" text-wrap col (click)="iraPenalizacion()"> Registrar Penalización
+      </button>
+    </ion-row>
+
+
+  </div>
+
+</ion-content>

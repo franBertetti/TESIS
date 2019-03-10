@@ -64,6 +64,9 @@ import { PruebadistconkmPageModule } from '../pages/pruebadistconkm/pruebadistco
 import { PruebadragdirPageModule } from '../pages/pruebadragdir/pruebadragdir.module';
 import { BackgroundGeolocation } from '@ionic-native/background-geolocation/ngx';
 import { BuscarConductorPageModule } from '../pages/buscar-conductor/buscar-conductor.module';
+import { ConductorEnDestinoPageModule } from '../pages/conductor-en-destino/conductor-en-destino.module';
+import { CallNumber } from '@ionic-native/call-number/ngx';
+
 
 
 
@@ -132,7 +135,8 @@ export const firebaseConfig = {
       libraries: ['geometry', 'places']
     }),
     PruebadragdirPageModule,
-    BuscarConductorPageModule
+    BuscarConductorPageModule,
+    ConductorEnDestinoPageModule
     /*,
     AdministradorPage*/
   ],
@@ -156,6 +160,7 @@ export const firebaseConfig = {
     Facebook,
     UbicacionProvider,    
     BackgroundGeolocation,
+    CallNumber,
     Geolocation
   ]
 })

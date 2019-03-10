@@ -5,6 +5,7 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Geolocation } from '@ionic-native/geolocation';
 import firebase from 'firebase';
+import { ConductorEnDestinoPage } from '../conductor-en-destino/conductor-en-destino';
 
 
 declare var google: any;
@@ -27,18 +28,18 @@ export class BuscarConductorPage {
   directionsDisplay: any;
   watch: any;
   marker: any;
-  viaje:any;
-  mensaje:any;
+  viaje: any;
+  mensaje: any;
 
-  numeroContratacion:any;
-  destino:any;
-  fotoPerfilCliente:any;
-  marker1:any;
-  marker2:any;
-  markerPar:boolean = true;
-  markerImpar:boolean = false;
-  banderaAlertaMensaje:boolean = true;
-  cargando:any;
+  numeroContratacion: any;
+  destino: any;
+  fotoPerfilCliente: any;
+  marker1: any;
+  marker2: any;
+  markerPar: boolean = true;
+  markerImpar: boolean = false;
+  banderaAlertaMensaje: boolean = true;
+  cargando: any;
 
   constructor(public navCtrl: NavController,
     public loadingCtrl: LoadingController,
@@ -49,22 +50,24 @@ export class BuscarConductorPage {
     public _ubicacionProv: UbicacionProvider,
     private geolocation: Geolocation) {
 
-      this.cargando = this.loadingCtrl.create({
-        spinner: 'crescent',
-        content: 'Buscando Conductores',
-        duration: 7000
-      });
+      this.viaje = this.navParams.get('viaje');
+
+    this.cargando = this.loadingCtrl.create({
+      spinner: 'crescent',
+      content: 'Buscando Conductores',
+      duration: 7000
+    });
     this.cargando.present();
 
-      if (this.navParams.get('viaje')) {
-        this.viaje = this.navParams.get('viaje');
-        this.numeroContratacion = this.viaje.numeroContratacion;
-        this.destino = this.viaje.latitud + ',' + this.viaje.longitud;
-        var id = this.viaje.idUsuario;
-        firebase.storage().ref('FotosUsuario/' + id + '/fotoPerfil.png').getDownloadURL().then((url) => {
-          this.fotoPerfilCliente = url;
-        });
-      }
+    if (this.navParams.get('viaje')) {
+      this.viaje = this.navParams.get('viaje');
+      this.numeroContratacion = this.viaje.numeroContratacion;
+      this.destino = this.viaje.latitud + ',' + this.viaje.longitud;
+      var id = this.viaje.idUsuario;
+      firebase.storage().ref('FotosUsuario/' + id + '/fotoPerfil.png').getDownloadURL().then((url) => {
+        this.fotoPerfilCliente = url;
+      });
+    }
 
     this.watch = this.geolocation.watchPosition();
     this.watch.subscribe((data) => {
@@ -114,11 +117,11 @@ export class BuscarConductorPage {
 
     this.map.setCenter(this.posActual);
 
-    
+
     this.markerPar = this.markerPar!;
     this.markerImpar = this.markerImpar!;
 
-    if (this.markerPar == true){
+    if (this.markerPar == true) {
       this.marker2 = new google.maps.Marker({
         position: this.map.getCenter(),//new google.maps.LatLng(parseFloat(latitud), parseFloat(longitud))
         icon: {
@@ -137,7 +140,7 @@ export class BuscarConductorPage {
       this.marker1 = null;
     }
 
-    if (this.markerImpar == true){
+    if (this.markerImpar == true) {
       this.marker1 = new google.maps.Marker({
         position: this.map.getCenter(),
         icon: {
@@ -192,14 +195,15 @@ export class BuscarConductorPage {
     var total = 0;
     console.log('resultados:');
     console.log(result.routes['0'].legs['0'].distance.text);
-    this.mensaje = result.routes['0'].legs['0'].distance.text + '.' + 'Alrededor de '+ result.routes['0'].legs['0'].duration.text ;
-    
-    if (this.banderaAlertaMensaje == true){
+
+    this.mensaje = result.routes['0'].legs['0'].distance.text + '.' + 'Alrededor de ' + result.routes['0'].legs['0'].duration.text;
+
+    if (this.banderaAlertaMensaje == true) {
 
       this.cargando.dismiss();
       let alert = this.alertCtrl.create({
         title: 'Vamos por el pasajero !',
-        subTitle: 'Se encuentra a ' +this.mensaje,
+        subTitle: 'Se encuentra a ' + this.mensaje,
         buttons: [
           {
             text: "Ok",
@@ -212,6 +216,19 @@ export class BuscarConductorPage {
     }
 
     console.log(result.routes['0'].legs['0'].distance.value);
+
+    if (result.routes['0'].legs['0'].distance.value < 100) {
+      var cargando = this.loadingCtrl.create({
+        spinner: 'crescent',
+        content: 'Llegando a destino..',
+        duration: 3000
+      });
+      cargando.present();
+      setTimeout(() => {
+        this.navCtrl.push(ConductorEnDestinoPage, { 'viaje': this.viaje });
+        }, 3000);
+    }
+
     console.log(result.routes['0'].legs['0'].duration.text);
     console.log(result.routes['0'].legs['0'].duration.value);
     console.log(result);
@@ -232,21 +249,21 @@ export class BuscarConductorPage {
     document.getElementById('total').innerHTML = total + ' km';
     this.total = total;
 
- /*   if (this.banderaAlertaMensaje == true){
-
-    this.cargando.dismiss();
-    let alert = this.alertCtrl.create({
-      title: this.mensaje,
-      buttons: [
-        {
-          text: "Vamos por el pasajero !",
-          role: 'cancel'
-        }
-      ]
-    });
-    alert.present();
-    this.banderaAlertaMensaje = false;
-  }*/
+    /*   if (this.banderaAlertaMensaje == true){
+   
+       this.cargando.dismiss();
+       let alert = this.alertCtrl.create({
+         title: this.mensaje,
+         buttons: [
+           {
+             text: "Vamos por el pasajero !",
+             role: 'cancel'
+           }
+         ]
+       });
+       alert.present();
+       this.banderaAlertaMensaje = false;
+     }*/
   }
 
 

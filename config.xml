@@ -113,6 +113,7 @@
     <plugin name="cordova-android-support-gradle-release" spec="^2.0.1">
         <variable name="ANDROID_SUPPORT_VERSION" value="23.+" />
     </plugin>
+    <plugin name="mx.ferreyra.callnumber" spec="~0.0.2" />
     <engine name="ios" spec="4.5.5" />
     <engine name="browser" spec="5.0.4" />
     <engine name="android" spec="7.1.4" />

@@ -48,7 +48,7 @@ export class RealizarReservaPage {
   @ViewChild("search")
   public searchElementRef;
 
-
+  contador = 0;
 
   today;
   TipoVehiculos = [];
@@ -188,7 +188,10 @@ export class RealizarReservaPage {
           console.log(place.geometry.location.lng);
           console.log(place.formatted_address);
           this.direccionFormateada = place.formatted_address;
-          this.busqueda.direccion = this.direccionFormateada;
+          if (this.contador == 0) {
+            this.busqueda.direccion = this.direccionFormateada;
+            this.contador = 1;
+          }
           console.log('localidad:');
           this.localidadFormateada = place.vicinity;
           this.usuario.localidad = this.localidadFormateada;
@@ -237,7 +240,9 @@ export class RealizarReservaPage {
     this.geocodeLatLng(infoLatLong).then(res => {
       console.log('ubicacion cargada');
       this.myFormInmediato.value.direccion = res;
+      if (this.contador == 0 ){
       this.busqueda.direccion = res;
+    }
       this.cargarUbicacion.dismiss();
     });
   }
@@ -329,47 +334,6 @@ export class RealizarReservaPage {
 
   buscarConductores() {
 
-    /*
-    if (!this.busqueda.horaBusqueda)
-
-      if (this.busqueda.direccion) {
-        this.faltaDireccion = false;
-      } else {
-        this.faltaDireccion = true;
-      }
-
-    console.log(this.faltaDireccion);
-
-    if (this.busqueda.vehiculoReserva) {
-      this.faltaTipoVehiculo = false;
-    } else {
-      this.faltaTipoVehiculo = true;
-    }
-
-    console.log(this.faltaTipoVehiculo);
-
-    if (this.faltaDireccion == true && this.faltaTipoVehiculo == true) {
-      this.mensaje = 'Por favor, ingrese el Tipo de vehiculo y la Direccion';
-    } else if (this.faltaDireccion == true) {
-      this.mensaje = 'Por favor, ingrese la Dirección';
-    } else if (this.faltaTipoVehiculo == true) {
-      this.mensaje = 'Por favor, ingrese el Tipo de vehiculo';
-    }
-
-    if (this.faltaDireccion == true || this.faltaTipoVehiculo == true) {
-      let alert = this.alertCtrl.create({
-        message: this.mensaje,
-        buttons: [
-          {
-            text: "Ok",
-            role: 'cancel'
-          }
-        ]
-      });
-      alert.present();
-    }*/
-
-    //  if (this.faltaDireccion == false && this.faltaTipoVehiculo == false) {
     this.busqueda.latitud = this.latitude;
     this.busqueda.longitud = this.longitude;
 
@@ -392,20 +356,22 @@ export class RealizarReservaPage {
             console.log('Si clicked');
 
 
-/*            let loading = this.loadingCtrl.create({
-              spinner: 'crescent',
-              content: 'Buscando Conductores',
-              duration: 3500
-            });
-
-            loading.onDidDismiss(() => {
-              console.log('Dismissed loading');
-            });
-
-            loading.present();*/
+            /*            let loading = this.loadingCtrl.create({
+                          spinner: 'crescent',
+                          content: 'Buscando Conductores',
+                          duration: 3500
+                        });
+            
+                        loading.onDidDismiss(() => {
+                          console.log('Dismissed loading');
+                        });
+            
+                        loading.present();*/
 
             this.busqueda.idCliente = this.usuario.id;
-
+            
+            console.log(this.busqueda.direccion);
+            console.log(this.direccionFormateada);
 
             this.navCtrl.push(ResultadoBusquedaPage, { 'datosBusqueda': this.busqueda });
 

@@ -1,6 +1,102 @@
-page-inicio-viaje {
-    #map{
-        height: 400px;
-        width: 100%;
+page-realizar-reserva {
+
+    .bg-general{
+        /*background-image: url(https://i2.wp.com/tribot.net/wp-content/uploads/2016/06/fondo-gradiente.jpg);*/
+        background-size: 100%;
+        background-repeat: no-repeat;
     }
+
+    .btn{
+        color: #488aff;
+        background-color: transparent;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        border-radius: 64px;
+        padding: 0 2.6rem;
+    }
+
+    .btn:hover{
+        color: white;
+    }
+    .btnInmediato{
+        border-width: 1px;
+        border-style: solid;
+//        border-color: #488aff;
+        color: white;
+        background-color: #488aff;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        border-radius: 64px;
+        padding: 0 2.6rem;        
+    }
+
+    .btnAnticipado{
+        border-width: 1px;
+        border-style: solid;
+//        border-color: #488aff;
+        color: white;
+        background-color: #488aff;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        border-radius: 64px;
+        padding: 0 2.6rem;
+    }
+
+    .item.wrap, .item-content.wrap {
+        white-space: normal !important;
+        }
+
+    .alert-md .alert-radio-label{
+    overflow: hidden;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    text-overflow: normal !important;
+    white-space: nowrap;
+    color: initial;
+    padding: 13px 26px;
+    }
+
+
+
+
+
+        #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #floating-panel {
+        position: absolute;
+        top: 10px;
+        left: 25%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+      }
+      #floating-panel {
+        position: absolute;
+        top: 5px;
+        left: 50%;
+        margin-left: -180px;
+        width: 350px;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+      }
+      #latlng {
+        width: 225px;
+      }
+
 }

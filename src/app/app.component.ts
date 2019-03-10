@@ -40,6 +40,8 @@ import { PruebaDatosConductorPage } from '../pages/prueba-datos-conductor/prueba
 import { AdministradorPage } from '../pages/administrador/administrador';
 import { PruebadistconkmPage } from '../pages/pruebadistconkm/pruebadistconkm';
 import { PruebadragdirPage } from '../pages/pruebadragdir/pruebadragdir';
+import { ViajeSeleccionadoPage } from '../pages/viaje-seleccionado/viaje-seleccionado';
+import { InicioViajePage } from '../pages/inicio-viaje/inicio-viaje';
 //
 declare var window;
 
