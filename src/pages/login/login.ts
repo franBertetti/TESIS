@@ -29,7 +29,7 @@ export class LoginPage implements OnInit {
   locations: any;
 
   splash = true;
-  //secondPage = SecondPagePage;
+  //secondPage = SecondPagePag;
 
   myForm: FormGroup;
   user: Observable<firebase.User>;
