@@ -106,7 +106,7 @@ export class PruebadragdirPage {
 
   this.viaje = this.navParams.get('viaje');
   console.log(this.viaje);
-//  this.viaje.idConductor = 'a0AQRl4MqrQZcCUO818uYL2yRe12';
+//  this.viaje.idConductor = 'a0AQRl4MqrQZcCUO818uYL2yRe12'; 
   firebase.database().ref('conductor/').orderByChild('id').equalTo('a0AQRl4MqrQZcCUO818uYL2yRe12').on('child_added', snap => {
     var valor = snap.val();
     console.log('valor:');
