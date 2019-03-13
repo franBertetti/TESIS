@@ -133,7 +133,7 @@ export class BuscarConductorPage {
           fillOpacity: 1// opacidad del relleno
         },
         map: this.map,
-        labelAnchor: new google.maps.Point(10, 10), // Os lo explico después del CSS.
+        labelAnchor: new google.maps.Point(10, 10), // Os lo explico después del CSS..
         labelClass: "label" // LA CLASE CSS, AQUÍ LLEGA LA MAGIA!!
       });
 
