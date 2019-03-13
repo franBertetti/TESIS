@@ -214,7 +214,7 @@ export class InicioViajePage {
     });
   }
 
-  buscarConductores(){
+  calcularViaje(){
     alert(this.direccionFormateada);
   }
 

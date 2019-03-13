@@ -7,8 +7,8 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>pruebaDragDir</ion-title>
-    <button ion-button (click)="abrir()"> Iniciar </button>
+    <ion-title></ion-title>
+    <button ion-button (click)="ComenzarViaje()"> Iniciar Viaje </button>
   </ion-navbar>
 
 </ion-header>
@@ -16,6 +16,22 @@
 
 <ion-content class="home">
 
+  <div>
+    <form [formGroup]="myForm" (ngSubmit)="calcularViaje()">
+      <ion-list>
+
+        <ion-item>
+          <ion-label floating>*Dirección Completa</ion-label>
+          <ion-input formControlName="direccion" id="txtHome" [(ngModel)]="busqueda.direccion" type="text"></ion-input>
+        </ion-item>
+
+        <div padding>
+          <button ion-button block type="submit" [disabled]="!myForm.valid"> Calcular Viaje </button>
+        </div>
+
+      </ion-list>
+    </form>
+  </div>
   <div class="map-wrapper">
     <div id="map"></div>
   </div>
@@ -23,10 +39,7 @@
     <p text-wrapper col-md-6 class="distTotal">Distancia: <span id="total"></span> </p>
     <p text-wrapper col-md-6 class="costoTotal">Costo: {{total}} km </p>
   </div>
-      <div id="right-panel">
-      <!--<p>Distancia total: <span id="total"></span></p>-->
-    </div>
-  <!--  <div id="right-panel">
-<p>Distancia total: <span id="total"></span></p>
-  </div>-->
+  <div id="right-panel">
+  </div>
+
 </ion-content>

@@ -82,6 +82,14 @@ export class LoginPage implements OnInit {
 
   }
 
+  pruebadragdir(){
+    this.navCtrl.push(PruebadragdirPage);
+  }
+  llamarPasajero(){
+    var numTelefono:number = 154065223;
+    window.open('tel:' + numTelefono.toString());
+  }
+
   uno(){
     this.navCtrl.push(PruebadragdirPage);
   }
