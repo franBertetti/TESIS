@@ -164,7 +164,7 @@ export class MyApp implements OnInit {
     console.log(this.message);
 
     console.log('el mensaje es:');
-    this.usuarioService.currentMesagge.subscribe(message => {
+//    this.usuarioService.currentMesagge.subscribe(message => {
 
       if (this.id != undefined) {
         firebase.storage().ref('FotosUsuario/' + this.id + '/fotoPerfil.png').getDownloadURL().then((url) => {
@@ -184,11 +184,11 @@ export class MyApp implements OnInit {
             }
 
 
-            this.message = message;
+      //      this.message = message;
             console.log(this.message);
           });
       }
-    });
+   // });
 
     //// this.newMessage();
 

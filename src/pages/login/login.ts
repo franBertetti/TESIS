@@ -17,6 +17,9 @@ import { PerfilClientePage } from '../perfil-cliente/perfil-cliente';
 import { Facebook } from '@ionic-native/facebook';
 import { PruebadistconkmPage } from '../pruebadistconkm/pruebadistconkm';
 import { InicioViajePage } from '../inicio-viaje/inicio-viaje';
+import { CallNumber } from '@ionic-native/call-number/ngx';
+import { PruebadragdirPage } from '../pruebadragdir/pruebadragdir';
+import { Pruebadist2puntosPage } from '../pruebadist2puntos/pruebadist2puntos';
 
 declare var window;
 
@@ -50,7 +53,8 @@ export class LoginPage implements OnInit {
     public usuarioService: UsuarioServicioProvider,
     public toastCtrl: ToastController,
     public fb: Facebook,
-    public platform: Platform) {
+    public platform: Platform,
+    private callNumber: CallNumber) {
 
     this.locations = [];
 
@@ -76,6 +80,18 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
 
+  }
+
+  uno(){
+    this.navCtrl.push(PruebadragdirPage);
+  }
+
+  dos(){
+    this.navCtrl.push(PruebadistconkmPage);
+  }
+
+  tres(){
+    this.navCtrl.push(Pruebadist2puntosPage);
   }
 
   startBackgroundTracking() {

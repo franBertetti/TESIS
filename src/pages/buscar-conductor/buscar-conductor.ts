@@ -54,7 +54,7 @@ export class BuscarConductorPage {
 
     this.cargando = this.loadingCtrl.create({
       spinner: 'crescent',
-      content: 'Buscando Conductores',
+      content: 'Cargando..',
       duration: 7000
     });
     this.cargando.present();
@@ -217,7 +217,7 @@ export class BuscarConductorPage {
 
     console.log(result.routes['0'].legs['0'].distance.value);
 
-    if (result.routes['0'].legs['0'].distance.value < 100) {
+    if (result.routes['0'].legs['0'].distance.value < 50) {
       var cargando = this.loadingCtrl.create({
         spinner: 'crescent',
         content: 'Llegando a destino..',
@@ -249,21 +249,7 @@ export class BuscarConductorPage {
     document.getElementById('total').innerHTML = total + ' km';
     this.total = total;
 
-    /*   if (this.banderaAlertaMensaje == true){
-   
-       this.cargando.dismiss();
-       let alert = this.alertCtrl.create({
-         title: this.mensaje,
-         buttons: [
-           {
-             text: "Vamos por el pasajero !",
-             role: 'cancel'
-           }
-         ]
-       });
-       alert.present();
-       this.banderaAlertaMensaje = false;
-     }*/
+  
   }
 
 

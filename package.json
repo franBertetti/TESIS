@@ -36,7 +36,6 @@
     "bootstrap": "^4.2.1",
     "call-number": "1.0.1",
     "cordova-android": "7.1.4",
-    "cordova-android-support-gradle-release": "^2.0.1",
     "cordova-browser": "5.0.4",
     "cordova-ios": "4.5.5",
     "cordova-plugin-camera": "^4.0.3",
@@ -57,6 +56,7 @@
     "ionic1-star-rating": "^1.2.13",
     "ionic3-star-rating": "^1.1.5",
     "ionicons": "3.0.0",
+    "mx.ferreyra.callnumber": "0.0.2",
     "ng-sweet-alert": "^1.0.11",
     "node-sass": "^4.10.0",
     "promise-polyfill": "^8.1.0",
@@ -89,22 +89,8 @@
       "cordova-plugin-geolocation": {
         "GEOLOCATION_USAGE_DESCRIPTION": "To locate you"
       },
-      "cordova-plugin-mauron85-background-geolocation": {
-        "GOOGLE_PLAY_SERVICES_VERSION": "11+",
-        "ANDROID_SUPPORT_LIBRARY_VERSION": "23+",
-        "ICON": "@mipmap/icon",
-        "SMALL_ICON": "@mipmap/icon",
-        "ACCOUNT_NAME": "@string/app_name",
-        "ACCOUNT_LABEL": "@string/app_name",
-        "ACCOUNT_TYPE": "$PACKAGE_NAME.account",
-        "CONTENT_AUTHORITY": "$PACKAGE_NAME",
-        "ALWAYS_USAGE_DESCRIPTION": "This app always requires location tracking",
-        "MOTION_USAGE_DESCRIPTION": "App requires motion detection"
-      },
-      "cordova-android-support-gradle-release": {
-        "ANDROID_SUPPORT_VERSION": "23.+"
-      },
-      "mx.ferreyra.callnumber": {}
+      "mx.ferreyra.callnumber": {},
+      "call-number": {}
     },
     "config": {
       "ionic_sass": "./config/sass.config.js",

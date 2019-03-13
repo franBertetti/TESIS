@@ -30,7 +30,8 @@ export class ConductorEnDestinoPage {
     });
 
     this.numTelefono =  firebase.database().ref('usuarios/'+this.viaje.idUsuario+'/numCelular');
-
+    console.log(this.numTelefono);
+    console.log(this.numTelefono.toString());
 
   }
 
@@ -39,10 +40,13 @@ export class ConductorEnDestinoPage {
   }
 
   llamarPasajero(){
-    this.callNumber.callNumber(this.numTelefono.toString(), true)
-  .then(res => console.log('Launched dialer!', res))
-  .catch(err => console.log('Error launching dialer', err));
-  }
+
+       window.open('tel:'+ this.numTelefono.toString());
+    
+      /*       this.callNumber.callNumber("18001010101", true)
+             .then(res => console.log('Launched dialer!', res))
+             .catch(err => console.log('Error launching dialer', err)); */
+      }
 
   iraPenalizacion() {
     this.navCtrl.push(PenalizacionPage, { 'viaje': this.viaje });

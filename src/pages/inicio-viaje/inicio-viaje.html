@@ -25,11 +25,20 @@
       </ion-item>
 
       <div padding>
-        <button ion-button block type="submit" [disabled]="!myForm.valid"> Buscar Conductores </button>
+        <button ion-button block type="submit" [disabled]="!myForm.valid"> Calcular Viaje </button>
       </div>
 
     </ion-list>
   </form>
 
-  <div id="map"></div>
+  <div class="map-wrapper">
+    <div id="map"></div>
+  </div>
+  <div id="divDistCosto" class="row">
+    <p text-wrapper col-md-6 class="distTotal">Distancia: <span id="total"></span> </p>
+    <p text-wrapper col-md-6 class="costoTotal">Costo: {{total}} km </p>
+  </div>
+      <div id="right-panel">
+    </div>
+
 </ion-content>

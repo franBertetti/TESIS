@@ -162,7 +162,7 @@ export class RealizarReservaPage {
     //create search FormControl
     this.searchControl = new FormControl();
 
-    this.setCurrentPosition();
+    //this.setCurrentPosition();
 
     //load Places Autocomplete
     this.mapsAPILoader.load().then(() => {
@@ -236,7 +236,6 @@ export class RealizarReservaPage {
     console.log(infoLatLong);
     var infoLatLong2 = this.geolocalizacion.latitud + ',' + this.geolocalizacion.longitud;
     console.log(infoLatLong2);
-    console.log('-32.4027606,-63.2415736');
     this.geocodeLatLng(infoLatLong).then(res => {
       console.log('ubicacion cargada');
       this.myFormInmediato.value.direccion = res;
@@ -354,19 +353,6 @@ export class RealizarReservaPage {
           text: 'Confirmar',
           handler: () => {
             console.log('Si clicked');
-
-
-            /*            let loading = this.loadingCtrl.create({
-                          spinner: 'crescent',
-                          content: 'Buscando Conductores',
-                          duration: 3500
-                        });
-            
-                        loading.onDidDismiss(() => {
-                          console.log('Dismissed loading');
-                        });
-            
-                        loading.present();*/
 
             this.busqueda.idCliente = this.usuario.id;
             

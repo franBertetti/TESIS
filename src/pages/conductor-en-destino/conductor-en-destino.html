@@ -25,9 +25,9 @@
     </ion-item>
     <h4 text-center> Pasajero: </h4>
     <h3 text-center>{{viaje.nombreCliente}}</h3>
-    <button ion-button block clear>
-      <ion-icon name="call" (click)="llamarPasajero()"></ion-icon> Llamar Pasajero 
-    </button>
+    <a ion-button block clear href="tel:{{numTelefono}}">
+      <ion-icon name="call"></ion-icon> Llamar Pasajero 
+    </a>
 
     <ion-row>
       <button ion-button class="btn" color="secondary" text-wrap col (click)="iraInicioViaje()"> Iniciar Viaje </button>
