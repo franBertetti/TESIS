@@ -40,7 +40,7 @@ export class PenalizacionesPage {
     usuarioServicio.changeMessage('asda');
 
     this.getPenalizaciones();
-
+//d
     /*this.usuarioServicio.currentMesagge.subscribe(message => {
       for (var i = 0; i < this.penalizaciones.length; i++) {
         firebase.storage().ref('FotosUsuario/' + this.penalizaciones[i].idConductor + '/fotoPerfil.png').getDownloadURL().then((url) => {
