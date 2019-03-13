@@ -8,7 +8,7 @@ import { LoadingController, AlertController } from 'ionic-angular';
 import { MenuController } from 'ionic-angular';
 import { ResultadoBusquedaPage } from '../resultado-busqueda/resultado-busqueda';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
+import firebase from 'firebase';
 import { NgZone, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from "@angular/forms";
 import { } from 'googlemaps';
@@ -46,6 +46,8 @@ export class PruebadragdirPage {
 
   mostrarBotonViaje: boolean = false;
 
+  mostrarIndicaciones: boolean = false;
+
   today;
   TipoVehiculos = [];
   busqueda: any = {};
@@ -64,6 +66,8 @@ export class PruebadragdirPage {
   lngPosActual;
   posActual;
 
+  mostrarBtnFinalizarViaje:boolean = true;
+
   total: number;
 
   comenzoViaje: boolean = false;
@@ -79,7 +83,13 @@ export class PruebadragdirPage {
   markerPar: boolean = true;
   markerImpar: boolean = false;
   load;
-  isCollapsed: any;
+  viaje:any;
+  costoConductor;
+  datosConductor;
+
+  totalViaje:number;
+
+  contTotal:boolean = false;
   
   constructor(public navCtrl: NavController,
     public fireAuth: AngularFireAuth,
@@ -94,6 +104,18 @@ export class PruebadragdirPage {
     private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone) {
 
+  this.viaje = this.navParams.get('viaje');
+  console.log(this.viaje);
+//  this.viaje.idConductor = 'a0AQRl4MqrQZcCUO818uYL2yRe12';
+  firebase.database().ref('conductor/').orderByChild('id').equalTo('a0AQRl4MqrQZcCUO818uYL2yRe12').on('child_added', snap => {
+    var valor = snap.val();
+    console.log('valor:');
+    console.log(valor);
+    this.costoConductor = valor.tarifa;
+    this.latPosActual = valor.latitud;
+    this.lngPosActual = valor.longitud;
+    this.posActual = this.latPosActual + ',' + this.lngPosActual;
+  });
 
     this.myForm = this.formBuilder.group({
       direccion: ['', Validators.required]
@@ -111,16 +133,6 @@ export class PruebadragdirPage {
 
   }
 
-  toggleCollapse() {
-    this.isCollapsed = !this.isCollapsed;
-    if (!this.isCollapsed) {
-      this.load = this.loadingCtrl.create({
-        spinner: 'crescent',
-        duration: 1500
-      });
-      this.load.present();
-    }
-  }
 
   ionViewDidLoad() {
 
@@ -212,53 +224,8 @@ export class PruebadragdirPage {
 
   initMap(dirDestino) {
 
-    this.map.setCenter(this.posActual);
+    //this.map.setCenter(this.posActual);
 
-
-    this.markerPar = this.markerPar!;
-    this.markerImpar = this.markerImpar!;
-
-    if (this.markerPar == true) {
-      this.marker2 = new google.maps.Marker({
-        position: this.map.getCenter(),//new google.maps.LatLng(parseFloat(latitud), parseFloat(longitud))
-        icon: {
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 10, //tamaño
-          strokeColor: '#f00', //color del borde
-          strokeWeight: 5, //grosor del borde
-          fillColor: '#00f', //color de relleno
-          fillOpacity: 1// opacidad del relleno
-        },
-        map: this.map,
-        labelAnchor: new google.maps.Point(10, 10), // Os lo explico después del CSS.
-        labelClass: "label" // LA CLASE CSS, AQUÍ LLEGA LA MAGIA!!
-      });
-
-      this.marker1 = null;
-    }
-
-    if (this.markerImpar == true) {
-      this.marker1 = new google.maps.Marker({
-        position: this.map.getCenter(),
-        icon: {
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 10, //tamaño
-          strokeColor: '#f00', //color del borde
-          strokeWeight: 5, //grosor del borde
-          fillColor: '#00f', //color de relleno
-          fillOpacity: 1// opacidad del relleno
-        },
-        map: this.map,
-        labelAnchor: new google.maps.Point(10, 10), // Os lo explico después del CSS.
-        labelClass: "label" // LA CLASE CSS, AQUÍ LLEGA LA MAGIA!!
-      });
-
-      this.marker2 = null;
-    }
-
-    /*    setInterval(() => {
-          console.log('Intervalo timeout');
-    */
     this.directionsDisplay.addListener('directions_changed', () => {
       this.computeTotalDistance(this.directionsDisplay.getDirections());
       var result = this.directionsDisplay.getDirections();
@@ -311,19 +278,37 @@ export class PruebadragdirPage {
     };
     total = total / 1000;
     document.getElementById('total').innerHTML = total + ' km';
+    if (this.mostrarBtnFinalizarViaje == true){
     this.total = total;
+    this.totalViaje = Math.trunc(this.total*this.costoConductor);
+      this.contTotal = true;
+  }
   }
 
   calcularViaje() {
-    //    alert(this.direccionFormateada);
     this.initMap(this.direccionFormateada);
     this.mostrarBotonViaje = true;
     this.esOculto = false;
+
+    this.load = this.loadingCtrl.create({
+      spinner: 'crescent',
+      content: 'Cargando..',
+      duration: 2000
+    });
+    this.load.present();
   }
 
   ComenzarViaje() {
+    this.mostrarBtnFinalizarViaje = false;
     this.comenzoViaje = true;
-  }
+    this.mostrarIndicaciones = true;
+    this.load = this.loadingCtrl.create({
+      spinner: 'crescent',
+      content: 'Cargando..',
+      duration: 2000
+    });
+    this.load.present();
+}
 
 
 }

@@ -17,6 +17,8 @@ declare var google: any;
 })
 export class BuscarConductorPage {
 
+contador: number = 0;
+
   latPosActual;
   lngPosActual;
   posActual;
@@ -115,53 +117,8 @@ export class BuscarConductorPage {
 
   initMap() {
 
-    this.map.setCenter(this.posActual);
+    //this.map.setCenter(this.posActual);
 
-
-    this.markerPar = this.markerPar!;
-    this.markerImpar = this.markerImpar!;
-
-    if (this.markerPar == true) {
-      this.marker2 = new google.maps.Marker({
-        position: this.map.getCenter(),//new google.maps.LatLng(parseFloat(latitud), parseFloat(longitud))
-        icon: {
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 10, //tamaño
-          strokeColor: '#f00', //color del borde
-          strokeWeight: 5, //grosor del borde
-          fillColor: '#00f', //color de relleno
-          fillOpacity: 1// opacidad del relleno
-        },
-        map: this.map,
-        labelAnchor: new google.maps.Point(10, 10), // Os lo explico después del CSS.
-        labelClass: "label" // LA CLASE CSS, AQUÍ LLEGA LA MAGIA!!
-      });
-
-      this.marker1 = null;
-    }
-
-    if (this.markerImpar == true) {
-      this.marker1 = new google.maps.Marker({
-        position: this.map.getCenter(),
-        icon: {
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 10, //tamaño
-          strokeColor: '#f00', //color del borde
-          strokeWeight: 5, //grosor del borde
-          fillColor: '#00f', //color de relleno
-          fillOpacity: 1// opacidad del relleno
-        },
-        map: this.map,
-        labelAnchor: new google.maps.Point(10, 10), // Os lo explico después del CSS.
-        labelClass: "label" // LA CLASE CSS, AQUÍ LLEGA LA MAGIA!!
-      });
-
-      this.marker2 = null;
-    }
-
-    /*    setInterval(() => {
-          console.log('Intervalo timeout');
-    */
     this.directionsDisplay.addListener('directions_changed', () => {
       this.computeTotalDistance(this.directionsDisplay.getDirections());
       var result = this.directionsDisplay.getDirections();
@@ -195,7 +152,6 @@ export class BuscarConductorPage {
     var total = 0;
     console.log('resultados:');
     console.log(result.routes['0'].legs['0'].distance.text);
-
     this.mensaje = result.routes['0'].legs['0'].distance.text + '.' + 'Alrededor de ' + result.routes['0'].legs['0'].duration.text;
 
     if (this.banderaAlertaMensaje == true) {
@@ -218,6 +174,7 @@ export class BuscarConductorPage {
     console.log(result.routes['0'].legs['0'].distance.value);
 
     if (result.routes['0'].legs['0'].distance.value < 50) {
+      this.watch = [];
       var cargando = this.loadingCtrl.create({
         spinner: 'crescent',
         content: 'Llegando a destino..',
@@ -225,9 +182,11 @@ export class BuscarConductorPage {
       });
       cargando.present();
       setTimeout(() => {
-        this.navCtrl.push(ConductorEnDestinoPage, { 'viaje': this.viaje });
-        }, 3000);
+        this.navCtrl.setRoot(ConductorEnDestinoPage, { 'viaje': this.viaje });
+      } , 3000);
     }
+
+if (this.contador == 0 ){
 
     console.log(result.routes['0'].legs['0'].duration.text);
     console.log(result.routes['0'].legs['0'].duration.value);
@@ -236,7 +195,6 @@ export class BuscarConductorPage {
     console.log('reuta:');
     console.log(myroute);
     console.log(result.routes['0'].legs['0'].steps);
-    console.log(result.routes['0'].legs['0'].steps[1].distance.text);
     console.log(result.routes['0'].legs['0'].steps[1].duration.text);
     console.log(result.routes['0'].legs['0'].steps[1].instructions);
     console.log(result.routes['0'].legs['0'].steps[1].maneuver);
@@ -246,10 +204,11 @@ export class BuscarConductorPage {
       total += myroute.legs[i].distance.value;
     };
     total = total / 1000;
-    document.getElementById('total').innerHTML = total + ' km';
+    //document.getElementById('total').innerHTML = total + ' km';
     this.total = total;
-
   
+    this.contador = 1;
+  }
   }
 
 

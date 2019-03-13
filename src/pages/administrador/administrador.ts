@@ -47,10 +47,6 @@ cantUsuarios:any;
     });
   }
 
-  irApruebaDragDir(){
-    this.navCtrl.push(PruebadragdirPage);
-  }
-
   irATipoVehiculo(){
     this.navCtrl.push(TipoVehiculoPage);
   }

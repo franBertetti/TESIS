@@ -4,6 +4,7 @@ import firebase from 'firebase';
 import { CallNumber } from '@ionic-native/call-number/ngx';
 import { PenalizacionPage } from '../penalizacion/penalizacion';
 import { InicioViajePage } from '../inicio-viaje/inicio-viaje';
+import { PruebadragdirPage } from '../pruebadragdir/pruebadragdir';
 
 /**
  * Generated class for the ConductorEnDestinoPage page.
@@ -36,9 +37,12 @@ firebase.storage().ref('FotosUsuario/' + this.viaje.idUsuario + '/fotoPerfil.png
   this.load.dismiss();
 });
 
-this.numTelefono = firebase.database().ref('usuarios/' + this.viaje.idUsuario + '/numCelular');
-console.log(this.numTelefono);
-console.log(this.numTelefono.toString());
+firebase.database().ref('usuarios/').orderByChild('id').equalTo(this.viaje.idUsuario).on('child_added', snap => {
+  var valor = snap.val();
+  console.log('valor:');
+  console.log(valor);
+  this.numTelefono = valor.numCelular;
+});
 
   }
 
@@ -48,7 +52,7 @@ ionViewDidLoad() {
 
 llamarPasajero(){
 
-  window.open('tel:' + this.numTelefono.toString());
+  window.open('tel:' + this.numTelefono);
 
   /*       this.callNumber.callNumber("18001010101", true)
          .then(res => console.log('Launched dialer!', res))
@@ -60,7 +64,7 @@ iraPenalizacion() {
 }
 
 iraInicioViaje() {
-  this.navCtrl.push(InicioViajePage, { 'viaje': this.viaje });
+  this.navCtrl.push(PruebadragdirPage, { 'viaje': this.viaje });
 }
 
 
