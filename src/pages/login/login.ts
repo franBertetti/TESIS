@@ -84,7 +84,7 @@ export class LoginPage implements OnInit {
   }
 
   pruebadragdir(){
-    this.navCtrl.push(PruebadragdirPage);
+    this.navCtrl.setRoot(PruebadragdirPage);
   }
   llamarPasajero(){
     var numTelefono:number = 154065223;

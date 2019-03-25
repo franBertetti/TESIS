@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { UbicacionProvider } from '../../providers/ubicacion/ubicacion';
 import { AngularFireDatabase } from 'angularfire2/database';
@@ -13,6 +13,7 @@ import { NgZone, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from "@angular/forms";
 import { } from 'googlemaps';
 import { MapsAPILoader } from '@agm/core';
+import { LoginPage } from '../login/login';
 
 declare var google: any;
 
@@ -28,7 +29,7 @@ declare var google: any;
   selector: 'page-pruebadragdir',
   templateUrl: 'pruebadragdir.html',
 })
-export class PruebadragdirPage {
+export class PruebadragdirPage implements OnInit, OnDestroy{
   //declaraciones autocompletar
 
   esOculto: boolean = true;
@@ -83,12 +84,11 @@ export class PruebadragdirPage {
   markerPar: boolean = true;
   markerImpar: boolean = false;
   load;
-  viaje:any;
+  viaje:any = {};
   costoConductor;
   datosConductor;
-
   totalViaje:number;
-
+  subscription:any;
   contTotal:boolean = false;
   
   constructor(public navCtrl: NavController,
@@ -104,9 +104,9 @@ export class PruebadragdirPage {
     private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone) {
 
-  this.viaje = this.navParams.get('viaje');
+/*  this.viaje = this.navParams.get('viaje');
   console.log(this.viaje);
-//  this.viaje.idConductor = 'a0AQRl4MqrQZcCUO818uYL2yRe12'; 
+  this.viaje.idConductor = 'a0AQRl4MqrQZcCUO818uYL2yRe12'; */
   firebase.database().ref('conductor/').orderByChild('id').equalTo('a0AQRl4MqrQZcCUO818uYL2yRe12').on('child_added', snap => {
     var valor = snap.val();
     console.log('valor:');
@@ -122,19 +122,44 @@ export class PruebadragdirPage {
     });
 
 
-    this.watch = this.geolocation.watchPosition();
+/*    this.watch = this.geolocation.watchPosition();
     this.watch.subscribe((data) => {
 
       this.latPosActual = data.coords.latitude;
       this.lngPosActual = data.coords.longitude;
       this.posActual = this.latPosActual + ',' + this.lngPosActual;
       console.log(this.posActual);
-    });
+    });*/
 
   }
 
 
+ngOnInit(){
+  this.watch = this.geolocation.watchPosition();
+  this.subscription = this.watch.subscribe((data) => {
+
+    this.latPosActual = data.coords.latitude;
+    this.lngPosActual = data.coords.longitude;
+    this.posActual = this.latPosActual + ',' + this.lngPosActual;
+    console.log(this.posActual);
+  });
+}
+
+ngOnDestroy(){
+  this.subscription.unsubscribe();
+} 
+
+  finalizarViaje(){
+    this.navCtrl.setRoot(LoginPage);
+  }
+
   ionViewDidLoad() {
+
+    if (this.directionsDisplay != null)
+    {
+        this.directionsDisplay.setMap(null);
+        this.directionsDisplay = null;
+    }
 
     this.zoom = 15;
 

@@ -66,6 +66,7 @@ import { BackgroundGeolocation } from '@ionic-native/background-geolocation/ngx'
 import { BuscarConductorPageModule } from '../pages/buscar-conductor/buscar-conductor.module';
 import { ConductorEnDestinoPageModule } from '../pages/conductor-en-destino/conductor-en-destino.module';
 import { CallNumber } from '@ionic-native/call-number/ngx';
+import { DireccionBusquedaProvider } from '../providers/direccion-busqueda/direccion-busqueda';
 
 
 
@@ -161,7 +162,8 @@ export const firebaseConfig = {
     UbicacionProvider,    
     BackgroundGeolocation,
     CallNumber,
-    Geolocation
+    Geolocation,
+    DireccionBusquedaProvider
   ]
 })
 export class AppModule { }

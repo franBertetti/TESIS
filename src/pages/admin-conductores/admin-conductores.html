@@ -68,18 +68,9 @@
     (select)='onSelect($event)'>
 >
 
-    <ngx-datatable-column prop="nombreCompleto"  [resizeable]="false"></ngx-datatable-column>
-    <!--    <ngx-datatable-column name="Gender"></ngx-datatable-column>
-    -->
-    <ngx-datatable-column name="estado"></ngx-datatable-column>
+    <ngx-datatable-column prop="nombreCompleto"></ngx-datatable-column>
 
-    <ngx-datatable-column name="id" [resizeable]="false">
-      <ng-template ngx-datatable-header-template>
-      </ng-template>
-      <ng-template let-row="row" ngx-datatable-cell-template>
-        <button ion-button small outline color="light" (click)="detalleConductor($event)">Ir a Conductor</button>
-      </ng-template>
-    </ngx-datatable-column>
+    <ngx-datatable-column name="estado"></ngx-datatable-column>
 
   </ngx-datatable>
 
