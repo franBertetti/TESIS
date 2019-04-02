@@ -71,6 +71,8 @@ export class MyApp implements OnInit {
 
   yaSolicitoRegistro: boolean;
 
+  cant: number = 0;
+
   pages: Array<{ title: string, component: any }>;
 
   datoPrueba: any = {};
@@ -89,13 +91,6 @@ export class MyApp implements OnInit {
     public fcm: FcmProvider,
     public usuarioService: UsuarioServicioProvider,
     public toastCtrl: ToastController) {
-
-
-    /*this.datoPrueba = usuarioService.getValor().subscribe(valorGuardado => {
-      this.datoPrueba = valorGuardado;
-      console.log("el valor cambio a:");
-      console.log(this.datoPrueba);
-    });*/
 
 
     platform.ready().then(() => {
@@ -117,43 +112,9 @@ export class MyApp implements OnInit {
 
     )
 
-
-
-    //codigo de onesignal de linea 45 a 64
-    /*
-      platform.ready().then(() => {
-        statusBar.styleDefault();
-        splashScreen.hide();
-    
-        // OneSignal Code start:
-        // Enable to debug issues:
-        // window["plugins"].OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
-    
-        var notificationOpenedCallback = function(jsonData) {
-          console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
-        };
-    
-        window["plugins"].OneSignal
-          .startInit("e1e2cfc8-d5d2-44b9-883c-fba5a6c15cb3", "1037405461007")
-          .handleNotificationOpened(notificationOpenedCallback)
-          .endInit();
-      });
-
-      */
     this.arr = [];
     this.initializeApp();
     this.fireAuth.user.subscribe(user => this.mostrarPerfilCliente(user));
-
-    /*if (this.conductor.estado) {
-      this.estado = this.conductor.estado;
-      console.log("entro a parte 2");
-    }*/
-
-    /*if (this.conductor.estado) {
-      this.estado = this.conductor.estado;
-    } else {
-      this.estado = '';
-    }*/
 
     this.pages = [
       { title: 'Realizar Reserva', component: RealizarReservaPage },
@@ -297,25 +258,48 @@ export class MyApp implements OnInit {
         stationaryRadius: 20,
         distanceFilter: 30,
         debug: true,
-        stopOnTerminate: false
+        stopOnTerminate: false,
+        interval: 10000
       };
 
-      this.backgroundGeolocation.configure(config).then(() => {
-        this.backgroundGeolocation.on
-          (BackgroundGeolocationEvents.location).subscribe(
-            (location: BackgroundGeolocationResponse) => {
-              var locationstr = localStorage.getItem("location");
-              if (locationstr == null) {
-                this.arr.push(location);
-              }
-              else {
-                var locationarr = JSON.parse(locationstr);
-                this.arr = locationstr;
-              }
-              localStorage.setItem("location", JSON.stringify(this.arr));
-            }) 
-      })
-      window.app = this;
+
+        this.backgroundGeolocation.configure(config).then(() => {
+          this.backgroundGeolocation.on
+            (BackgroundGeolocationEvents.location).subscribe(
+              (location: BackgroundGeolocationResponse) => {
+               // var locationstr = localStorage.getItem("location");
+                console.log(location);
+                var posicion = location.latitude + ',' + location.longitude;
+                this.afDB.database.ref('pruebaBack/latlng/').set(posicion);
+                this.cant = this.cant + 1;
+                this.afDB.database.ref('pruebaBack/cant/').set(this.cant);
+                //console.log(locationstr);
+                /*if (locationstr){
+                  if  (locationstr['0'].latitude){
+                  console.log(locationstr);
+                }
+                }
+                this.lat = location.latitude;
+                this.lng = location.longitude;
+                console.log(location.latitude);
+                console.log(location.longitude);
+*/
+                /*if (locationstr == null) {
+                  this.arr.push(location);
+                  console.log(this.arr);
+                } else {
+                  //console.log(locationarr);
+                  var locationarr = JSON.parse(locationstr);
+                  this.arr = locationstr;
+                  //console.log(this.arr);
+                }*/
+                //localStorage.setItem("location", JSON.stringify(this.arr));
+              })
+
+              this.backgroundGeolocation.start();
+        })
+        window.app = (this);
+
 
     });
   }
