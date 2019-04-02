@@ -134,8 +134,7 @@ export class MyApp implements OnInit {
         };
     
         window["plugins"].OneSignal
-          .startInit("e1e2cfc8-d5d2-44b9-883c-fba5a6c15cb3", "1037405461007")
-          .handleNotificationOpened(notificationOpenedCallback)
+asdas          .handleNotificationOpened(notificationOpenedCallback)
           .endInit();
       });
 

@@ -71,12 +71,6 @@ import { CallNumber } from '@ionic-native/call-number/ngx';
 
 
 export const firebaseConfig = {
-  apiKey: "AIzaSyAQEtqK6bbnV5BTVHH4mWWNDwTW8s-YYuw",
-  authDomain: "tesis-1df62.firebaseapp.com",
-  databaseURL: "https://tesis-1df62.firebaseio.com",
-  projectId: "tesis-1df62",
-  storageBucket: "tesis-1df62.appspot.com",
-  messagingSenderId: "1037405461007"
 };
 
 
@@ -131,7 +125,7 @@ export const firebaseConfig = {
     PruebadistconkmPageModule,
     PruebaDatosConductorPageModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyAK63fXQji9i7akGbEnPHQBxWRLjM8sNBs',
+      apiKey: 'ACA',
       libraries: ['geometry', 'places']
     }),
     PruebadragdirPageModule,
