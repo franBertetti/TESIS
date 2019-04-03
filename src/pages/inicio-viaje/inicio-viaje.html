@@ -10,13 +10,13 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Realizar Reserva</ion-title>
+    <ion-title>Comenzar Viaje</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content class="bg-general" padding>
 
-  <form [formGroup]="myForm" (ngSubmit)="buscarConductores()">
+  <form [formGroup]="myForm" (ngSubmit)="calcularViaje()">
     <ion-list>
 
       <ion-item>
@@ -31,14 +31,15 @@
     </ion-list>
   </form>
 
-  <div class="map-wrapper">
-    <div id="map"></div>
-  </div>
-  <div id="divDistCosto" class="row">
-    <p text-wrapper col-md-6 class="distTotal">Distancia: <span id="total"></span> </p>
-    <p text-wrapper col-md-6 class="costoTotal">Costo: {{total}} km </p>
-  </div>
-      <div id="right-panel">
+  <div>
+    <div class="map-wrapper">
+      <div id="map"></div>
     </div>
-
+    <div id="divDistCosto" class="row">
+      <p text-wrapper col-md-6 class="distTotal">Distancia: <span id="total"></span> </p>
+      <p text-wrapper col-md-6 class="costoTotal">Costo: {{total}} km </p>
+    </div>
+    <div id="right-panel">
+    </div>
+  </div>
 </ion-content>

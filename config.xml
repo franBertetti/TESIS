@@ -104,7 +104,8 @@
     <access launch-external="yes" origin="tel:*" />
     <access launch-external="yes" origin="tel:*" />
     <access launch-external="yes" origin="mailto:*" />
+    <plugin name="cordova-plugin-mauron85-background-geolocation" spec="~2.2.5" />
     <engine name="ios" spec="4.5.5" />
     <engine name="browser" spec="5.0.4" />
-    <engine name="android" spec="7.1.4" />
+    <engine name="android" spec="~7.1.4" />
 </widget>

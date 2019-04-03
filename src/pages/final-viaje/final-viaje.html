@@ -7,26 +7,38 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Final Viaje</ion-title>
+    <ion-title>Resumen Viaje</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+  <div>
+    <h1 text-center>400$ ARS</h1>
     <ion-item>
-        <ion-label col-6>Total: </ion-label>
-        <ion-label col-6>300$</ion-label>
-      </ion-item>
+      <ion-avatar item-start>
+        <img *ngIf="viaje.fotoPerfil" id="foto" src="{{viaje.fotoPerfil}}">
+      </ion-avatar>
+    </ion-item>
+  </div>
+  <ion-row>
+    <ion-col size="3" text-center> 14:49 min </ion-col>
+    <ion-col size="3" offset="6" text-center> 5,4 km </ion-col>
+  </ion-row>
 
-  <ion-label> Recorrido </ion-label>
+  <ion-row>
+    <button text-wrap ion-button col-6 offset-3 (click)="tomarFoto()">Toma una foto</button>
+  </ion-row>
+    
+  <div id="LoadedImages" *ngIf="fotos">
+    <ion-item *ngFor="let item of fotos; let i = index">
+      <ion-icon name="close-circle" (click)="borrarFoto(i)"></ion-icon>
+      <img [src]="item" class="imagenes">
+    </ion-item>
+  </div>
 
-  <ion-img width="270" height="150" src="http://www.adnradio.cl/images_remote/308/3082301_n_vir1.jpg"></ion-img>
-
-  <button ion-button full block> Agregar Fotos   <ion-icon name="add"></ion-icon></button>
-      <br>
-
-      <button ion-button full block (click)="iraPerfilCliente()"> Aceptar </button>
+  <button ion-button full block (click)="guardarFinalViaje()"> Aceptar </button>
 
 
 </ion-content>
