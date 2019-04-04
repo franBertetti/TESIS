@@ -50,7 +50,6 @@ export class FinalViajePage {
       this.viaje = this.navParams.get('viaje');
       console.log(this.viaje);
     }
-    console.log(this.viaje);
     firebase.storage().ref('FotosUsuario/' + this.viaje.idUsuario + '/fotoPerfil.png').getDownloadURL().then((url) => {
       this.viaje.fotoPerfil = url;
       this.load.dismiss();
@@ -111,7 +110,6 @@ export class FinalViajePage {
           handler: () => {
             console.log('Aceptar clicked');
 
-            this.afDB.database.ref('penalizacion/' + this.penalizacion.id).set(this.penalizacion);
             this.afDB.database.ref('viaje/' + this.viaje.numeroContratacion + '/direccionDestino/').set(this.viaje.direccionDestino);
             this.afDB.database.ref('viaje/' + this.viaje.numeroContratacion + '/estado/').set('finalizado');
             this.afDB.database.ref('viaje/' + this.viaje.numeroContratacion + '/latitudDireccionDestino/').set(this.viaje.latitudDireccionDestino);

@@ -14,6 +14,7 @@ import { FormControl } from "@angular/forms";
 import { } from 'googlemaps';
 import { MapsAPILoader } from '@agm/core';
 import { LoginPage } from '../login/login';
+import { FinalViajePage } from '../final-viaje/final-viaje';
 
 declare var google: any;
 
@@ -29,7 +30,7 @@ declare var google: any;
   selector: 'page-pruebadragdir',
   templateUrl: 'pruebadragdir.html',
 })
-export class PruebadragdirPage implements OnInit, OnDestroy{
+export class PruebadragdirPage implements OnInit, OnDestroy {
   //declaraciones autocompletar
 
   esOculto: boolean = true;
@@ -66,8 +67,9 @@ export class PruebadragdirPage implements OnInit, OnDestroy{
   latPosActual;
   lngPosActual;
   posActual;
+  esFinViaje: boolean = false;
 
-  mostrarBtnFinalizarViaje:boolean = true;
+  mostrarBtnFinalizarViaje: boolean = true;
 
   total: number;
 
@@ -84,13 +86,14 @@ export class PruebadragdirPage implements OnInit, OnDestroy{
   markerPar: boolean = true;
   markerImpar: boolean = false;
   load;
-  viaje:any = {};
+  viaje: any = {};
   costoConductor;
   datosConductor;
-  totalViaje:number;
-  subscription:any;
-  contTotal:boolean = false;
-  
+  totalViaje: number;
+  subscription: any;
+  contTotal: boolean = false;
+  contador = 0;
+
   constructor(public navCtrl: NavController,
     public fireAuth: AngularFireAuth,
     public afDB: AngularFireDatabase,
@@ -104,61 +107,59 @@ export class PruebadragdirPage implements OnInit, OnDestroy{
     private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone) {
 
-/*  this.viaje = this.navParams.get('viaje');
-  console.log(this.viaje);
-  this.viaje.idConductor = 'a0AQRl4MqrQZcCUO818uYL2yRe12'; */
-  firebase.database().ref('conductor/').orderByChild('id').equalTo('a0AQRl4MqrQZcCUO818uYL2yRe12').on('child_added', snap => {
-    var valor = snap.val();
-    console.log('valor:');
-    console.log(valor);
-    this.costoConductor = valor.tarifa;
-    this.latPosActual = valor.latitud;
-    this.lngPosActual = valor.longitud;
-    this.posActual = this.latPosActual + ',' + this.lngPosActual;
-  });
+      this.viaje = this.navParams.get('viaje');
+      console.log(this.viaje);
+    firebase.database().ref('conductor/').orderByChild('id').equalTo(this.viaje.idConductor).on('child_added', snap => {
+      var valor = snap.val();
+      console.log('valor:');
+      console.log(valor);
+      this.costoConductor = valor.tarifa;
+      this.latPosActual = valor.latitud;
+      this.lngPosActual = valor.longitud;
+      this.posActual = this.latPosActual + ',' + this.lngPosActual;
+    });
 
     this.myForm = this.formBuilder.group({
       direccion: ['', Validators.required]
     });
 
 
-/*    this.watch = this.geolocation.watchPosition();
-    this.watch.subscribe((data) => {
+    /*    this.watch = this.geolocation.watchPosition();
+        this.watch.subscribe((data) => {
+    
+          this.latPosActual = data.coords.latitude;
+          this.lngPosActual = data.coords.longitude;
+          this.posActual = this.latPosActual + ',' + this.lngPosActual;
+          console.log(this.posActual);
+        });*/
+
+  }
+
+
+  ngOnInit() {
+    this.watch = this.geolocation.watchPosition();
+    this.subscription = this.watch.subscribe((data) => {
 
       this.latPosActual = data.coords.latitude;
       this.lngPosActual = data.coords.longitude;
       this.posActual = this.latPosActual + ',' + this.lngPosActual;
       console.log(this.posActual);
-    });*/
-
+    });
   }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 
-ngOnInit(){
-  this.watch = this.geolocation.watchPosition();
-  this.subscription = this.watch.subscribe((data) => {
-
-    this.latPosActual = data.coords.latitude;
-    this.lngPosActual = data.coords.longitude;
-    this.posActual = this.latPosActual + ',' + this.lngPosActual;
-    console.log(this.posActual);
-  });
-}
-
-ngOnDestroy(){
-  this.subscription.unsubscribe();
-} 
-
-  finalizarViaje(){
+  finalizarViaje() {
     this.navCtrl.setRoot(LoginPage);
   }
 
   ionViewDidLoad() {
 
-    if (this.directionsDisplay != null)
-    {
-        this.directionsDisplay.setMap(null);
-        this.directionsDisplay = null;
+    if (this.directionsDisplay != null) {
+      this.directionsDisplay.setMap(null);
+      this.directionsDisplay = null;
     }
 
     this.zoom = 15;
@@ -249,16 +250,14 @@ ngOnDestroy(){
 
   initMap(dirDestino) {
 
-    //this.map.setCenter(this.posActual);
-
     this.directionsDisplay.addListener('directions_changed', () => {
       this.computeTotalDistance(this.directionsDisplay.getDirections());
       var result = this.directionsDisplay.getDirections();
       this.computeTotalDistance(result);
     });
-
     this.displayRoute(this.posActual, dirDestino, this.directionsService,
       this.directionsDisplay);
+
 
   }
 
@@ -267,48 +266,65 @@ ngOnDestroy(){
   }
 
   displayRoute(origin, destination, service, display) {
-    service.route({
-      origin: origin,
-      destination: destination,
-      travelMode: 'DRIVING'
-    }, function (response, status) {
-      if (status === 'OK') {
-        display.setDirections(response);
-      } else {
-        alert('Could not display directions due to: ' + status);
-      }
-    });
+    if (this.contador != 2) {
+      service.route({
+        origin: origin,
+        destination: destination,
+        travelMode: 'DRIVING'
+      }, function (response, status) {
+        if (status === 'OK') {
+          display.setDirections(response);
+        }
+        else {
+          alert('Could not display directions due to: ' + status);
+        }
+      });
+    }
   }
+
 
   computeTotalDistance(result) {
-    var total = 0;
-    console.log('resultados:');
-    console.log(result.routes['0'].legs['0'].distance.text);
-    console.log(result.routes['0'].legs['0'].distance.value);
-    console.log(result.routes['0'].legs['0'].duration.text);
-    console.log(result.routes['0'].legs['0'].duration.value);
-    console.log(result);
-    var myroute = result.routes[0];
-    console.log('reuta:');
-    console.log(myroute);
-    console.log(result.routes['0'].legs['0'].steps);
-    console.log(result.routes['0'].legs['0'].steps[1].distance.text);
-    console.log(result.routes['0'].legs['0'].steps[1].duration.text);
-    console.log(result.routes['0'].legs['0'].steps[1].instructions);
-    console.log(result.routes['0'].legs['0'].steps[1].maneuver);
-
-
-    for (var i = 0; i < myroute.legs.length; i++) {
-      total += myroute.legs[i].distance.value;
-    };
-    total = total / 1000;
-    document.getElementById('total').innerHTML = total + ' km';
-    if (this.mostrarBtnFinalizarViaje == true){
-    this.total = total;
-    this.totalViaje = Math.trunc(this.total*this.costoConductor);
-      this.contTotal = true;
+    if (this.contador != 2) {
+      var total = 0;
+      console.log('resultados:');
+      console.log(result.routes['0'].legs['0'].distance.text);
+      console.log(result.routes['0'].legs['0'].distance.value);
+      console.log(result.routes['0'].legs['0'].duration.text);
+      console.log(result.routes['0'].legs['0'].duration.value);
+      console.log(result);
+      var myroute = result.routes[0];
+      console.log('reuta:');
+      console.log(myroute);
+      if (result.routes['0'].legs['0'].distance.value < 50) {
+        this.watch = [];
+        this.contador = 2;
+        var cargando = this.loadingCtrl.create({
+          spinner: 'crescent',
+          content: 'Llegando a destino..',
+          duration: 3000
+        });
+        cargando.present();
+        setTimeout(() => {
+          this.navCtrl.setRoot(FinalViajePage, { 'viaje': this.viaje });
+        }, 3000);
+      }
+      if (this.contador == 0) {
+        for (var i = 0; i < myroute.legs.length; i++) {
+          total += myroute.legs[i].distance.value;
+        }
+        ;
+        total = total / 1000;
+        document.getElementById('total').innerHTML = total + ' km';
+        if (this.mostrarBtnFinalizarViaje == true) {
+          this.total = total;
+          this.totalViaje = Math.trunc(this.total * this.costoConductor);
+          this.contTotal = true;
+          this.contador = 1;
+        }
+      }
+    }
   }
-  }
+
 
   calcularViaje() {
     this.initMap(this.direccionFormateada);
@@ -324,6 +340,9 @@ ngOnDestroy(){
   }
 
   ComenzarViaje() {
+    this.viaje.direccionDestino = this.direccionFormateada;
+    this.viaje.latitudDireccionDestino = this.latitude;
+    this.viaje.longitudDireccionDestino = this.longitude;
     this.mostrarBtnFinalizarViaje = false;
     this.comenzoViaje = true;
     this.mostrarIndicaciones = true;
@@ -333,7 +352,7 @@ ngOnDestroy(){
       duration: 2000
     });
     this.load.present();
-}
+  };
 
 
 }
