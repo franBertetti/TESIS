@@ -59,7 +59,7 @@ export class FinalViajePage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad FinalViajePage');
   }
-
+//
   tomarFoto() {
     this.camera.getPicture({
       quality: 95,
